@@ -20,7 +20,6 @@ class DemandeController extends Controller
     public function index()
     {
         $demandes = Demande::with('user')->paginate(10);
-        // dd($demandes);
         return view('demandes.index', compact('demandes'));
     }
 
@@ -37,7 +36,19 @@ class DemandeController extends Controller
      */
     public function store(Request $request)
     {
-        
+        //dd($request->demandes);
+        $order = Demande::count() === 0 ? 1 : Demande::get()->last()->id + 1;
+        $ref = "REQ-{$order}-". Carbon::now()->year;
+        $demande = Demande::create([
+            'numero' => $ref,
+            'service_id' => 1,
+            'user_id' => Auth::user()->id
+        ]);
+        foreach ($request->all() as $key => $value) {
+            $demande->$key = $value;
+        }
+
+        return redirect()->route('demandes.index')->with('success', 'Demande Enregistré');
     }
 
     /**
@@ -46,6 +57,8 @@ class DemandeController extends Controller
     public function show(Demande $demande)
     {
         //
+    return view('demandes.index', compact('demandes'));
+
     }
 
     /**
@@ -54,6 +67,9 @@ class DemandeController extends Controller
     public function edit(Demande $demande)
     {
         //
+
+        return view('demandes.index', compact('demandes'));
+
     }
 
     /**
@@ -70,5 +86,8 @@ class DemandeController extends Controller
     public function destroy(Demande $demande)
     {
         //
+        $demande->delete();
+        return redirect()->route('demandes.index')->with('success','');
+
     }
 }
