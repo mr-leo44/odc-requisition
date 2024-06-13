@@ -11,7 +11,8 @@ class Approbateur extends Model
     protected $fillable =[
         'level',
         'name',
-        'fonction'
+        'fonction',
+        'email'
 
     ];
 }
