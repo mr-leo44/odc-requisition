@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Demande;
-use App\Http\Requests\StoreDemandeRequest;
-use App\Http\Requests\UpdateDemandeRequest;
+use App\Mail\DemandeMail;
+use Illuminate\Http\Request;
+use App\Models\DemandeDetail;
+use App\Http\Controllers\Controller;
+use Exception;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class DemandeController extends Controller
 {
@@ -13,7 +19,9 @@ class DemandeController extends Controller
      */
     public function index()
     {
-        //
+        $demandes = Demande::with('user')->paginate(10);
+        // dd($demandes);
+        return view('demandes.index', compact('demandes'));
     }
 
     /**
@@ -21,15 +29,15 @@ class DemandeController extends Controller
      */
     public function create()
     {
-        //
+        return view('demandes.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDemandeRequest $request)
+    public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -51,7 +59,7 @@ class DemandeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDemandeRequest $request, Demande $demande)
+    public function update(Request $request, Demande $demande)
     {
         //
     }

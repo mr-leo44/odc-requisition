@@ -11,6 +11,8 @@ class Demande extends Model
 
     protected $fillable = [
         'numero',
+        'service_id',
+        'user_id',
     ];
 
     public function user()
