@@ -20,9 +20,9 @@
             <div class="flex items-center ms-3">
               <div>
                 <button type="button" class="flex text-sm bg-white rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
-                  <span class="sr-only">Open user menu</span> 
+                  <span class="sr-only">Open user menu</span>
                   <img class="w-8 h-8 rounded-full" src="{{ asset('img/profil.jpeg') }}" alt="user photo">
-                  
+
                 </button>
               </div>
               <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
@@ -34,13 +34,13 @@
                     {{ Auth::user()->email }}
                   </p>
                 </div>
-                <ul class="py-1" role="none"> 
+                <ul class="py-1" role="none">
                   <li>
                     <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Profil</a>
                   </li>
-                   
+
                   <li>
-                     
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -51,8 +51,8 @@
                                 {{ __('Deconnexion') }}
                             </x-dropdown-link>
                         </form>
-                    
-                    
+
+
                   </li>
                 </ul>
               </div>
@@ -75,7 +75,16 @@
                 <span class="ms-3">Dashboard</span>
              </a>
           </li>
-         
+          <li>
+             <a href="{{route('demandes.index')}}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M8 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2Zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1V4Zm-6 8a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1Zm1 3a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z" clip-rule="evenodd"/>
+                </svg>
+
+                <span class="ms-3">Demandes</span>
+             </a>
+          </li>
+
        </ul>
     </div>
  </aside>
