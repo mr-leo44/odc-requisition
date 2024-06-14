@@ -48,7 +48,7 @@ class DemandeController extends Controller
             $demande->$key = $value;
         }
 
-        return redirect()->route('demandes.index')->with('success', 'Demande Enregistré');
+        return redirect()->route('demandes.index')->with('success', 'Demande enregistrée avec succès');
     }
 
     /**
@@ -87,7 +87,8 @@ class DemandeController extends Controller
     {
         //
         $demande->delete();
-        return redirect()->route('demandes.index')->with('success','');
+        return redirect()->route('demandes.index')->with('success','Suppression éffectuée avec succès');
 
     }
+
 }
