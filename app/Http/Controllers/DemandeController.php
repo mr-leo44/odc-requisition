@@ -19,7 +19,9 @@ class DemandeController extends Controller
      */
     public function index()
     {
-        $demandes = Demande::with('user')->paginate(10);
+        $demandes = Demande::with(['user', 'demande_details', 'service'])->paginate(10);
+        $service_id = Auth::user()->id;//signifie que c'est l'utilisateur qui est connecté
+
         return view('demandes.index', compact('demandes'));
     }
 
@@ -38,14 +40,21 @@ class DemandeController extends Controller
     {
         //dd($request->demandes);
         $order = Demande::count() === 0 ? 1 : Demande::get()->last()->id + 1;
-        $ref = "REQ-{$order}-". Carbon::now()->year;
+        $ref = "REQ-{$order}-" . Carbon::now()->year;
         $demande = Demande::create([
             'numero' => $ref,
             'service_id' => 1,
             'user_id' => Auth::user()->id
         ]);
-        foreach ($request->all() as $key => $value) {
-            $demande->$key = $value;
+        if ($demande) {
+            foreach ($request->demandes as $item) {
+                DemandeDetail::create([
+                    'designation' => $item["designation"],
+                    'qte_demandee' => $item["qte_demandee"],
+                    'qte_livree' => 0,
+                    'demande_id' => $demande->id
+                ]);
+            }
         }
 
         return redirect()->route('demandes.index')->with('success', 'Demande enregistrée avec succès');
@@ -57,8 +66,7 @@ class DemandeController extends Controller
     public function show(Demande $demande)
     {
         //
-    return view('demandes.index', compact('demandes'));
-
+        return view('demandes.index', compact('demandes'));
     }
 
     /**
@@ -69,7 +77,6 @@ class DemandeController extends Controller
         //
 
         return view('demandes.index', compact('demandes'));
-
     }
 
     /**
@@ -87,8 +94,6 @@ class DemandeController extends Controller
     {
         //
         $demande->delete();
-        return redirect()->route('demandes.index')->with('success','Suppression éffectuée avec succès');
-
+        return redirect()->route('demandes.index')->with('success', 'Suppression éffectuée avec succès');
     }
-
 }
