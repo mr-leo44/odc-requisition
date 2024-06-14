@@ -26,8 +26,8 @@
                         <span class="sr-only">Close</span>
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                         </svg>
                     </button>
                 </div>
@@ -43,36 +43,27 @@
                     </div>
                 </div>
 
-                <div class="overflow-x-auto">
-                    <div class="flex justify-end my-2">
-                        {{-- <a href="{{ route('demandes.create') }}" data-toggle="modal" data-target="#ModalCreate"
-                            class="bg-indigo-700 px-6 py-1 text-white rounded">Nouveau</a> --}}
-                        <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
-                            class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                            type="button">
-                            Ajouter
-                        </button>
-                    </div>
-                    <table class="max-w-7xl max-h-full w-full">
-                        <thead class="dark:hover:bg-gray-700 group">
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col"
-                                    class="text-sm font-medium bg-indigo-100 text-indigo-900 px-6 py-4 text-left">
+                                    class="text-sm font-medium bg-indigo-100 text-indigo-900 px-6 py-3 text-left">
                                     N° Demande
                                 </th>
                                 <th scope="col"
-                                    class="text-sm font-medium bg-indigo-100 text-indigo-900 px-6 py-4 text-left">
+                                    class="text-sm font-medium bg-indigo-100 text-indigo-900 px-6 py-3 text-left">
                                     Service
                                 </th>
                                 <th scope="col"
-                                    class="text-sm font-medium bg-indigo-100 text-indigo-900 px-6 py-4 text-left">
+                                    class="text-sm font-medium bg-indigo-100 text-indigo-900 px-6 py-3 text-left">
                                     Utilisateur</th>
                                 <th scope="col"
-                                    class="text-sm font-medium bg-indigo-100 text-indigo-900 px-6 py-4 text-left">
-                                    Action</th>
+                                    class="text-sm font-medium bg-indigo-100 text-indigo-900 px-6 py-3 text-left">
+                                    Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="sortable">
                             @foreach ($demandes as $demande)
                                 <tr class="dark:bg-gray-800">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium dark:text-gray-400">
@@ -81,25 +72,29 @@
                                         {{ __('Marketing') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium dark:text-gray-400">
                                         {{ $demande->user->name }}</td>
-                                    <td
-                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-900 first:mr-2 last:ml-2">
-                                        <a href="{{ route('demandes.show', $demande->id) }}"
-                                            class="bg-blue-700 px-6 py-1 text-white rounded">Voir</a>
-                                        <a href="{{ route('demandes.edit', $demande->id) }}"
-                                            class="bg-emerald-700 px-6 py-1 text-white rounded">Editer</a>
-                                        <form action="{{ route('demandes.destroy', $demande->id) }}" method="POST"
-                                            class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="bg-red-700 px-6 py-1 text-white rounded">Supprimer</button>
-                                        </form>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-900 first:mr-2 last:ml-2">
+                                        <a href="{{ route('demandes.show', $demande->id) }}" class="bg-blue-700 px-6 py-1 text-white rounded">Voir</a>
+
+                                        <a href="{{ route('demandes.edit', $demande->id) }}" class="bg-emerald-700 px-6 py-1 text-white rounded">Editer</a>
+
+                                        <a onclick="supprimer(event);" data-modal-target="delete-modal" data-modal-toggle="delete-modal" href="{{ route('demandes.destroy', $demande->id) }}" class="bg-red-700 px-6 py-1 text-white rounded">Supprimer</a>
                                     </td>
+
                                 </tr>
                             @endforeach
                         </tbody>
+
                     </table>
+                    <div class="flex justify-end my-2">
+                        <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
+                            class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            type="button">
+                            Ajouter
+                        </button>
+                    </div>
                 </div>
                 {{ $demandes->links() }}
+                <x-deleteDemande/>
             </div>
             {{-- @include('demandes.modal.create') --}}
             <!-- Main modal -->
@@ -190,6 +185,9 @@
                                 </form>
                             </div>
                         </div>
+
+
+
                         <script>
                             $(document).ready(function() {
                                 var i = 0;
