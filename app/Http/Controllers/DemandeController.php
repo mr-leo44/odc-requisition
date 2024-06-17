@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Demande;
 use App\Mail\DemandeMail;
 use Illuminate\Http\Request;
 use App\Models\DemandeDetail;
 use App\Http\Controllers\Controller;
-use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -20,7 +21,7 @@ class DemandeController extends Controller
     public function index()
     {
         $demandes = Demande::with(['user', 'demande_details', 'service'])->paginate(10);
-        $service_id = Auth::user()->id;//signifie que c'est l'utilisateur qui est connecté
+        $service_id = Auth::user()->id; //signifie que c'est l'utilisateur qui est connecté
 
         return view('demandes.index', compact('demandes'));
     }
@@ -55,6 +56,15 @@ class DemandeController extends Controller
                     'demande_id' => $demande->id
                 ]);
             }
+
+            $service_manager = (int)($demande->user->compte->manager);
+            $manager = User::find($service_manager);
+            $demande['manager'] = $manager->name;
+
+            Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande));
+            Mail::to($manager->email, $manager->name)->send(new DemandeMail($demande, true));
+
+            return redirect()->route('demandes.index')->with('success', 'Demande enregistrée avec succès');
         }
 
         return redirect()->route('demandes.index')->with('success', 'Demande enregistrée avec succès');
