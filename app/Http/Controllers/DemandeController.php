@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
 use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Demande;
 use App\Mail\DemandeMail;
 use Illuminate\Http\Request;
 use App\Models\DemandeDetail;
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -39,6 +38,7 @@ class DemandeController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->demandes);
         $order = Demande::count() === 0 ? 1 : Demande::get()->last()->id + 1;
         $ref = "REQ-{$order}-" . Carbon::now()->year;
         $demande = Demande::create([
@@ -55,19 +55,9 @@ class DemandeController extends Controller
                     'demande_id' => $demande->id
                 ]);
             }
-            $service_manager = (int)($demande->user->compte->manager);
-            $manager= User::find($service_manager);
-            $demande['manager'] = $manager->name;
-            
-            // Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande));
-            Mail::to($manager->email, $manager->name)->send(new DemandeMail($demande, true));
-            
-            return redirect()->route('demandes.index')->with('success', 'Demande enregistrée avec succès');
         }
 
-            return back();
-            
-
+        return redirect()->route('demandes.index')->with('success', 'Demande enregistrée avec succès');
     }
 
     /**
