@@ -20,8 +20,11 @@ class DemandeController extends Controller
      */
     public function index()
     {
-        $demandes = Demande::with(['user', 'demande_details', 'service'])->paginate(10);
-        $service_id = Auth::user()->id;//signifie que c'est l'utilisateur qui est connecté
+
+        $service_id = Auth::user()->id; //signifie que c'est l'utilisateur qui est connecté
+        $demandes = Demande::with(['user', 'demande_details', 'service'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
 
         return view('demandes.index', compact('demandes'));
     }
@@ -76,7 +79,10 @@ class DemandeController extends Controller
     public function show(Demande $demande)
     {
         //
-        return view('demandes.index', compact('demandes'));
+        // return view('demandes.index', compact('demandes'));
+        // $demande = Demande::with('demande_details')->findOrFail($id);
+        // dd($demande->demande_details);
+        return view('demandes.show', compact('demande'));
     }
 
     /**
