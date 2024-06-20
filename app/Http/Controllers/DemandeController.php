@@ -6,6 +6,7 @@ use Exception;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Demande;
+use App\Models\Traitement;
 use App\Mail\DemandeMail;
 use Illuminate\Http\Request;
 use App\Models\DemandeDetail;
@@ -60,6 +61,10 @@ class DemandeController extends Controller
                 ]);
             }
 
+            Traitement::create([
+                'demande_id' => $demande->id,
+                'approbateur_id'=> 0,
+            ]);
             $service_manager = (int)($demande->user->compte->manager);
             $manager = User::find($service_manager);
             $demande['manager'] = $manager->name;
