@@ -44,7 +44,7 @@ class DemandeController extends Controller
     public function store(Request $request)
     {
         //dd($request->demandes);
-        $order = Demande::count() === 0 ? 1 : Demande::get()->last()->id + 1;
+        $order = Demande::count() === 0 ? 1 : Demande::get()->first()->id + 1;
         $ref = "REQ-{$order}-" . Carbon::now()->year;
         $demande = Demande::create([
             'numero' => $ref,
@@ -74,7 +74,7 @@ class DemandeController extends Controller
                 $service_manager = (int)($demande->user->compte->manager);
                 $manager = User::find($service_manager);
                 $demande['manager'] = $manager->name;
-    
+
                 Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande));
                 Mail::to($manager->email, $manager->name)->send(new DemandeMail($demande, true));
             }
