@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
             {{ __('Demandes') }}
         </h2>
     </x-slot>
@@ -43,12 +43,12 @@
                         </td>
                         <td class="px-6 py-4">
                             <a href="{{ route('demandes.show', $demande->id) }}"
-                                class=" bg-emerald-700 px-6 py-1 text-white rounded">Voir</a>
+                                class=" bg-blue-500 px-10 py-1 text-white rounded">Voir</a>
                         </td>
                         <td class="px-6 py-4 text-right">
                             <a onclick="supprimer(event);" data-modal-target="delete-modal"
                                 data-modal-toggle="delete-modal" href="{{ route('demandes.destroy', $demande->id) }}"
-                                class=" bg-emerald-700 px-6 py-1 text-white rounded">Supprimer</a>
+                                class=" bg-orange-700 px-6 py-1 text-white rounded">Supprimer</a>
                         </td>
                     </tr>
                 @endforeach
@@ -56,7 +56,7 @@
         </table>
         <div class="flex justify-end my-2">
             <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
-                class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="block text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
                 type="button">
                 Ajouter
             </button>
