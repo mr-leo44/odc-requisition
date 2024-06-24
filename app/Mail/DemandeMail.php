@@ -41,7 +41,7 @@ class DemandeMail extends Mailable
                 'demande_id' => $this->demande->id,
                 'num_demande' => $this->demande->numero,
                 'demandeur' => $this->demande->user->name,
-                'manager' => $this->demande->manager,
+                'manager' => $this->demande->manager ?? 'Lionel Kaniki',
                 'is_manager' => $this->is_manager
             ]
         );
