@@ -25,6 +25,7 @@ class DemandeController extends Controller
         $service_id = Auth::user()->id; //signifie que c'est l'utilisateur qui est connecté
         $demandes = Demande::with(['user', 'demande_details', 'service'])
             ->orderBy('created_at', 'desc')
+            ->where('user_id',"=",$service_id)
             ->paginate(15);
 
         return view('demandes.index', compact('demandes'));
