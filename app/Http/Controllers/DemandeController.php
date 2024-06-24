@@ -67,7 +67,8 @@ class DemandeController extends Controller
 
             $traitement = Traitement::create([
                 'demande_id' => $demande->id,
-                'approbateur_id' => 0,
+                'approbateur_id' => $demande->user->compte->manager,
+                'demandeur_id' => $demande->user->id,
             ]);
 
             if ($traitement) {
