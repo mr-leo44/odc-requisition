@@ -8,6 +8,7 @@ use App\Models\Service;
 use App\Models\DemandeDetail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traitement;
 
 class Demande extends Model
 {
@@ -35,5 +36,9 @@ class Demande extends Model
     public function demande_details()
     {
         return $this->hasMany(DemandeDetail::class);
+    }
+    public function traitement()
+    {
+        return $this->hasMany(Traitement::class);
     }
 }
