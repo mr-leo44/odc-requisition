@@ -74,14 +74,14 @@
                                 <div class="col-span-5">
                                     <div class="flex justify-between gap-3">
                                         <x-text-input id="designation"
-                                            class="bg-gray-50 w-[80%] border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500"
+                                            class="bg-gray-50 w-[80%] border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
                                             type="text" name="demandes[0][designation]" :value="old('designation')"
                                             placeholder="Ex. Rame papier duplicataire" required autofocus
                                             autocomplete="designation" />
                                         <x-input-error :messages="$errors->get('designation')" class="mt-2" />
 
                                         <x-text-input id="qte_demandee"
-                                            class="bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-[23.8%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500"
+                                            class="bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-[23.8%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
                                             type="number" name="demandes[0][qte_demandee]" :value="old('qte_demandee')" required
                                             autofocus autocomplete="qte_demandee" placeholder="Ex. 10" />
                                         <x-input-error :messages="$errors->get('qte_demandee')" class="mt-2" />
@@ -125,15 +125,15 @@
                         <div class="col-span-5">
                             <div class="flex justify-between gap-3">
                                 <x-text-input id="designation"
-                                    class="bg-gray-50 w-[80%] border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500"
-                                    type="text" name="demandes[0][designation]" :value="old('designation')"
+                                    class="bg-gray-50 w-[80%] border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                                    type="text" name="demandes[${i}][designation]" :value="old('designation')"
                                     placeholder="Ex. Rame papier duplicataire" required autofocus
                                     autocomplete="designation" />
                                 <x-input-error :messages="$errors->get('designation')" class="mt-2" />
                                 <x-text-input id="qte_demandee"
-                                    class="bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-[20%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500"
-                                    type="number" name="demandes[0][qte_demandee]" :value="old('qte_demandee')" required
-                                    autofocus autocomplete="qte_demandee" />
+                                    class="bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-[23.8%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                                    type="number" name="demandes[${i}][qte_demandee]" :value="old('qte_demandee')" regreen
+                                    autofocus autocomplete="qte_demandee" placeholder="Ex. 10"/>
                                 <x-input-error :messages="$errors->get('qte_demandese')" class="mt-2" />
                             </div>
                         </div>
