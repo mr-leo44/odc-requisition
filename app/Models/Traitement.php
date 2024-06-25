@@ -14,6 +14,7 @@ class Traitement extends Model
         'status',
         'observation',
         'demande_id',
+        'demandeur_id',
         'approbateur_id',
     ];
 }
