@@ -128,4 +128,18 @@ class DemandeController extends Controller
         $demande->delete();
         return redirect()->route('demandes.index')->with('success', 'Suppression éffectuée avec succès');
     }
+    public function validate()
+    {
+        $service_id = Auth::user()->id;
+
+        $demandes = Demande::with(['user', 'demande_details', 'service', 'traitement'])
+            ->whereHas('traitement', function ($query) {
+                $query->where('status', '=', 'approuvée');
+            })
+            ->orderBy('created_at', 'desc')
+            ->where('user_id', '=', $service_id)
+            ->paginate(15);
+
+            return view('demandes.validate', compact('demandes'));
+    }
 }
