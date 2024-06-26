@@ -1,8 +1,8 @@
-@props(['demande_id', 'num_demande', 'demandeur', 'manager', 'is_manager'])
+@props(['demande_id', 'num_demande', 'demandeur', 'validateur', 'is_manager'])
 <x-guest-layout>
     <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
         @if ($is_manager)
-            Bonjour {{ $manager }}, Vous avez une demande de requisition de la part de {{ $demandeur }}
+            Bonjour {{ $validateur }}, Vous avez une demande de requisition de la part de {{ $demandeur }}
             enregistrée avec le numéro {{ $num_demande }}.</span>
             <div>
                 Veuillez cliquer
