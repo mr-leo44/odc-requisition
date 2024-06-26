@@ -2,7 +2,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
-            {{ __('Demandes validées') }}
+            {{ __('Historique des demandes') }}
         </h2>
     </x-slot>
 
@@ -21,10 +21,10 @@
                         UTILISATEUR
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        ACTIONS
+                        ACTION
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        <span class="sr-only">Edit</span>
+                        DATE DE CREATION
                     </th>
                 </tr>
             </thead>
@@ -46,22 +46,14 @@
                             <a href="{{ route('demandes.show', $demande->id) }}"
                                 class=" bg-blue-500 px-10 py-1 text-white rounded">Voir</a>
                         </td>
-                        <td class="px-6 py-4 text-right">
-                            <a onclick="supprimer(event);" data-modal-target="delete-modal"
-                                data-modal-toggle="delete-modal" href="{{ route('demandes.destroy', $demande->id) }}"
-                                class=" bg-orange-700 px-6 py-1 text-white rounded">Supprimer</a>
+                        <td class="px-6 py-4">
+                            {{ $demande->created_at->diffForHumans() }}
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-        <div class="flex justify-end my-2">
-            <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
-                class="block text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
-                type="button">
-                Ajouter
-            </button>
-        </div>
+
         {{ $demandes->links() }}
 
         {{-- <x-showDemande :demande="$demande" /> --}}

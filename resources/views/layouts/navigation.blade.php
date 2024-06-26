@@ -107,9 +107,8 @@
                         <span class="ms-3">Demandes en cours</span>
                     </a>
                 </li>
-
                 <li>
-                    <a href="#"
+                    <a href="{{ route('demandes.historique') }}"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -119,36 +118,10 @@
                                 clip-rule="evenodd" />
                         </svg>
 
-                        <span class="ms-3" id="dropdownHoverButton" data-dropdown-toggle="dropdownHover"
-                            data-dropdown-trigger="hover">Historique
-
-                        </span>
+                        <span class="ms-3">Historique</span>
                     </a>
-
-
-
-                    <!-- Dropdown menu -->
-                    <div id="dropdownHover"
-                        class="z-10 hidden bg-white divide-x divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
-                            <li>
-                                <a href="{{ route('demandes.validate') }}"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Demandes
-                                    validées</a>
-                            </li>
-                            {{-- <li>
-                                <a href="{{ route('demandes.index') }}"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Demandes
-                                    rejetées</a>
-                            </li> --}}
-
-                        </ul>
-                    </div>
-
-
-
-
                 </li>
+
 
             </ul>
         </div>
