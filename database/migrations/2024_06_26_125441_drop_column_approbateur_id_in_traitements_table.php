@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('traitements', function (Blueprint $table) {
-            $table->integer('demandeur_id');
-            $table->integer('approbateur_id')->change();
+            $table->dropColumn('approbateur_id');
         });
     }
 
