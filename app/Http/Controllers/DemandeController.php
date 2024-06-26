@@ -70,18 +70,17 @@ class DemandeController extends Controller
                 'approbateur_id' => $demande->user->compte->manager,
                 'demandeur_id' => $demande->user->id,
             ]);
-
             if ($traitement) {
+                // dd($traitement);
                 MailModel::create([
-                    'demande_id' => $demande->id,
-                    'approbateur_id' => $traitement->approbateur_id,
+                    'traitement_id' => $traitement->id,
                 ]);
-                $service_manager = (int)($demande->user->compte->manager);
-                $manager = User::find($service_manager);
-                $demande['manager'] = $manager->name;
 
+                $validateur = User::find($traitement->approbateur_id);
+                $demande['validateur'] = $validateur->name;
+                
                 Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande));
-                Mail::to($manager->email, $manager->name)->send(new DemandeMail($demande, true));
+                Mail::to($validateur->email, $validateur->name)->send(new DemandeMail($demande, true));
             }
 
             return redirect()->route('demandes.index')->with('success', 'Demande enregistrée avec succès');

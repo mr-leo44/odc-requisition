@@ -12,8 +12,7 @@ class Mail extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'demande_id',
-        'approbateur_id',
+        'traitement_id',
         'is_approved',
     ];
 
