@@ -78,7 +78,7 @@ class DemandeController extends Controller
 
                 $validateur = User::find($traitement->approbateur_id);
                 $demande['validateur'] = $validateur->name;
-                
+
                 Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande));
                 Mail::to($validateur->email, $validateur->name)->send(new DemandeMail($demande, true));
             }
@@ -128,18 +128,19 @@ class DemandeController extends Controller
         $demande->delete();
         return redirect()->route('demandes.index')->with('success', 'Suppression éffectuée avec succès');
     }
-    public function validate()
+    public function historique()
     {
         $service_id = Auth::user()->id;
 
         $demandes = Demande::with(['user', 'demande_details', 'service', 'traitement'])
             ->whereHas('traitement', function ($query) {
-                $query->where('status', '=', 'approuvée');
+                $query->where('status', '!=', 'en cours');
             })
             ->orderBy('created_at', 'desc')
             ->where('user_id', '=', $service_id)
             ->paginate(15);
 
-            return view('demandes.validate', compact('demandes'));
+            return view('demandes.historique', compact('demandes'));
     }
+
 }
