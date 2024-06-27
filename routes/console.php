@@ -8,4 +8,4 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote')->hourly();
 
-Schedule::command('req:send-pending-email')->everyMinute();
+Schedule::command('req:send-pending-email')->everyFifteenMinutes();

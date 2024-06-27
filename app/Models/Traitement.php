@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Demande;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Traitement extends Model
 {
@@ -17,4 +18,9 @@ class Traitement extends Model
         'demandeur_id',
         'approbateur_id',
     ];
+
+    public function demande()
+    {
+        return $this->belongsTo(Demande::class);
+    }
 }
