@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Demande;
-use App\Models\Approbateur;
+use App\Models\Traitement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,14 +15,9 @@ class Mail extends Model
         'is_approved',
     ];
 
-    public function demande() : BelongsTo
+    public function traitement() : BelongsTo
     {
-        return $this->belongsTo(Demande::class);
-    }
-
-    public function approbateur() : BelongsTo
-    {
-        return $this->belongsTo(Approbateur::class);
+        return $this->belongsTo(Traitement::class);
     }
 
 }
