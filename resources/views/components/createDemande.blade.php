@@ -57,7 +57,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div>
+                                <div class="flex justify-end mb-4">
                                     <button type="button"
                                         class="add-input  text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-md p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                         <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
@@ -70,7 +70,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="grid gap-4 mb-6 md:grid-cols-6 input-group">
+                            <div class="grid gap-4 mb-6 md:grid-cols-6 input-group ">
                                 <div class="col-span-5">
                                     <div class="flex justify-between gap-3">
                                         <x-text-input id="designation"
@@ -87,7 +87,7 @@
                                         <x-input-error :messages="$errors->get('qte_demandee')" class="mt-2" />
                                     </div>
                                 </div>
-                                <div class="mt-auto">
+                                <div class="flex justify-end mb-4">
                                     <button type="button"
                                         class="delete-input text-white bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-md p-2.5 text-center inline-flex items-center me-2 dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800">
                                         <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
@@ -103,7 +103,7 @@
 
                             </div>
                         </div>
-                        <div class="flex justify-start mb-4">
+                        <div class="flex justify-end mb-4">
                             <button type="submit" class="block text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800
                                 ">
                                 Envoyer
@@ -122,7 +122,7 @@
                 i++;
                 $('#input-container').append(`
                     <div class="grid gap-4 mb-6 md:grid-cols-6 input-group">
-                        <div class="col-span-5">
+                        <div class="col-span-5 ">
                             <div class="flex justify-between gap-3">
                                 <x-text-input id="designation"
                                     class="bg-gray-50 w-[80%] border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
@@ -137,7 +137,7 @@
                                 <x-input-error :messages="$errors->get('qte_demandese')" class="mt-2" />
                             </div>
                         </div>
-                            <div class="mt-auto">
+                            <div class="flex justify-end mb-4">
                                 <button type="button"
                                     class="delete-input text-white bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-md p-2.5 text-center inline-flex items-center me-2 dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800">
                                     <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
