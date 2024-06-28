@@ -7,6 +7,13 @@
 
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div class="flex justify-end my-2">
+            <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
+                class="block text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
+                type="button">
+                Ajouter
+            </button>
+        </div>
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -54,13 +61,7 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="flex justify-end my-2">
-            <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
-                class="block text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800"
-                type="button">
-                Ajouter
-            </button>
-        </div>
+
         {{ $demandes->links() }}
 
         {{-- <x-showDemande :demande="$demande" /> --}}
