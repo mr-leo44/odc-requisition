@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Compte;
+use App\Models\Service;
+use App\Models\Direction;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Session;
 
 class RegisteredUserController extends Controller
 {
@@ -19,7 +23,22 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $users = User::all();
+        $directions = Direction::all();
+        $services = Service::all();
+        if (Session::has('user')) {
+            return view('auth.register', compact('users', 'directions', 'services'));
+        } else {
+            return redirect()->route('login');
+        }
+    }
+
+    public function search_service(Request $request)
+    {
+        $data = Service::select("name", "id")
+            ->where('name', 'LIKE', '%' . $request->get('search_service') . '%')
+            ->get();
+        return response()->json($data);
     }
 
     /**
@@ -27,24 +46,45 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'direction' => ['required', 'string'],
+            'manager' => ['required', 'string'],
+            'service' => ['required', 'string'],
         ]);
+        Session::regenerate();
+        $manager = User::where('name', '=', $request->manager)->first();
+        $manager_id = $manager['id'];
+        $direction = Direction::where('name', '=', $request->direction)->first();
+        $direction_id = $direction['id'];
+        $service_id = DB::table('services')->select('id')->where('direction_id', '=', $direction_id)->first()->id;
+        
+        $username = session('user');
+        $response = Http::get("http://10.143.41.70:8000/promo2/odcapi/?method=getUserByUsername&username=$username");
+        if ($response->successful()) {
+            $userResponse = $response->json();
+            $userData = $userResponse['users'][0];
+            // dd($userData);
+            $user = User::create([
+                'name' => $userData['first_name'] .  ' ' . $userData['last_name'],
+                'email' => $userData['email'],
+                'password' => Hash::make('password'),
+            ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+            if ($user) {
+                
+                Compte::create([
+                    "manager" => $manager_id,
+                    "user_id" => $user->id,
+                    "service_id" => $service_id,
+                ]);
+            }
+            event(new Registered($user));
 
-        event(new Registered($user));
-
-        Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
+            Auth::login($user);
+            return redirect()->route('dashboard');
+        }
+        return back();
     }
 }
