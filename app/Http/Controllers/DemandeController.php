@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Compte;
 use App\Models\Demande;
 use App\Mail\DemandeMail;
 use App\Models\Traitement;
@@ -140,7 +141,27 @@ class DemandeController extends Controller
             ->where('user_id', '=', $service_id)
             ->paginate(15);
 
-            return view('demandes.historique', compact('demandes'));
+        return view('demandes.historique', compact('demandes'));
     }
 
+    public function demandesManager()
+    {
+        // Récupérez l'ID de l'utilisateur connecté
+        $userId = Auth::user()->id;
+
+        // Vérifiez si l'utilisateur a le rôle "Manager"
+        $isManager = Compte::where('manager', $userId)->exists();
+
+        if ($isManager) {
+            // Récupérez les demandes en cours des utilisateurs dont le user actuel est manager
+            $demandes = Demande::whereHas('traitement', function ($query) {
+                $query->where('status', '=', 'en cours')->where('approbateur_id', '=', Auth::user()->id);
+            })->paginate(15);
+
+            return view('demandes.manager', compact('demandes'));
+        } else {
+            // L'utilisateur n'est pas un manager, redirigez-le ou affichez un message d'erreur
+            return redirect()->route('home')->with('error', 'Vous n\'avez pas les droits de manager.');
+        }
+    }
 }

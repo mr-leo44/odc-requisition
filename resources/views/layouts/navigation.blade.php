@@ -16,10 +16,10 @@
                             </path>
                         </svg>
                     </button>
-                    <a href="https://flowbite.com" class="flex ms-2 md:me-24">
+                    <a href="{{route('dashboard')}}" class="flex ms-2 md:me-24">
                         <img src="{{ asset('img/orange.png') }}" class="h-8 me-3" alt="FlowBite Logo" />
                         <span
-                            class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Projet</span>
+                            class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Requisition Orange</span>
                     </a>
                 </div>
                 <div class="flex items-center">
@@ -114,27 +114,14 @@
                             <div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
                                 <div class="p-4 border-b border-gray-200 dark:border-gray-700">
                                     <p class="mb-2 text-gray-500 hover:text-white dark:text-gray-400"><a href="{{ route('demandes.index') }}">En cours</a></p>
-                                    <p class="text-gray-500 mb-2 hover:text-white dark:text-gray-400"><a href="#">Demandes de mon équipe</a></p>
+                                    <p class="text-gray-500 mb-2 hover:text-white dark:text-gray-400"><a href="{{route('demandes.manager')}}">Demandes de mon équipe</a></p>
                                     <p class="text-gray-500 mb-2 hover:text-white dark:text-gray-400"><a href="{{ route('demandes.historique') }}">Historique</a></p>
 
                                 </div>
                             </div>
                         </div>
                     </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                viewBox="0 0 24 24">
-                                <path fill-rule="evenodd"
-                                    d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span class="ms-3">ODC User</span>
-                        </a>
-                    </li>
-                    <li>
+
                 </li>
 
 
