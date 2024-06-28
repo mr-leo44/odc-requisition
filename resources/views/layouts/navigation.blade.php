@@ -94,32 +94,47 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('demandes.index') }}"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                            viewBox="0 0 24 24">
-                            <path fill-rule="evenodd"
-                                d="M8 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2Zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1V4Zm-6 8a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1Zm1 3a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z"
-                                clip-rule="evenodd" />
-                        </svg>
+                    <li>
+                        <div id="accordion-flush"  data-accordion="collapse" data-active-classes="bg-white dark:bg-gray-900 text-white dark:text-white" data-inactive-classes="text-white dark:text-white">
+                            <h2 id="accordion-flush-heading-2">
+                                <button type="button"
+                                    class="flex items-center  w-full  font-medium p-2 text-white    dark:text-gray-400 gap-3 dark:hover:bg-gray-700 rounded-lg"
+                                    data-accordion-target="#accordion-flush-body-2" aria-expanded="true"
+                                    aria-controls="accordion-flush-body-2">
+                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z" />
+                                    </svg>
+                                    <span>Demandes</span>
+                                </button>
+                            </h2>
+                            <div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
+                                <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                                    <p class="mb-2 text-gray-500 hover:text-white dark:text-gray-400"><a href="{{ route('demandes.index') }}">En cours</a></p>
+                                    <p class="text-gray-500 mb-2 hover:text-white dark:text-gray-400"><a href="#">Demandes de mon équipe</a></p>
+                                    <p class="text-gray-500 mb-2 hover:text-white dark:text-gray-400"><a href="{{ route('demandes.historique') }}">Historique</a></p>
 
-                        <span class="ms-3">Demandes en cours</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('demandes.historique') }}"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                            viewBox="0 0 24 24">
-                            <path fill-rule="evenodd"
-                                d="M8 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2Zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1V4Zm-6 8a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1Zm1 3a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z"
-                                clip-rule="evenodd" />
-                        </svg>
-
-                        <span class="ms-3">Historique</span>
-                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                viewBox="0 0 24 24">
+                                <path fill-rule="evenodd"
+                                    d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <span class="ms-3">ODC User</span>
+                        </a>
+                    </li>
+                    <li>
                 </li>
 
 
