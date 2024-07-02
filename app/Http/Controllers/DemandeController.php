@@ -22,8 +22,8 @@ class DemandeController extends Controller
      */
     public function index()
     {
-
-        $service_id = Auth::user()->id; //signifie que c'est l'utilisateur qui est connecté
+        // dd(session()->get('authUser')->id);
+        $service_id = session()->get('authUser')->id; //signifie que c'est l'utilisateur qui est connecté
         $demandes = Demande::with(['user', 'demande_details', 'service', 'traitement'])
             ->whereHas('traitement', function ($query) {
                 $query->where('status', '=', 'en cours');
@@ -49,12 +49,12 @@ class DemandeController extends Controller
     public function store(Request $request)
     {
         //dd($request->demandes);
-        $order = Demande::count() === 0 ? 1 : Demande::get()->first()->id + 1;
+        $order = Demande::count() === 0 ? 1 : Demande::get()->last()->id + 1;
         $ref = "REQ-{$order}-" . Carbon::now()->year;
         $demande = Demande::create([
             'numero' => $ref,
             'service_id' => 1,
-            'user_id' => Auth::user()->id
+            'user_id' => session()->get('authUser')->id
         ]);
         if ($demande) {
             foreach ($request->demandes as $item) {
@@ -65,23 +65,31 @@ class DemandeController extends Controller
                     'demande_id' => $demande->id
                 ]);
             }
-
-            $traitement = Traitement::create([
+            
+            $traitement1 = Traitement::create([
                 'demande_id' => $demande->id,
-                'approbateur_id' => $demande->user->compte->manager,
+                'approbateur_id' => $demande->user->id,
                 'demandeur_id' => $demande->user->id,
+                'status' => 'validé',
             ]);
-            if ($traitement) {
-                // dd($traitement);
-                MailModel::create([
-                    'traitement_id' => $traitement->id,
+
+            if($traitement1){
+                $traitement2 = Traitement::create([
+                    'demande_id' => $demande->id,
+                    'approbateur_id' => $demande->user->compte->manager,
+                    'demandeur_id' => $demande->user->id,
                 ]);
-
-                $validateur = User::find($traitement->approbateur_id);
-                $demande['validateur'] = $validateur->name;
-
-                Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande));
-                Mail::to($validateur->email, $validateur->name)->send(new DemandeMail($demande, true));
+                if ($traitement2) {
+                    MailModel::create([
+                        'traitement_id' => $traitement2->id,
+                    ]);
+    
+                    $validateur = User::find($traitement2->approbateur_id);
+                    $demande['validateur'] = $validateur->name;
+    
+                    Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande));
+                    Mail::to($validateur->email, $validateur->name)->send(new DemandeMail($demande, true));
+                }
             }
 
             return redirect()->route('demandes.index')->with('success', 'Demande enregistrée avec succès');
@@ -125,13 +133,12 @@ class DemandeController extends Controller
      */
     public function destroy(Demande $demande)
     {
-        //
         $demande->delete();
         return redirect()->route('demandes.index')->with('success', 'Suppression éffectuée avec succès');
     }
     public function historique()
     {
-        $service_id = Auth::user()->id;
+        $service_id = session()->get('authUser')->id;
 
         $demandes = Demande::with(['user', 'demande_details', 'service', 'traitement'])
             ->whereHas('traitement', function ($query) {
@@ -147,7 +154,7 @@ class DemandeController extends Controller
     public function demandesManager()
     {
         // Récupérez l'ID de l'utilisateur connecté
-        $userId = Auth::user()->id;
+        $userId = session()->get('authUser')->id;
 
         // Vérifiez si l'utilisateur a le rôle "Manager"
         $isManager = Compte::where('manager', $userId)->exists();
@@ -155,7 +162,7 @@ class DemandeController extends Controller
         if ($isManager) {
             // Récupérez les demandes en cours des utilisateurs dont le user actuel est manager
             $demandes = Demande::whereHas('traitement', function ($query) {
-                $query->where('status', '=', 'en cours')->where('approbateur_id', '=', Auth::user()->id);
+                $query->where('status', '=', 'en cours')->where('approbateur_id', '=', session()->get('authUser')->id);
             })->paginate(15);
 
             return view('demandes.manager', compact('demandes'));
