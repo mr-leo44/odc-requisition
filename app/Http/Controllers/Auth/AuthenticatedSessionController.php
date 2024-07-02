@@ -45,8 +45,9 @@ class AuthenticatedSessionController extends Controller
         if ($response->successful()) {
             $request->session()->regenerate();
             $responsefinal = $response->json();
-            if (User::find($responsefinal['user']['id'])) {
-                Session::put('user', $request->username);
+            $user= User::where('email', $responsefinal['user']['email'])->first();
+            if ($user) {
+                Session::put('authUser', $user);
                 return redirect()->route('dashboard');
             } else {
                 $id = $responsefinal['user']['id'];
@@ -63,28 +64,29 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request)
     {
         // Deconnecte l'utilisateur
-        Auth::guard('web')->logout();
+        // Auth::guard('web')->logout();
 
         // Invalide la session 
-        $request->session()->invalidate();
+        // $request->session()->invalidate();
         // Génère un nouveau jeton pour la session
-        $request->session()->regenerateToken();
+        // $request->session()->regenerateToken();
         // Redirege l'utilisateur vers la page d'acceuil
-        return redirect('dashboard');
+        // return redirect('dashboard');
 
-        // Session::forget('user');
-        // Auth::guard('web')->logout();
-        // return redirect()->route('/');
+        Session::forget('user');
+        Session::forget('authUser');
+        Auth::guard('web')->logout();
+        return redirect('/');
     }
 
-    public function storeRegister(Request $request)
-    {
-        $user = Auth::user();
-        $user->manager_id = $request->compte;
-        $user->service_id = $request->compte;
-        $user->direction_id = $request->compte;
+    // public function storeRegister(Request $request)
+    // {
+    //     $user = Auth::user();
+    //     $user->manager_id = $request->compte;
+    //     $user->service_id = $request->compte;
+    //     $user->direction_id = $request->compte;
 
 
-        return redirect()->route('dashboard');
-    }
+    //     return redirect()->route('dashboard');
+    // }
 }
