@@ -20,3 +20,4 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 require __DIR__.'/demande_route.php';
 require __DIR__ . '/webR.php';
+require __DIR__ . '/web_approbateur.php';
