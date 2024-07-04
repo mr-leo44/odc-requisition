@@ -22,10 +22,6 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
-
-        // if(Session::has('user')){
-        //     return redirect()->route('dashboard');
-        // }
         return view('auth.login');
     }
 
@@ -63,30 +59,9 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request)
     {
-        // Deconnecte l'utilisateur
-        // Auth::guard('web')->logout();
-
-        // Invalide la session 
-        // $request->session()->invalidate();
-        // Génère un nouveau jeton pour la session
-        // $request->session()->regenerateToken();
-        // Redirege l'utilisateur vers la page d'acceuil
-        // return redirect('dashboard');
-
         Session::forget('user');
         Session::forget('authUser');
         Auth::guard('web')->logout();
-        return redirect('/');
+        return redirect('login');
     }
-
-    // public function storeRegister(Request $request)
-    // {
-    //     $user = Auth::user();
-    //     $user->manager_id = $request->compte;
-    //     $user->service_id = $request->compte;
-    //     $user->direction_id = $request->compte;
-
-
-    //     return redirect()->route('dashboard');
-    // }
 }
