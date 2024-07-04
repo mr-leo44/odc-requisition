@@ -8,6 +8,7 @@ use App\Models\Compte;
 use App\Models\Demande;
 use App\Mail\DemandeMail;
 use App\Models\Traitement;
+use App\Models\Approbateur;
 use Illuminate\Http\Request;
 use App\Models\DemandeDetail;
 use App\Models\Mail as MailModel;
@@ -47,8 +48,7 @@ class DemandeController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //dd($request->demandes);
+    {   
         $order = Demande::count() === 0 ? 1 : Demande::get()->last()->id + 1;
         $ref = "REQ-{$order}-" . Carbon::now()->year;
         $demande = Demande::create([
@@ -65,7 +65,7 @@ class DemandeController extends Controller
                     'demande_id' => $demande->id
                 ]);
             }
-            
+
             $traitement1 = Traitement::create([
                 'demande_id' => $demande->id,
                 'approbateur_id' => $demande->user->id,
@@ -73,7 +73,7 @@ class DemandeController extends Controller
                 'status' => 'validé',
             ]);
 
-            if($traitement1){
+            if ($traitement1) {
                 $traitement2 = Traitement::create([
                     'demande_id' => $demande->id,
                     'approbateur_id' => $demande->user->compte->manager,
@@ -83,10 +83,10 @@ class DemandeController extends Controller
                     MailModel::create([
                         'traitement_id' => $traitement2->id,
                     ]);
-    
+
                     $validateur = User::find($traitement2->approbateur_id);
                     $demande['validateur'] = $validateur->name;
-    
+
                     Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande));
                     Mail::to($validateur->email, $validateur->name)->send(new DemandeMail($demande, true));
                 }
@@ -103,11 +103,17 @@ class DemandeController extends Controller
      */
     public function show(Demande $demande)
     {
-        //
-        // return view('demandes.index', compact('demandes'));
-        // $demande = Demande::with('demande_details')->findOrFail($id);
-        // dd($demande->demande_details);
-        return view('demandes.show', compact('demande'));
+        $traitement_en_cours = Traitement::where('demande_id', $demande->id)
+            ->where('status', 'en cours')
+            // ->orWhere('status', 'rejeté')
+            ->first();
+        $manager = User::find($demande->user->compte->manager);
+        $approbateurs = Approbateur::orderBy('level', 'ASC')->get();
+        $traitements = Traitement::where('demande_id', $demande->id)->orderBy('level', 'ASC')->get();
+        $demande['en_cours'] = $traitement_en_cours;
+        $demande['manager'] = $manager;
+        $demande['approbateurs'] = $approbateurs;
+        return view('demandes.show', compact('demande', 'traitements'));
     }
 
     /**
