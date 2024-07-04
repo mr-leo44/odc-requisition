@@ -53,7 +53,6 @@ class RegisteredUserController extends Controller
             'manager' => ['required', 'string'],
             'service' => ['required', 'string'],
         ]);
-        Session::regenerate();
         $manager = User::where('name', '=', $request->manager)->first();
         $manager_id = $manager['id'];
         $direction = Direction::where('name', '=', $request->direction)->first();
@@ -65,15 +64,13 @@ class RegisteredUserController extends Controller
         if ($response->successful()) {
             $userResponse = $response->json();
             $userData = $userResponse['users'][0];
-            // dd($userData);
             $user = User::create([
                 'name' => $userData['first_name'] .  ' ' . $userData['last_name'],
                 'email' => $userData['email'],
                 'password' => Hash::make('password'),
             ]);
-
+            Session::put('authUser', $user);
             if ($user) {
-                
                 Compte::create([
                     "manager" => $manager_id,
                     "user_id" => $user->id,
