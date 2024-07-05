@@ -103,17 +103,15 @@ class DemandeController extends Controller
      */
     public function show(Demande $demande)
     {
-        $traitement_en_cours = Traitement::where('demande_id', $demande->id)
-            ->where('status', 'en cours')
-            // ->orWhere('status', 'rejeté')
+        $en_cours = Traitement::where('demande_id', $demande->id)
+            ->orderBy('id', 'DESC')
             ->first();
-        $manager = User::find($demande->user->compte->manager);
+        $manager_id = User::find($demande->user->compte->manager);
         $approbateurs = Approbateur::orderBy('level', 'ASC')->get();
         $traitements = Traitement::where('demande_id', $demande->id)->orderBy('level', 'ASC')->get();
-        $demande['en_cours'] = $traitement_en_cours;
-        $demande['manager'] = $manager;
+        $demande['manager'] = $manager_id;
         $demande['approbateurs'] = $approbateurs;
-        return view('demandes.show', compact('demande', 'traitements'));
+        return view('demandes.show', compact('demande', 'traitements', 'en_cours'));
     }
 
     /**
