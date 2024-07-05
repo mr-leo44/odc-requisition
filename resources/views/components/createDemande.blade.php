@@ -33,11 +33,6 @@
                             </ul>
                         </div>
                     @endif
-                    {{-- <div class="flex justify-end input-group-append">
-                        <x-primary-button class="add-input text-sm">
-                            {{ __('Ajouter') }}
-                        </x-primary-button>
-                    </div> --}}
                     <form class="w-full" action="{{ route('demandes.store') }}" method="POST">
                         @csrf
                         <div id="input-container">
@@ -82,7 +77,7 @@
 
                                         <x-text-input id="qte_demandee"
                                             class="bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-[23.8%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
-                                            type="number" name="demandes[0][qte_demandee]" :value="old('qte_demandee')" required
+                                            type="number" min="1" step="1" name="demandes[0][qte_demandee]" :value="old('qte_demandee')" required
                                             autofocus autocomplete="qte_demandee" placeholder="Ex. 10" />
                                         <x-input-error :messages="$errors->get('qte_demandee')" class="mt-2" />
                                     </div>
@@ -132,7 +127,7 @@
                                 <x-input-error :messages="$errors->get('designation')" class="mt-2" />
                                 <x-text-input id="qte_demandee"
                                     class="bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-[23.8%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
-                                    type="number" name="demandes[${i}][qte_demandee]" :value="old('qte_demandee')" regreen
+                                    type="number" min="1" step="1" name="demandes[${i}][qte_demandee]" :value="old('qte_demandee')" regreen
                                     autofocus autocomplete="qte_demandee" placeholder="Ex. 10"/>
                                 <x-input-error :messages="$errors->get('qte_demandese')" class="mt-2" />
                             </div>

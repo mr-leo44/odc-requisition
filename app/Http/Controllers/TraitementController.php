@@ -37,13 +37,13 @@ class TraitementController extends Controller
                     'approbateur_id' => $user_approb->id
                 ]);
             }
-            return redirect()->back()->with('success','Validation reussie');
+            return redirect()->route('demandes.manager')->with('success','Validation reussie');
         } elseif ($request->status === 'rejeté') {
             $en_cours->update([
                 'status'=> $request->status,
                 'observation' => $request->observation
             ]);
-            return redirect()->back()->with('success','Demande rejetée avec succès');
+            return redirect()->route('demandes.manager')->with('success','Demande rejetée avec succès');
         } else {
             return redirect()->back();
         }
