@@ -1,16 +1,20 @@
 <?php
 namespace App\Http\Controllers;
+use App\Models\User;
 use App\Models\Approbateur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+
 class approbateurController extends Controller
 {
     public function index()
     {
+        $users = User::all();
         $approbateurs = Approbateur::query()
         ->orderBy('level','asc')
         ->get();
-        return view('approbateurs.index', compact('approbateurs'));
+        return view('approbateurs.index', compact('approbateurs','users'));
     }
     public function create()
     {
@@ -24,6 +28,12 @@ class approbateurController extends Controller
             $fonction = $request->input('fonction');
             $email = $request->input('email');
         for ($i=0; $i < count($level); $i++){
+            $existEmail = DB::table('approbateurs')->where('email', $email[$i])->first();
+            $existName = DB::table('approbateurs')->where('name', $name[$i])->first();
+            $existFonction = DB::table('approbateurs')->where('fonction', $fonction[$i])->first();
+            if ($existEmail || $existName || $existFonction) {
+                return redirect()->back()->with('error', 'Un approbateur avec cet email, nom ou fonction existe déjà.');
+            } else {
                 $data = [
                     'level'=>$level[$i],
                     'name'=>$name[$i],
@@ -31,6 +41,7 @@ class approbateurController extends Controller
                     'email'=>$email[$i]
             ];
             DB::table('approbateurs')->Insert($data);
+        }
         }
         return redirect()->back()->with('message', 'Approbateur ajouté avec succès');
     }
@@ -57,7 +68,7 @@ class approbateurController extends Controller
                 Approbateur::create($Data);
             }
         }
-        return redirect()->back()->with('message', 'Approbateurs mis à jour avec succès');
+        return back();
     }
     public function destroy($id)
     {
