@@ -91,6 +91,21 @@
                 $("#step-3").removeClass('hidden');
                 $("#step-2").addClass('hidden');
             })
+
+             // Logique pour rester sur le même champ qui contient la mauvaise information
+             @if ($errors->has('direction'))
+                $("#step-1").removeClass('hidden');
+                $("#step-2").addClass('hidden');
+                $("#step-3").addClass('hidden');
+            @elseif ($errors->has('service'))
+                $("#step-1").addClass('hidden');
+                $("#step-2").removeClass('hidden');
+                $("#step-3").addClass('hidden');
+            @elseif ($errors->has('manager'))
+                $("#step-1").addClass('hidden');
+                $("#step-2").addClass('hidden');
+                $("#step-3").removeClass('hidden');
+            @endif
         })
     </script>
 </x-guest-layout>
