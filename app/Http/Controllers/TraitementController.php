@@ -44,8 +44,8 @@ class TraitementController extends Controller
                     MailModel::create([
                         'traitement_id' => $prochain_traitement->id,
                     ]);
-
-                    $validateur = User::find($prochain_traitement->approbateur->id);
+                    
+                    $validateur = User::find($prochain_traitement->approbateur_id);
                     $demande['validateur'] = $validateur->name;
                     $demande['level'] = $prochain_traitement->level;
 
@@ -63,6 +63,7 @@ class TraitementController extends Controller
 
             if($cloture_traitement) {
                 $validateur = User::find($en_cours->approbateur_id);
+                $demande['validateur'] = $validateur->name;
                 $demande['observation'] = $en_cours->observation;
                 $demande['level'] = $en_cours->level;
                 
