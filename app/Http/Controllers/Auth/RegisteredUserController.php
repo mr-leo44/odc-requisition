@@ -49,16 +49,35 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'direction' => ['required', 'string'],
-            'manager' => ['required', 'string'],
+            'direction' => ['required', 'string','exists:directions,name'],
+            'manager' => ['required', 'string','exists:users,name'],
             'service' => ['required', 'string'],
-        ]);
+        ],['direction.exists'=>'Direction non trouvée.']);
         $manager = User::where('name', '=', $request->manager)->first();
-        $manager_id = $manager['id'];
+        if ($manager){
+            $manager_id = $manager->id;
+        }else{
+            return back()->withErrors('Manager non trouvé');
+        }
         $direction = Direction::where('name', '=', $request->direction)->first();
+        if ($direction){
+            $direction_id = $direction->id;
+        }
+        else{
+            return back()->withError('Direction non trouvée');
+        }
         $direction_id = $direction['id'];
-        $service_id = DB::table('services')->select('id')->where('direction_id', '=', $direction_id)->first()->id;
-        
+
+        $service =DB::table('services')
+            ->select('id')
+            ->where('direction_id','=', $direction_id)
+            ->first();
+
+        if ($service) {
+            $service_id=$service->id;
+        }else{
+            return back()->withErrors(['service'=>'Aucun service correspondant']);
+        }
         $username = session('user');
         $response = Http::get("http://10.143.41.70:8000/promo2/odcapi/?method=getUserByUsername&username=$username");
         if ($response->successful()) {
