@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 use App\Models\DemandeDetail;
 use App\Models\Mail as MailModel;
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -25,35 +24,14 @@ class DemandeController extends Controller
     public function index()
     {
         // dd(session()->get('authUser')->id);
-        $connected_user = session()->get('authUser')->id; //signifie que c'est l'utilisateur qui est connecté
-        $isDemandeur = Demande::whereHas('traitement', function ($query) use ($connected_user) {
-            $query->where('demandeur_id', $connected_user);
-        })->exists();
-        if ($isDemandeur) {
-            $demandes = Demande::whereHas('traitement', function (Builder $query) use ($connected_user) {
-                $query->where('demandeur_id', $connected_user)
-                ->where('status', 'en cours');
+        $service_id = session()->get('authUser')->id; //signifie que c'est l'utilisateur qui est connecté
+        $demandes = Demande::with(['user', 'demande_details', 'service', 'traitement'])
+            ->whereHas('traitement', function ($query) {
+                $query->where('status', '=', 'en cours');
             })
-                ->orderBy('created_at', 'desc')
-                ->paginate(15);
-        } else {
-            $demandes = Demande::whereHas('traitement', function ($query) use ($connected_user) {
-                $query->where('approbateur_id', $connected_user)
-                ->where('status', 'en cours');
-            })
-                ->orderBy('created_at', 'desc')
-                ->paginate(15);
-        }
-   
-
-
-        // $demandes = Demande::with(['user', 'demande_details', 'service', 'traitement'])
-        //     ->whereHas('traitement', function ($query) {
-        //         $query->where('status', '=', 'en cours');
-        //     })
-        //     ->orderBy('created_at', 'desc')
-        //     ->where('user_id', "=", $connected_user)
-        //     ->paginate(15);
+            ->orderBy('created_at', 'desc')
+            ->where('user_id', "=", $service_id)
+            ->paginate(15);
 
         return view('demandes.index', compact('demandes'));
     }
@@ -70,7 +48,7 @@ class DemandeController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+    {   
         $order = Demande::count() === 0 ? 1 : Demande::get()->last()->id + 1;
         $ref = "REQ-{$order}-" . Carbon::now()->year;
         $demande = Demande::create([
@@ -126,8 +104,8 @@ class DemandeController extends Controller
     public function show(Demande $demande)
     {
         $en_cours = Traitement::where('demande_id', $demande->id)
-        ->orderBy('id', 'DESC')
-        ->first();
+            ->orderBy('id', 'DESC')
+            ->first();
         $manager_id = User::find($demande->user->compte->manager);
         $approbateurs = Approbateur::orderBy('level', 'ASC')->get();
         $traitements = Traitement::where('demande_id', $demande->id)->orderBy('level', 'ASC')->get();
@@ -174,7 +152,27 @@ class DemandeController extends Controller
             ->where('user_id', '=', $service_id)
             ->paginate(15);
 
-
         return view('demandes.historique', compact('demandes'));
+    }
+
+    public function demandesManager()
+    {
+        // Récupérez l'ID de l'utilisateur connecté
+        $userId = session()->get('authUser')->id;
+
+        // Vérifiez si l'utilisateur a le rôle "Manager"
+        $isManager = Compte::where('manager', $userId)->exists();
+
+        if ($isManager) {
+            // Récupérez les demandes en cours des utilisateurs dont le user actuel est manager
+            $demandes = Demande::whereHas('traitement', function ($query) {
+                $query->where('status', '=', 'en cours')->where('approbateur_id', '=', session()->get('authUser')->id);
+            })->paginate(15);
+
+            return view('demandes.manager', compact('demandes'));
+        } else {
+            // L'utilisateur n'est pas un manager, redirigez-le ou affichez un message d'erreur
+            return redirect()->route('home')->with('error', 'Vous n\'avez pas les droits de manager.');
+        }
     }
 }
