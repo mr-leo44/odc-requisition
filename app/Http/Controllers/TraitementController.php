@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Demande;
 use App\Models\Traitement;
 use App\Models\Approbateur;
 use Illuminate\Http\Request;
+use App\Models\Mail as MailModel;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StoreTraitementRequest;
 use App\Http\Requests\UpdateTraitementRequest;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
+use App\Mail\TraitementMail;
 
 class TraitementController extends Controller
 {
@@ -29,20 +31,45 @@ class TraitementController extends Controller
             $success = $en_cours->update([
                 'status' => $request->status
             ]);
+
             if ($success) {
-                Traitement::create([
+                $prochain_traitement = Traitement::create([
                     'level' => $en_cours->level + 1,
                     'demande_id' => $demande->id,
                     'demandeur_id' => $en_cours->demandeur_id,
                     'approbateur_id' => $user_approb->id
                 ]);
+                
+                if($prochain_traitement) {
+                    MailModel::create([
+                        'traitement_id' => $prochain_traitement->id,
+                    ]);
+
+                    $validateur = User::find($prochain_traitement->approbateur->id);
+                    $demande['validateur'] = $validateur->name;
+                    $demande['level'] = $prochain_traitement->level;
+
+                    Mail::to($demande->user->email, $demande->user->name)->send(new TraitementMail($demande, true));
+                    Mail::to($validateur->email, $validateur->name)->send(new TraitementMail($demande, true, true));
+                }    
             }
+
             return redirect()->route('demandes.manager')->with('success','Validation reussie');
         } elseif ($request->status === 'rejeté') {
-            $en_cours->update([
+            $cloture_traitement = $en_cours->update([
                 'status'=> $request->status,
                 'observation' => $request->observation
             ]);
+
+            if($cloture_traitement) {
+                $validateur = User::find($en_cours->approbateur_id);
+                $demande['observation'] = $en_cours->observation;
+                $demande['level'] = $en_cours->level;
+                
+                Mail::to($demande->user->email, $demande->user->name)->send(new TraitementMail($demande));
+                Mail::to($validateur->email, $validateur->name)->send(new TraitementMail($demande, false, true));
+            }
+
             return redirect()->route('demandes.manager')->with('success','Demande rejetée avec succès');
         } else {
             return redirect()->back();
