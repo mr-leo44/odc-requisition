@@ -117,11 +117,6 @@
                 class="text-white bg-emerald-700 hover:bg-emerald-800 focus:outline-none focus:ring-4 focus:ring-black-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-black-600 dark:hover:bg-black-700 dark:focus:ring-black-800">
                 Valider
             </button>
-        @endif
-        @if (session()->get('authUser')->email !== $demande->user->email ||
-                $en_cours->level === 0 ||
-                $en_cours->approbateur_id === session()->get('authUser')->id
-            )
             <button id="reject" onclick="reject(event)" data-modal-target="popup-modal"
                 data-modal-toggle="popup-modal" type="button" 
                 @if($en_cours->status === 'rejeté') class="hidden" @endif
