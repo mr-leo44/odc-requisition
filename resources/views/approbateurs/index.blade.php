@@ -4,9 +4,6 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('Approbateurs') }}
             </h2>
-            <a href="#" id="add" class="px-2 py-2 text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:ring-emerald-300 font-medium rounded-lg text-sm dark:bg-emerald-700 dark:hover:bg-emerald-700 focus:outline-none dark:focus:ring-blue-800">
-                Add approver
-            </a>
         </div>
     </x-slot>
     <div>
@@ -21,7 +18,7 @@
                     </svg>
                     <span class="sr-only">Info</span>
                     <div class="ms-3 text-sm font-medium">
-                        {{session()->get('message')}}
+                        {{session()->get('message')}};
                     <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-3" aria-label="Close">
                         <span class="sr-only">Close</span>
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -50,6 +47,11 @@
                     </button>
                 </div>
             @endif
+    </div>
+    <div class="flex justify-end my-2">
+        <button  id="add" class=" px-2 py-2 text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:ring-emerald-300 font-medium rounded-lg text-sm dark:bg-emerald-700 dark:hover:bg-emerald-700 focus:outline-none dark:focus:ring-emerald-800">
+            Add approver
+    </button>
     </div>
     <form action="{{route('approbateurs.store')}}" method="post">
         @csrf
@@ -94,7 +96,7 @@
                             <td>
                                 <input type="text" name="email[]" value="{{$approbateur->email}}" class="in bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
                             </td>
-                            <td class=" flex items-center space-x-10">
+                            <td class="flex items-center mx-4 space-x-10">
                                 <a onclick="supprimer(event);" class="text-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm ps-2 px-2.5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
                                 data-modal-target="delete-modal"
                                 data-modal-toggle="delete-modal"
@@ -170,7 +172,7 @@
                                     <td>
                                         <input type="text" name="email[]" value="${approbateur.email}" class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
                                     </td>
-                                    <td class=" flex items-center space-x-10">
+                                    <td class="flex items-center mx-4 space-x-10">
                                         <a onclick="supprimer(event);" class="text-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm ps-2 px-2.5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
                                         data-modal-target="delete-modal"
                                         data-modal-toggle="delete-modal"
@@ -184,7 +186,6 @@
                                             </svg>
                                         </a>
                                     </td>
-
                                     <td>
                                     <input type="hidden" name="id[]" value="{{$approbateur->id}}">
                                     </td>
@@ -208,6 +209,8 @@
                 input.removeAttribute('disabled');
             });
             document.getElementById('saveBtn').style.display = 'block';
+            document.getElementById('create').style.display = 'none';   
+            $('tr.new-row').remove();// supprimer les lignes ajoutées si elles ne sont pas valider
         }
         $(document).ready(function() {
             $("#add").click(function() {
@@ -220,7 +223,7 @@
                 document.getElementById('create').style.display = 'block';
                 document.getElementById('saveBtn').style.display = 'none';
                 var tr = `
-                    <tr class="ui-widget bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <tr class="new-row ui-widget bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <th scope="row">
                             <input type="hidden" name="level[]" value="${i}"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                         </th>
@@ -233,8 +236,8 @@
                         <td>
                             <input type="email" name="email[]" class="email-approver bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                         </td>
-                        <td  class="justify-center flex py-8" dir="rtl" >
-                            <button type="button" class="delete text-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800" disabled>
+                        <td dir="rtl" >
+                            <button type="button" class="delete text-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800" >
                                 Cancel
                             </button>
                         </td>
@@ -244,7 +247,7 @@
                 }
             });
                 $('tbody').on('click','.delete',function(){
-                    $a = $(this).closest('tr').remove();
+                    $(this).closest('tr').remove();
                     var a = document.getElementById('sortable');
                     var b = a.rows.length;
                     var i = b+1;
@@ -283,6 +286,7 @@
         });
         // update avec ajax
         $('#saveBtn').click(function() {
+        $('#add').show();
         $('input').prop('disabled', true);
         $('#saveBtn').hide( "drop", { direction: "down" }, "slow" );
         var approbateurs = [];
