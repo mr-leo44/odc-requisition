@@ -116,7 +116,6 @@
                             <div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
                                 <div class="p-4 border-b border-gray-200 dark:border-gray-700">
                                     <p class="mb-2 text-gray-500 hover:text-white dark:text-gray-400"><a href="{{ route('demandes.index') }}">En cours</a></p>
-                                    <p class="text-gray-500 mb-2 hover:text-white dark:text-gray-400"><a href="{{route('demandes.manager')}}">Demandes de mon équipe</a></p>
                                     <p class="text-gray-500 mb-2 hover:text-white dark:text-gray-400"><a href="{{ route('demandes.historique') }}">Historique</a></p>
 
                                 </div>
