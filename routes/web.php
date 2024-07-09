@@ -1,10 +1,15 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
-    return view('welcome');
+    if (Session::get('authUser') !== null) {
+        return redirect()->route('demandes.index');
+    } else {
+        return redirect()->route('login');
+    }
 });
 
 Route::get('/dashboard', function () {
@@ -17,7 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
-require __DIR__.'/demande_route.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/demande_route.php';
 require __DIR__ . '/webR.php';
 require __DIR__ . '/web_approbateur.php';

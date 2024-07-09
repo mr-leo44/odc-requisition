@@ -17,7 +17,7 @@ class RedirectIfAuthenticated
     public function handle(Request $request, Closure $next): Response
     {
         if (Session::get('authUser') !== null) {
-            return redirect()->route('dashboard');
+            return redirect()->route('demandes.index');
         } else {
             return $next($request);
         }
