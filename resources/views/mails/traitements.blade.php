@@ -1,8 +1,8 @@
-@props(['demande_id', 'num_demande', 'demandeur', 'level', 'validateur', 'is_manager', 'observation', 'success'])
+@props(['demande_id', 'num_demande', 'demandeur', 'level', 'validateur', 'is_validator', 'observation', 'success'])
 <x-guest-layout>
     <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
         @if ($success)
-            @if ($is_manager)
+            @if ($is_validator)
                 Bonjour {{ $validateur }}, Vous avez une demande de requisition de la part de {{ $demandeur }}
                 enregistrée avec le numéro {{ $num_demande }}.
                 <div>
@@ -12,11 +12,11 @@
                 </div>
             @else
                 Bonjour {{ $demandeur }}, Votre demande de
-                requisition enregistrée par le numéro {{ $num_demande }} a été validé et est passé au niveau
+                requisition enregistrée par le numéro {{ $num_demande }} a été validée et est passé au niveau
                 {{ $level }}.
             @endif
         @else
-            @if ($is_manager)
+            @if ($is_validator)
                 Bonjour {{ $validateur }}, La demande de requisition numéro {{ $num_demande }} a été rejetée avec
                 succès.
             @else

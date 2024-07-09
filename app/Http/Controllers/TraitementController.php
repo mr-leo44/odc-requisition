@@ -54,7 +54,7 @@ class TraitementController extends Controller
                 }    
             }
 
-            return redirect()->route('demandes.manager')->with('success','Validation reussie');
+            return redirect()->route('demandes.index')->with('success','Validation reussie');
         } elseif ($request->status === 'rejeté') {
             $cloture_traitement = $en_cours->update([
                 'status'=> $request->status,
@@ -71,7 +71,7 @@ class TraitementController extends Controller
                 Mail::to($validateur->email, $validateur->name)->send(new TraitementMail($demande, false, true));
             }
 
-            return redirect()->route('demandes.manager')->with('success','Demande rejetée avec succès');
+            return redirect()->route('demandes.index')->with('success','Demande rejetée avec succès');
         } else {
             return redirect()->back();
         }
