@@ -33,14 +33,14 @@ class DemandeController extends Controller
         if ($isDemandeur) {
             $demandes = Demande::whereHas('traitement', function (Builder $query) use ($connected_user) {
                 $query->where('demandeur_id', $connected_user)
-                ->where('status', 'en cours');
+                    ->where('status', 'en cours');
             })
                 ->orderBy('created_at', 'desc')
                 ->paginate(15);
         } else {
             $demandes = Demande::whereHas('traitement', function ($query) use ($connected_user) {
                 $query->where('approbateur_id', $connected_user)
-                ->where('status', 'en cours');
+                    ->where('status', 'en cours');
             })
                 ->orderBy('created_at', 'desc')
                 ->paginate(15);
@@ -140,7 +140,7 @@ class DemandeController extends Controller
         $demande['manager'] = $manager_id;
         $demande['approbateurs'] = $approbateurs;
         // $date_validate = $traitements->last()->validate_at ?? null;
-        return view('demandes.show', compact('demande', 'traitements', 'en_cours' , 'date_validate'));
+        return view('demandes.show', compact('demande', 'traitements', 'en_cours', 'date_validate'));
     }
 
     /**
@@ -171,16 +171,29 @@ class DemandeController extends Controller
     }
     public function historique()
     {
-        $service_id = session()->get('authUser')->id;
+        $connected_user = session()->get('authUser')->id;
 
-        $demandes = Demande::with(['user', 'demande_details', 'service', 'traitement'])
-            ->whereHas('traitement', function ($query) {
-                $query->where('status', '!=', 'en cours');
+        $isDemandeur = Demande::whereHas('traitement', function ($query) use ($connected_user) {
+            $query->where('demandeur_id', $connected_user);
+        })->exists();
+
+        if ($isDemandeur) {
+            $demandes = Demande::whereHas('traitement', function (Builder $query) use ($connected_user) {
+                $query->where('demandeur_id', $connected_user)
+                    ->where('status', '!=', 'en cours')
+                    ->orWhere('level', '>', 0)
+                    ;
             })
-            ->orderBy('created_at', 'desc')
-            ->where('user_id', '=', $service_id)
-            ->paginate(15);
-
+                ->orderBy('created_at', 'desc')
+                ->paginate(15);
+        } else {
+            $demandes = Demande::whereHas('traitement', function ($query) use ($connected_user) {
+                $query->where('approbateur_id', $connected_user)
+                    ->where('status', '!=', 'en cours');
+            })
+                ->orderBy('created_at', 'desc')
+                ->paginate(15);
+        }
 
         return view('demandes.historique', compact('demandes'));
     }
