@@ -44,7 +44,7 @@ class AuthenticatedSessionController extends Controller
             $user= User::where('email', $responsefinal['user']['email'])->first();
             if ($user) {
                 Session::put('authUser', $user);
-                return redirect()->route('dashboard');
+                return redirect()->route('demandes.index');
             } else {
                 $id = $responsefinal['user']['id'];
                 Session::put('user', $request->username);
