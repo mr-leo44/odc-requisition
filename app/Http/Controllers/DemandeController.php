@@ -29,7 +29,7 @@ class DemandeController extends Controller
         $isDemandeur = Demande::whereHas('traitement', function ($query) use ($connected_user) {
             $query->where('demandeur_id', $connected_user);
         })->exists();
-        
+
         if ($isDemandeur) {
             $demandes = Demande::whereHas('traitement', function (Builder $query) use ($connected_user) {
                 $query->where('demandeur_id', $connected_user)
@@ -127,14 +127,20 @@ class DemandeController extends Controller
     public function show(Demande $demande)
     {
         $en_cours = Traitement::where('demande_id', $demande->id)
-        ->orderBy('id', 'DESC')
-        ->first();
+            ->orderBy('id', 'DESC')
+            ->first();
         $manager_id = User::find($demande->user->compte->manager);
         $approbateurs = Approbateur::orderBy('level', 'ASC')->get();
         $traitements = Traitement::where('demande_id', $demande->id)->orderBy('level', 'ASC')->get();
+
+        $date_validate = [];
+        foreach ($traitements as $traitement) {
+            $date_validate[] = $traitement->updated_at;
+        }
         $demande['manager'] = $manager_id;
         $demande['approbateurs'] = $approbateurs;
-        return view('demandes.show', compact('demande', 'traitements', 'en_cours'));
+        // $date_validate = $traitements->last()->validate_at ?? null;
+        return view('demandes.show', compact('demande', 'traitements', 'en_cours' , 'date_validate'));
     }
 
     /**

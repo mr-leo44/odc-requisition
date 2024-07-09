@@ -1,10 +1,10 @@
 <x-app-layout>
-    <x-slot name="header" class="flex justify-end space-x-3">
-        <div class="flex justify-between space-x-1">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight flex items-center">
+    <x-slot name="header">
+        <div class="px-6 flex justify-between items-center space-x-2">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('Approbateurs') }}
             </h2>
-            <a href="#" id="add" class="px-2 py-2 text-white bg-blue-800 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm dark:bg-blue-700 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+            <a href="#" id="add" class="px-2 py-2 text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:ring-emerald-300 font-medium rounded-lg text-sm dark:bg-emerald-700 dark:hover:bg-emerald-700 focus:outline-none dark:focus:ring-blue-800">
                 Add approver
             </a>
         </div>
@@ -57,7 +57,7 @@
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="p-2.5">
                             Level
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -69,7 +69,7 @@
                         <th scope="col" class="px-6 py-3">
                             email
                         </th>
-                        <th scope="col" class="px-6 py-3 flex justify-between space-x-2">
+                        <th scope="col" class="p-6 flex justify-between items-center space-x-2">
                             <div >
                                 Actions
                             </div>
@@ -83,7 +83,7 @@
                     @foreach ($approbateurs as $approbateur)
                         <tr data-id="{{ $approbateur->id }}" class=" bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <th scope="row">
-                                <input type="number" value="{{$approbateur->level}}" name="level[]" class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
+                                <input type="number" value="{{$approbateur->level}}" name="level[]" class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-24 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
                             </th>
                             <td>
                                 <input type="text" name="name[]" value="{{$approbateur->name}} " class="in name_approver bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
@@ -92,15 +92,20 @@
                                 <input type="text" name="fonction[]" value="{{$approbateur->fonction}}" class="in  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
                             </td>
                             <td>
-                                <input type="text" name="email[]" value="{{$approbateur->email}}" class="in email_ bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
+                                <input type="text" name="email[]" value="{{$approbateur->email}}" class="in bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
                             </td>
-                            <td class="justify-center flex pt-2" dir="rtl">
-                                <a onclick="supprimer(event);" class="text-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+                            <td class=" flex items-center space-x-10">
+                                <a onclick="supprimer(event);" class="text-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm ps-2 px-2.5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
                                 data-modal-target="delete-modal"
                                 data-modal-toggle="delete-modal"
                                 href="{{ route('approbateurs.destroy', $approbateur->id) }}"
                                 data-id="{{ $approbateur->id }}" >
                                     Delete
+                                </a>
+                                <a href="" class="pe-8">
+                                    <svg class=" w-6 h-6 justify-center items-center text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 20V7m0 13-4-4m4 4 4-4m4-12v13m0-13 4 4m-4-4-4 4"/>
+                                    </svg>
                                 </a>
                             </td>
                             <td>
@@ -148,10 +153,48 @@
                             approbateurIds: approbateurIds,
                         },
                         success: function(response) {
-                            if (response.success) {
-                                console.log('Niveaux mis à jour avec succès');
-                            } 
-                        },
+                        if (response.data) {
+                            $('#sortable').empty();
+                            $.each(response.data, function(index, approbateur) {
+                                var newRow =  `
+                                <tr data-id="${approbateur.id}" class="space-x-4 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <th scope="row">
+                                        <input type="number" value="${approbateur.level}" name="level[]" class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-24 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
+                                    </th>
+                                    <td>
+                                        <input type="text" name="name[]" value="${approbateur.name}" class="in name_approver bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="fonction[]" value="${approbateur.fonction}" class="in  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="email[]" value="${approbateur.email}" class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
+                                    </td>
+                                    <td class=" flex items-center space-x-10">
+                                        <a onclick="supprimer(event);" class="text-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm ps-2 px-2.5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+                                        data-modal-target="delete-modal"
+                                        data-modal-toggle="delete-modal"
+                                        href="{{ route('approbateurs.destroy', $approbateur->id) }}"
+                                        data-id="{{ $approbateur->id }}" >
+                                            Delete
+                                        </a>
+                                        <a href="" class="pe-8">
+                                            <svg class=" w-6 h-6 justify-center items-center text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 20V7m0 13-4-4m4 4 4-4m4-12v13m0-13 4 4m-4-4-4 4"/>
+                                            </svg>
+                                        </a>
+                                    </td>
+
+                                    <td>
+                                    <input type="hidden" name="id[]" value="{{$approbateur->id}}">
+                                    </td>
+                                </tr>`;
+                                $('#sortable').append(newRow);
+                            });
+                        } else {
+                            console.log('Erreur : Aucune donnée retournée.');
+                        }
+                    },
                         error: function(xhr, status, error) {
                             console.error('Erreur AJAX : ' + error);
                         }
@@ -191,7 +234,7 @@
                             <input type="email" name="email[]" class="email-approver bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                         </td>
                         <td  class="justify-center flex py-8" dir="rtl" >
-                            <button type="button" class="delete text-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">
+                            <button type="button" class="delete text-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800" disabled>
                                 Cancel
                             </button>
                         </td>
@@ -208,7 +251,9 @@
                     if(b == 4 && $a == true ){
                         document.getElementById('add').style.display = 'none';
                     }else{
-                    document.getElementById('add').style.display = 'block';}
+                    document.getElementById('add').style.display = 'block';
+                    document.getElementById('create').style.display = 'none';
+                }
                 });
                 var users = @json($users); 
                 var userData = {}; 
