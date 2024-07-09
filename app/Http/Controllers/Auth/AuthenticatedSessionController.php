@@ -59,9 +59,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request)
     {
-        Session::forget('user');
-        Session::forget('authUser');
-        Auth::guard('web')->logout();
+        $request->session()->put('authUser', null);
         return redirect('login');
     }
 }
