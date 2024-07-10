@@ -45,7 +45,7 @@ class DemandeController extends Controller
                 ->paginate(15);
         }
 
-        return view('demandes.index', compact('demandes'));
+        return view('demandes.index', compact('demandes', 'isDemandeur'));
     }
 
     /**
