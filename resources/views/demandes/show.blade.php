@@ -99,27 +99,32 @@
                 </tr>
 
                 <tr>
-          @foreach ($traitements as $key => $traitement)
-            {{-- <td>{{ $traitement->level }}</td> --}}
-            <td>{{ $date_validate[$key] ? $date_validate[$key]->format('d-m-Y H:i:s') : $date_validate[$key]}}</td>
-            {{-- <td>{{ $traitement->status }}</td> --}}
-        @endforeach
+                    @foreach ($traitements as $key => $traitement)
+                        {{-- <td>{{ $traitement->level }}</td> --}}
+                        @if ($traitement->status === 'en cours')
+                            <td scope="col" class="px-6 py-4 text-center hover:bg-gray-50 dark:hover:bg-gray-600">
+                                {{ __(' ') }}</td>
+                        @else
+                            <td scope="col" class="px-6 py-4 text-center hover:bg-gray-50 dark:hover:bg-gray-600">
+                                {{ $date_validate[$key] }}</td>
+                        @endif
+                        {{-- <td>{{ $traitement->status }}</td> --}}
+                    @endforeach
 
-           </tr>
+                </tr>
             </tbody>
         </table>
     </div>
 
     <div class="flex justify-end mt-4">
-        @if ($en_cours->approbateur_id === session()->get('authUser')->id)
+        @if ($en_cours->approbateur_id === session()->get('authUser')->id && $en_cours->status === 'en cours')
             <button id="accept" onclick="accept(event);" data-modal-target="valider" data-modal-toggle="valider"
                 type="button"
                 class="text-white bg-emerald-700 hover:bg-emerald-800 focus:outline-none focus:ring-4 focus:ring-black-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-black-600 dark:hover:bg-black-700 dark:focus:ring-black-800">
                 Valider
             </button>
             <button id="reject" onclick="reject(event)" data-modal-target="popup-modal"
-                data-modal-toggle="popup-modal" type="button" 
-                @if($en_cours->status === 'rejeté') class="hidden" @endif
+                data-modal-toggle="popup-modal" type="button" @if ($en_cours->status === 'rejeté') class="hidden" @endif
                 class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                 Rejeter
             </button>
