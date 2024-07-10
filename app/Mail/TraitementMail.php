@@ -43,6 +43,7 @@ class TraitementMail extends Mailable
                 'num_demande' => $this->demande->numero,
                 'demandeur' => $this->demande->user->name,
                 'validateur' => $this->demande->validateur,
+                'validated' => $this->demande->validated,
                 'is_validator' => $this->is_validator,
                 'success' => $this->success,
                 'level' => $this->demande->level
