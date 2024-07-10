@@ -14,14 +14,6 @@
                 <span class="sr-only">Close modal</span>
             </button>
             <div class="p-4 md:p-5">
-                {{-- <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                    Etes-vous sûr de pouvoir rejeter
-                    cette demande?</h3> --}}
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white">Annulation d'une demande</h3>
                 <p class="mb-3 lg:text-xs text-gray-700 dark:text-gray-200">Ne valider qu'une fois sûr!</p>
 
@@ -29,8 +21,8 @@
                     @csrf
                     <input type="hidden" name="status" id="reject2">
                     <label for="observation" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Motifs <span class="lg: text-xs italic">(facultatif)</span></label>
-                    <textarea id="observation" rows="4" name="observation"
-                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    <textarea id="observation" rows="5" name="observation"
+                        class="block p-2.5 w-full text-sm resize-none overflow-auto text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Veuillez écrire vos motifs ici..."></textarea>
 
                     <button data-modal-hide="popup-modal" type="submit"
@@ -38,7 +30,7 @@
                         Valider
                     </button>
                     <button data-modal-hide="popup-modal" type="button"
-                        class="mt-3 py-2.5 px-5 ms-3 text-sm font-medium text-white focus:outline-none bg-gray-600 rounded-lg border border-gray-700 hover:bg-gray-700 hover:text-white focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Non,
+                        class="mt-3 py-2.5 px-5 ms-3 text-sm font-medium text-white focus:outline-none bg-gray-600 rounded-lg border border-gray-700 hover:bg-gray-700 hover:text-white focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-800">Non,
                         Annuler</button>
                 </form>
             </div>

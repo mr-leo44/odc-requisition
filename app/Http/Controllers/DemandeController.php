@@ -24,7 +24,6 @@ class DemandeController extends Controller
      */
     public function index()
     {
-        // dd(session()->get('authUser')->id);
         $connected_user = session()->get('authUser')->id; //signifie que c'est l'utilisateur qui est connecté
         $isDemandeur = Demande::whereHas('traitement', function ($query) use ($connected_user) {
             $query->where('demandeur_id', $connected_user);
@@ -45,16 +44,6 @@ class DemandeController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(15);
         }
-
-
-
-        // $demandes = Demande::with(['user', 'demande_details', 'service', 'traitement'])
-        //     ->whereHas('traitement', function ($query) {
-        //         $query->where('status', '=', 'en cours');
-        //     })
-        //     ->orderBy('created_at', 'desc')
-        //     ->where('user_id', "=", $connected_user)
-        //     ->paginate(15);
 
         return view('demandes.index', compact('demandes'));
     }
@@ -135,11 +124,10 @@ class DemandeController extends Controller
 
         $date_validate = [];
         foreach ($traitements as $traitement) {
-            $date_validate[] = $traitement->updated_at;
+            $date_validate[] = $traitement->updated_at->format('d-m-Y H:i:s');
         }
         $demande['manager'] = $manager_id;
         $demande['approbateurs'] = $approbateurs;
-        // $date_validate = $traitements->last()->validate_at ?? null;
         return view('demandes.show', compact('demande', 'traitements', 'en_cours', 'date_validate'));
     }
 
