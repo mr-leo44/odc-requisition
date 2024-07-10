@@ -21,30 +21,39 @@ class approbateurController extends Controller
        //
     }
     public function store(Request $request)
-    {
-            $data = $request->all();
-            $level = $request->input('level');
-            $name = $request->input('name');
-            $fonction = $request->input('fonction');
-            $email = $request->input('email');
-        for ($i=0; $i < count($level); $i++){
-            $existEmail = DB::table('approbateurs')->where('email', $email[$i])->first();
-            $existName = DB::table('approbateurs')->where('name', $name[$i])->first();
-            $existFonction = DB::table('approbateurs')->where('fonction', $fonction[$i])->first();
-            if ($existEmail || $existName || $existFonction) {
-                return redirect()->back()->with('error', 'Un approbateur avec cet email, nom ou fonction existe déjà.');
-            } else {
-                $data = [
-                    'level'=>$level[$i],
-                    'name'=>$name[$i],
-                    'fonction'=>$fonction[$i],
-                    'email'=>$email[$i]
-            ];
-            DB::table('approbateurs')->Insert($data);
+        {
+            $levels = $request->input('level');
+            $names = $request->input('name');
+            $fonctions = $request->input('fonction');
+            $emails = $request->input('email');
+        
+            for ($i = 0; $i < count($levels); $i++) {
+                $user = User::where('name', $names[$i])->where('email', $emails[$i])->first();
+        
+                if ($user) {
+                    $existEmail = Approbateur::where('email', $emails[$i])->first();
+                    $existName = Approbateur::where('name', $names[$i])->first();
+        
+                    if ($existEmail || $existName) {
+                        return redirect()->back()->with('error', 'Un approbateur avec cet email ou nom existe déjà.');
+                    }
+                } else {
+                    return redirect()->back()->with('error', 'Aucun utilisateur correspondant trouvé pour le nom et l\'email fournis.');
+                }
+            }
+            for ($i = 0; $i < count($levels); $i++) {
+                $user = User::where('name', $names[$i])->where('email', $emails[$i])->first();
+                if ($user) {
+                    Approbateur::create([
+                        'level' => $levels[$i],
+                        'name' => $user->name,
+                        'fonction' => $fonctions[$i],
+                        'email' => $user->email,
+                    ]);
+                }
+            }    
+            return redirect()->back()->with('message', 'Approbateur ajouté avec succès');
         }
-        }
-        return redirect()->back()->with('message', 'Approbateur ajouté avec succès');
-    }
     public function edit($id)
     {
         $approbateurs = Approbateur::findOrFail($id);
@@ -78,7 +87,7 @@ class approbateurController extends Controller
             foreach ($approubateurs as $index => $approubateur) {
                 $approubateur->update(['level' => $index + 1]);
             }
-                return back();
+                return  redirect()->back()->with('message', 'Approbateur supprimé avec succès');
     }
     public function updateLevels(Request $request)
     {
