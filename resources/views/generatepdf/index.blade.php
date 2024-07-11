@@ -20,8 +20,7 @@
             right: 10%;
             display: inline-block;
             /* margin-top: -250px; */
--
-
+            -
         }
 
         .kin {
@@ -75,14 +74,14 @@
         <tr>
             <th colspan="2">Service Demandeur</th>
             @foreach ($approbateurs as $approbateur)
-            <th>{{ $approbateur->fonction}}</th>
+                <th>{{ $approbateur->fonction }}</th>
             @endforeach
         </tr>
         <tr>
             <td>{{ $demande->user->name }}</td>
             <td>{{ $demande->manager }}</td>
             @foreach ($approbateurs as $approbateur)
-            <td>{{ $approbateur->name}}</td>
+                <td>{{ $approbateur->name }}</td>
             @endforeach
 
         </tr>
@@ -116,6 +115,9 @@
             font-size: 15px;
             font-family: 'Times New Roman', Times, serif;
 
+        }
+        .foot{
+            margin-top: 140px;
         }
     </style>
 </body>
