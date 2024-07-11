@@ -16,10 +16,11 @@
                             </path>
                         </svg>
                     </button>
-                    <a href="{{route('dashboard')}}" class="flex ms-2 md:me-24">
+                    <a href="{{ route('dashboard') }}" class="flex ms-2 md:me-24">
                         <img src="{{ asset('img/orange.png') }}" class="h-8 me-3" alt="FlowBite Logo" />
                         <span
-                            class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Requisition Orange</span>
+                            class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Requisition
+                            Orange</span>
                     </a>
                 </div>
                 <div class="flex items-center">
@@ -38,11 +39,11 @@
                             <div class="px-4 py-3" role="none">
                                 <p class="text-sm text-gray-900 dark:text-white" role="none">
                                     {{-- {{ Auth::user()->name }} --}}
-                                    {{ session()->get('authUser')->name}}
+                                    {{ session()->get('authUser')->name }}
                                 </p>
                                 <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
                                     {{-- {{ Auth::user()->email }} --}}
-                                    {{ session()->get('authUser')->email}}
+                                    {{ session()->get('authUser')->email }}
                                 </p>
                             </div>
                             <ul class="py-1" role="none">
@@ -74,20 +75,19 @@
             </div>
         </div>
     </nav>
-
-
     <aside id="logo-sidebar"
         class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
         aria-label="Sidebar">
         <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
             <ul class="space-y-2 font-medium">
-        
-                <li>
+                @profile('user')
                     <li>
-                        <div id="accordion-flush"  data-accordion="collapse" data-active-classes="bg-white dark:bg-gray-900 text-white dark:text-white" data-inactive-classes="text-white dark:text-white">
+                        <div id="accordion-flush" data-accordion="collapse"
+                            data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                            data-inactive-classes="text-gray-500 dark:text-white">
                             <h2 id="accordion-flush-heading-2">
                                 <button type="button"
-                                    class="flex items-center  w-full  font-medium p-2 text-white    dark:text-gray-400 gap-3 dark:hover:bg-gray-700 rounded-lg"
+                                    class="flex items-center w-full font-medium p-2 text-gray-800 dark:text-gray-400 gap-3 dark:hover:text-white dark:hover:bg-gray-700 rounded-lg"
                                     data-accordion-target="#accordion-flush-body-2" aria-expanded="true"
                                     aria-controls="accordion-flush-body-2">
                                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -102,26 +102,33 @@
                             </h2>
                             <div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
                                 <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-                                    <p class="mb-2 text-gray-500 hover:text-white dark:text-gray-400"><a href="{{ route('demandes.index') }}">En cours</a></p>
-                                    <p class="text-gray-500 mb-2 hover:text-white dark:text-gray-400"><a href="{{ route('demandes.historique') }}">Historique</a></p>
-
+                                    <p
+                                        class="mb-2 text-gray-800 px-7 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                                        <a href="{{ route('demandes.index') }}">En cours</a></p>
+                                    <p
+                                        class="text-gray-800 px-7 mb-2 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                                        <a href="{{ route('demandes.historique') }}">Historique</a>
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </li>
+                @endprofile
 
-                </li>
-                <li>
-                    <a href="{{ route('approbateurs.index') }}"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                            <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
-                        </svg>
-                        <span class="ms-3">Approbateurs</span>
-                    </a>
-                </li>
-
-
+                @profile('admin')
+                    <li>
+                        <a href="{{ route('approbateurs.index') }}"
+                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                viewBox="0 0 20 18">
+                                <path
+                                    d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+                            </svg>
+                            <span class="ms-3">Approbateurs</span>
+                        </a>
+                    </li>
+                @endprofile
             </ul>
         </div>
     </aside>
