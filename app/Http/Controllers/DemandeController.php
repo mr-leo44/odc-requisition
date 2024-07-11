@@ -46,6 +46,10 @@ class DemandeController extends Controller
                 ->paginate(15);
         }
 
+        foreach ($demandes as $demande) {
+            $dernier_traitement = Traitement::where('demande_id', $demande->id)->get()->last();
+            $demande['level'] = $dernier_traitement->level;
+        }
         return view('demandes.index', compact('demandes', 'isDemandeur'));
     }
 
@@ -169,9 +173,7 @@ class DemandeController extends Controller
         if ($isDemandeur) {
             $demandes = Demande::whereHas('traitement', function (Builder $query) use ($connected_user) {
                 $query->where('demandeur_id', $connected_user)
-                    ->where('status', '!=', 'en cours')
-                    ->orWhere('level', '>', 0)
-                    ;
+                    ->where('status', '!=', 'en cours');
             })
                 ->orderBy('created_at', 'desc')
                 ->paginate(15);

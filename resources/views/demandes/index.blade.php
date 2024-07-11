@@ -79,13 +79,15 @@
                             <a href="{{ route('demandes.show', $demande->id) }}"
                                 class=" bg-blue-500 px-10 py-1 text-white rounded">Voir</a>
                         </td>
-                        @if ($isDemandeur == 1)
+                        @if ($isDemandeur == 1 && $demande->level === 0)
                             <td class="px-6 py-4 text-right">
                                 <a onclick="supprimer(event);" data-modal-target="delete-modal"
                                     data-modal-toggle="delete-modal"
                                     href="{{ route('demandes.destroy', $demande->id) }}"
                                     class=" bg-orange-700 px-6 py-1 text-white rounded">Supprimer</a>
                             </td>
+                            @else
+                            <td></td>
                         @endif
                     </tr>
                 @endforeach
