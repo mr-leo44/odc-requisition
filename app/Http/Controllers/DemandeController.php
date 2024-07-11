@@ -13,9 +13,10 @@ use Illuminate\Http\Request;
 use App\Models\DemandeDetail;
 use App\Models\Mail as MailModel;
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Database\Eloquent\Builder;
 
 class DemandeController extends Controller
 {
@@ -24,7 +25,7 @@ class DemandeController extends Controller
      */
     public function index()
     {
-        $connected_user = session()->get('authUser')->id; //signifie que c'est l'utilisateur qui est connecté
+        $connected_user = Session::get('authUser')->id; //signifie que c'est l'utilisateur qui est connecté
         $isDemandeur = Demande::whereHas('traitement', function ($query) use ($connected_user) {
             $query->where('demandeur_id', $connected_user);
         })->exists();
@@ -66,7 +67,7 @@ class DemandeController extends Controller
         $demande = Demande::create([
             'numero' => $ref,
             'service_id' => 1,
-            'user_id' => session()->get('authUser')->id
+            'user_id' => Session::get('authUser')->id
         ]);
         if ($demande) {
             foreach ($request->demandes as $item) {
@@ -159,7 +160,7 @@ class DemandeController extends Controller
     }
     public function historique()
     {
-        $connected_user = session()->get('authUser')->id;
+        $connected_user = Session::get('authUser')->id;
 
         $isDemandeur = Demande::whereHas('traitement', function ($query) use ($connected_user) {
             $query->where('demandeur_id', $connected_user);
