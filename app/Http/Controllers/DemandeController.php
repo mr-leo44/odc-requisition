@@ -25,20 +25,19 @@ class DemandeController extends Controller
      */
     public function index()
     {
-        $connected_user = Session::get('authUser')->id; //signifie que c'est l'utilisateur qui est connecté
-        $isDemandeur = Demande::whereHas('traitement', function ($query) use ($connected_user) {
+        $connected_user = Session::get('authUser')->id; //signifie que c'est l'ID de l'utilisateur qui est connecté
+        $isDemandeur = Demande::whereHas('traitement', function (Builder $query) use ($connected_user) {
             $query->where('demandeur_id', $connected_user);
         })->exists();
 
         if ($isDemandeur) {
-            $demandes = Demande::whereHas('traitement', function (Builder $query) use ($connected_user) {
-                $query->where('demandeur_id', $connected_user)
-                    ->where('status', 'en cours');
+            $demandes = Demande::whereHas('traitement', function ($query) use ($connected_user) {
+                $query->where('demandeur_id', $connected_user)->where('status', 'en cours');
             })
                 ->orderBy('created_at', 'desc')
                 ->paginate(15);
         } else {
-            $demandes = Demande::whereHas('traitement', function ($query) use ($connected_user) {
+            $demandes = Demande::whereHas('traitement', function (Builder $query) use ($connected_user) {
                 $query->where('approbateur_id', $connected_user)
                     ->where('status', 'en cours');
             })
