@@ -4,33 +4,21 @@
         <div class="text-center font-bold">
             <x-input-label for="type" :value="__('Completez le profil')" />
         </div>
-        <div id="step-1">
-            <div class="mt-4 ui-widget" id="direction">
-                <x-input-label for="search_direction" :value="__('Votre direction')" />
-                <x-text-input id="search_direction" class="block mt-1 w-full" type="text" name="direction"
-                    :value="old('direction')" required />
-                <x-input-error :messages="$errors->get('direction')" class="mt-2" />
-            </div>
-            <div class="flex items-center justify-end mt-4">
-                <x-primary-button class="ms-4" type="button" id="byStepTwo">
-                    {{ __('Suivant') }}
-                </x-primary-button>
-            </div>
+        <div class="mt-4 ui-widget" id="direction">
+            <x-input-label for="search_direction" :value="__('Votre direction')" />
+            <x-text-input id="search_direction" class="block mt-1 w-full" type="text" name="direction"
+                :value="old('direction')" required />
+            <x-input-error :messages="$errors->get('direction')" class="mt-2" />
         </div>
-        <div id="step-2" class="hidden">
+        <div id="step-2" class="">
             <div class="mt-4" id="service">
                 <x-input-label for="search_service" :value="__('Votre service')" />
                 <x-text-input id="search_service" class="block mt-1 w-full" type="text" name="service"
                     :value="old('service')" required />
                 <x-input-error :messages="$errors->get('service')" class="mt-2" />
             </div>
-            <div class="flex items-center justify-end mt-4" id="byStepThree">
-                <x-primary-button class="ms-4">
-                    {{ __('Suivant') }}
-                </x-primary-button>
-            </div>
         </div>
-        <div id="step-3" class="hidden">
+        <div id="step-3" class="">
             <div class="mt-4 ui-widget">
                 <x-input-label for="search_manager" :value="__('Votre Manager')" />
                 <x-text-input id="search_manager" class="block mt-1 w-full" type="text" name="manager"
@@ -70,41 +58,19 @@
                 source: directionsData
             });
 
-            var services = @json($services);
-            var servicesData = []
-
-            for (var i = 0; i < services.length; i++) {
-                servicesData.push(services[i]['name']);
-            }
-
-            $("#search_service").autocomplete({
-                source: servicesData,
-            });
-
-            $("#byStepTwo").on('click', function(event) {
-                event.preventDefault();
-                $("#step-2").removeClass('hidden');
-                $("#step-1").addClass('hidden');
-            })
-            $("#byStepThree").on('click', function(event) {
-                event.preventDefault();
-                $("#step-3").removeClass('hidden');
-                $("#step-2").addClass('hidden');
-            })
-
-             // Logique pour rester sur le même champ qui contient la mauvaise information
-             @if ($errors->has('direction'))
-                $("#step-1").removeClass('hidden');
-                $("#step-2").addClass('hidden');
-                $("#step-3").addClass('hidden');
+            // Logique pour afficher les erreurs sous les champs respectifs
+            @if ($errors->has('direction'))
+                $('html, body').animate({
+                    scrollTop: $("#search_direction").offset().top
+                }, 1000);
             @elseif ($errors->has('service'))
-                $("#step-1").addClass('hidden');
-                $("#step-2").removeClass('hidden');
-                $("#step-3").addClass('hidden');
+                $('html, body').animate({
+                    scrollTop: $("#search_service").offset().top
+                }, 1000);
             @elseif ($errors->has('manager'))
-                $("#step-1").addClass('hidden');
-                $("#step-2").addClass('hidden');
-                $("#step-3").removeClass('hidden');
+                $('html, body').animate({
+                    scrollTop: $("#search_manager").offset().top
+                }, 1000);
             @endif
         })
     </script>
