@@ -32,26 +32,24 @@ class DemandeController extends Controller
 
         if ($isManager || $isValidator) {
             $demandes = Demande::whereHas('traitement', function (Builder $query) use ($connected_user) {
-                $query->where('approbateur_id', $connected_user)
+                $query->where('approbateur_id', $connected_user->id)
                     ->where('status', 'en cours');
             })
                 ->orderBy('created_at', 'desc')
                 ->paginate(15);
-            $isDemandeur = false;
         } else {
             $demandes = Demande::whereHas('traitement', function ($query) use ($connected_user) {
-                $query->where('demandeur_id', $connected_user)->where('status', 'en cours');
+                $query->where('demandeur_id', $connected_user->id)->where('status', 'en cours');
             })
                 ->orderBy('created_at', 'desc')
                 ->paginate(15);
-            $isDemandeur = true;
         }
 
         foreach ($demandes as $demande) {
             $dernier_traitement = Traitement::where('demande_id', $demande->id)->get()->last();
             $demande['level'] = $dernier_traitement->level;
         }
-        return view('demandes.index', compact('demandes', 'isDemandeur'));
+        return view('demandes.index', compact('demandes'));
     }
 
     /**
