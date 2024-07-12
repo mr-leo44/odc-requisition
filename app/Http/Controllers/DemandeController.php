@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\User;
-use App\Models\Compte;
 use App\Models\Demande;
 use App\Mail\DemandeMail;
 use App\Models\Traitement;
@@ -13,7 +12,6 @@ use Illuminate\Http\Request;
 use App\Models\DemandeDetail;
 use App\Models\Mail as MailModel;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,24 +23,28 @@ class DemandeController extends Controller
      */
     public function index()
     {
-        $connected_user = Session::get('authUser')->id; //signifie que c'est l'ID de l'utilisateur qui est connecté
-        $isDemandeur = Demande::whereHas('traitement', function (Builder $query) use ($connected_user) {
-            $query->where('demandeur_id', $connected_user);
+        $connected_user = Session::get('authUser'); //signifie que c'est l'utilisateur qui est connecté
+        $isManager = User::whereHas('compte', function (Builder $query) use ($connected_user) {
+            $query->where('manager', $connected_user->id);
         })->exists();
 
-        if ($isDemandeur) {
-            $demandes = Demande::whereHas('traitement', function ($query) use ($connected_user) {
-                $query->where('demandeur_id', $connected_user)->where('status', 'en cours');
-            })
-                ->orderBy('created_at', 'desc')
-                ->paginate(15);
-        } else {
+        $isValidator = Approbateur::where('email', $connected_user->email)->exists();
+
+        if ($isManager || $isValidator) {
             $demandes = Demande::whereHas('traitement', function (Builder $query) use ($connected_user) {
                 $query->where('approbateur_id', $connected_user)
                     ->where('status', 'en cours');
             })
                 ->orderBy('created_at', 'desc')
                 ->paginate(15);
+            $isDemandeur = false;
+        } else {
+            $demandes = Demande::whereHas('traitement', function ($query) use ($connected_user) {
+                $query->where('demandeur_id', $connected_user)->where('status', 'en cours');
+            })
+                ->orderBy('created_at', 'desc')
+                ->paginate(15);
+            $isDemandeur = true;
         }
 
         foreach ($demandes as $demande) {
