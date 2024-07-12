@@ -28,6 +28,10 @@ class DemandeController extends Controller
             $query->where('manager', $connected_user->id);
         })->exists();
 
+        $isAdmin = User::whereHas('compte', function(Builder $query) use($connected_user) {
+            $query->where('user_id', $connected_user->id)->where('is_admin', 1);
+        })->exists();
+
         $isValidator = Approbateur::where('email', $connected_user->email)->exists();
 
         if ($isManager || $isValidator) {
@@ -51,7 +55,12 @@ class DemandeController extends Controller
             $dernier_traitement = Traitement::where('demande_id', $demande->id)->get()->last();
             $demande['level'] = $dernier_traitement->level;
         }
-        return view('demandes.index', compact('demandes', 'isDemandeur'));
+
+        if($isAdmin){
+            return redirect()->route('approbateurs.index');
+        }else{
+            return view('demandes.index', compact('demandes', 'isDemandeur'));
+        }
     }
 
     /**
