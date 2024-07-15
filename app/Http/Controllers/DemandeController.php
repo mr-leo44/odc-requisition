@@ -12,9 +12,11 @@ use Illuminate\Http\Request;
 use App\Models\DemandeDetail;
 use App\Models\Mail as MailModel;
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Builder;
+use FontLib\Table\Type\cvt;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Database\Eloquent\Builder;
 
 class DemandeController extends Controller
 {
@@ -23,9 +25,13 @@ class DemandeController extends Controller
      */
     public function index()
     {
-        $connected_user = session()->get('authUser')->id; //signifie que c'est l'utilisateur qui est connecté
+        $connected_user = Session::get('authUser')->id; //signifie que c'est l'utilisateur qui est connecté
         $isDemandeur = Demande::whereHas('traitement', function ($query) use ($connected_user) {
             $query->where('demandeur_id', $connected_user);
+        $connected_user = Session::get('authUser'); //signifie que c'est l'utilisateur qui est connecté
+        $isManager = User::whereHas('compte', function (Builder $query) use ($connected_user) {
+            $query->where('manager', $connected_user->id);
+
         })->exists();
 
         $isValidator = Approbateur::where('email', $connected_user->email)->exists();
@@ -48,14 +54,16 @@ class DemandeController extends Controller
         }
 
         foreach ($demandes as $demande) {
+
             $dernierTraitement = $demande->traitement()->orderBy('id', 'DESC')->first();
             $demande['level'] = $dernierTraitement->level;
         }
 
-        foreach ($demandes as $demande) {
             $dernier_traitement = Traitement::where('demande_id', $demande->id)->get()->last();
             $demande['level'] = $dernier_traitement->level;
         }
+        );
+
         return view('demandes.index', compact('demandes', 'isDemandeur'));
     }
 
