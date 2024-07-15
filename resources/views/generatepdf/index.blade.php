@@ -19,9 +19,8 @@
         .txt {
             right: 10%;
             display: inline-block;
-            margin-top: -150px;
--
-
+            /* margin-top: -250px; */
+            -
         }
 
         .kin {
@@ -42,7 +41,7 @@
     <nav>
         <p class="flotte">
             <img src="https://th.bing.com/th/id/R.7322c511099a068f5689584aecf6f3be?rik=BE2S1VvY890%2bxg&riu=http%3a%2f%2fwww.ranklogos.com%2fwp-content%2fuploads%2f2014%2f08%2fOrange-logo-500x500.jpg&ehk=DIaknrKAB5S34NmF1UAY8w657JfVE4N1iyRtVYt1VAs%3d&risl=&pid=ImgRaw&r=0"
-                style="max-width: 130px; margin-right: 35px; margin-top: 30px;" alt="">
+                style="max-width: 130px; margin-right: 35px; margin-top: 50px;" alt="">
         </p>
         <div class="txt">
             372, av. Colonel Mondjiba <br>
@@ -75,14 +74,14 @@
         <tr>
             <th colspan="2">Service Demandeur</th>
             @foreach ($approbateurs as $approbateur)
-            <th>{{ $approbateur->fonction}}</th>
+                <th>{{ $approbateur->fonction }}</th>
             @endforeach
         </tr>
         <tr>
             <td>{{ $demande->user->name }}</td>
             <td>{{ $demande->manager }}</td>
             @foreach ($approbateurs as $approbateur)
-            <td>{{ $approbateur->name}}</td>
+                <td>{{ $approbateur->name }}</td>
             @endforeach
 
         </tr>
@@ -91,7 +90,7 @@
         table {
             table-layout: fixed;
             margin-right: 10px;
-            margin-top: 20px;
+            margin-top: 1px;
             margin-left: 5px;
             width: 100%;
             border-collapse: collapse;
@@ -99,23 +98,26 @@
 
         h1 {
             text-align: center;
-            margin-top: 50px;
+            margin-top: 80px;
             font-size: 20px;
             margin-left: 25%;
         }
 
         h3 {
-            margin-left: 100px;
-            margin-bottom: 50px;
+            margin-left: 180px;
+            margin-bottom: 45px;
         }
 
         .adr {
-            margin-left: 80%;
+            margin-left: 40%;
             float: right;
-            margin-top: -250px;
+            margin-top: -100px;
             font-size: 15px;
             font-family: 'Times New Roman', Times, serif;
 
+        }
+        .foot{
+            margin-top: 140px;
         }
     </style>
 </body>

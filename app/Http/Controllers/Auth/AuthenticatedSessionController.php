@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Auth\LoginRequest;
@@ -35,25 +36,46 @@ class AuthenticatedSessionController extends Controller
             "username" => $request->username,
             "password" => $request->password
         ];
+    
         $response = Http::withHeaders([
             'Content-Type' => 'application/json'
         ])->post('http://10.143.41.70:8000/promo2/odcapi/?method=login', $data);
+    
         if ($response->successful()) {
             $request->session()->regenerate();
             $responsefinal = $response->json();
-            $user= User::where('email', $responsefinal['user']['email'])->first();
+            $user = User::where('email', $responsefinal['user']['email'])->first();
+    
             if ($user) {
                 Session::put('authUser', $user);
                 return redirect()->route('demandes.index');
             } else {
                 $id = $responsefinal['user']['id'];
                 Session::put('user', $request->username);
-                return redirect()->route('register')->with('id',$id);
+                return redirect()->route('register')->with('id', $id);
             }
         } else {
-            return redirect()->route('login');
+            $errorMessages = [];
+
+        $user = User::where('email', $request->username)->first();
+
+        if (!$user) {
+          
+            $errorMessages['password']= 'Le nom ou le mot de passe est incorrect.';
+
+        } else {
+          
+            if (!Hash::check($request->password, $user->password)) {
+                $errorMessages['password'] = 'Le mot de passe est incorrect.';
+            }
+        }
+
+        return redirect()->route('login')
+            ->withErrors($errorMessages)
+            ->withInput($request->only('username'));
         }
     }
+    
     /**
      * Destroy an authenticated session.
      */
