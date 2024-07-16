@@ -59,7 +59,8 @@ class DemandeController extends Controller
 
             $dernier_traitement = Traitement::where('demande_id', $demande->id)->get()->last();
             $demande['level'] = $dernier_traitement->level;
-        }
+        });
+
         return view('demandes.index', compact('demandes', 'isDemandeur'));
     }
 
