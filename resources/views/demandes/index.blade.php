@@ -35,13 +35,11 @@
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div class="flex justify-end my-2">
-            @if ($isDemandeur == 1)
-                <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
-                    class="px-5 py-2.5 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    type="button">
-                    Ajouter
-                </button>
-            @endif
+            <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
+                class="px-5 py-2.5 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                type="button">
+                Ajouter
+            </button>
         </div>
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -81,7 +79,6 @@
                             <a href="{{ route('demandes.show', $demande->id) }}"
                                 class=" bg-blue-500 px-10 py-1 text-white rounded">Voir</a>
                         </td>
-                        @if ($isDemandeur == 1 && $demande->level == 0)
                         @if ($isDemandeur == 1 && $demande->level === 0)
                             <td class="px-6 py-4 text-right">
                                 <a onclick="supprimer(event);" data-modal-target="delete-modal"
@@ -89,9 +86,6 @@
                                     href="{{ route('demandes.destroy', $demande->id) }}"
                                     class=" bg-orange-700 px-6 py-1 text-white rounded">Supprimer</a>
                             </td>
-
-                        @else
-                            <td class="px-6 py-4 text-right"></td>
                             @else
                             <td></td>
 
