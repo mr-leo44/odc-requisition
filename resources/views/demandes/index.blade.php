@@ -6,9 +6,7 @@
     </x-slot>
     @if (session('success'))
         <div id="alert-3"
-            class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
             class="flex items-center p-4 my-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
-
             role="alert">
             <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 20">
@@ -79,16 +77,15 @@
                             <a href="{{ route('demandes.show', $demande->id) }}"
                                 class=" bg-blue-500 px-10 py-1 text-white rounded">Voir</a>
                         </td>
-                        @if ($isDemandeur == 1 && $demande->level === 0)
+                        @if (session()->get('authUser')->id == $demande->user_id && $demande->level === 0)
                             <td class="px-6 py-4 text-right">
                                 <a onclick="supprimer(event);" data-modal-target="delete-modal"
                                     data-modal-toggle="delete-modal"
                                     href="{{ route('demandes.destroy', $demande->id) }}"
                                     class=" bg-orange-700 px-6 py-1 text-white rounded">Supprimer</a>
                             </td>
-                            @else
+                        @else
                             <td></td>
-
                         @endif
                     </tr>
                 @endforeach

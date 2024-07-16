@@ -5,6 +5,13 @@
             {{ __('Historique des demandes') }}
         </h2>
     </x-slot>
+    <head>
+        <!-- DataTables CSS -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+        <!-- DataTables JS -->
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    </head>
+
 
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -47,7 +54,7 @@
                                 class=" bg-blue-500 px-10 py-1 text-white rounded">Voir</a>
                         </td>
                         <td class="px-6 py-4">
-                            {{ $demande->created_at->diffForHumans() }}
+                            {{ ucfirst($demande->created_at->locale('fr')->isoFormat('LLLL')) }}
                         </td>
                     </tr>
                 @endforeach
@@ -60,5 +67,13 @@
         <x-createDemande />
         <x-deleteDemande />
     </div>
+
+
+    <script>
+        $(document).ready(function() {
+            $('table').DataTable();
+        });
+    </script>
+
 
 </x-app-layout>
