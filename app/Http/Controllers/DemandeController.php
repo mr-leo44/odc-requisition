@@ -100,11 +100,9 @@ class DemandeController extends Controller
                         'traitement_id' => $traitement2->id,
                     ]);
 
-                    $validateur = User::find($traitement2->approbateur_id);
-                    $demande['validateur'] = $validateur->name;
+                    $demande['success'] = true;
 
                     Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande));
-                    Mail::to($validateur->email, $validateur->name)->send(new DemandeMail($demande, true));
                 }
             }
 

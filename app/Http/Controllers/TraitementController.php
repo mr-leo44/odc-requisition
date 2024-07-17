@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StoreTraitementRequest;
 use App\Http\Requests\UpdateTraitementRequest;
+use App\Mail\DemandeMail;
 use App\Mail\TraitementMail;
 
 class TraitementController extends Controller
@@ -25,21 +26,20 @@ class TraitementController extends Controller
             ->where('status', 'en cours')
             ->first();
         if ($request->status === 'validé') {
-            $approb_count = Approbateur::count();
-            if ($en_cours->level === $approb_count) {
+            if ($en_cours->level === Approbateur::count()) { // Si c'est la fin du flow
                 $success = $en_cours->update([
                     'status' => $request->status
                 ]);
                 if ($success) {
-                    $validateur = User::find($en_cours->approbateur_id);
-                    $demande['validateur'] = $validateur->name;
-                    $demande['validated'] = true;
                     MailModel::where('traitement_id', $en_cours->id)->delete();
-                    Mail::to($demande->user->email, $demande->user->name)->send(new TraitementMail($demande, true));
-                    Mail::to($validateur->email, $validateur->name)->send(new TraitementMail($demande, true, true));
+                    $validateur = User::find($en_cours->approbateur_id);
+                    $demande['validated'] = true;
+                    $demande['success'] = true;
+                    Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande));
+                    Mail::to($validateur->email, $validateur->name)->send(new DemandeMail($demande, true));
                 }
                 return redirect()->route('demandes.index')->with('Validation reussie');
-            } else {
+            } else { // Pendant le passage des flow
                 $prochain_level = (int)($en_cours->level) + 1;
                 $prochain_approb = Approbateur::where('level', $prochain_level)->first();
                 $validateur = User::where('email', $prochain_approb->email)->first();
@@ -55,17 +55,16 @@ class TraitementController extends Controller
                         'approbateur_id' => $validateur->id
                     ]);
 
-                    if ($prochain_traitement) {
+                    if ($prochain_traitement) { // Prochain flow
                         MailModel::where('traitement_id', $en_cours->id)->delete();
                         MailModel::create([
                             'traitement_id' => $prochain_traitement->id,
                         ]);
 
-                        $demande['validateur'] = $validateur->name;
+                        $demande['success'] = true;
                         $demande['level'] = $prochain_traitement->level;
 
-                        Mail::to($demande->user->email, $demande->user->name)->send(new TraitementMail($demande, true));
-                        Mail::to($validateur->email, $validateur->name)->send(new TraitementMail($demande, true, true));
+                        Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande)); 
                     }
                 }
                 return redirect()->route('demandes.index')->with('success', 'Validation reussie');
@@ -78,13 +77,10 @@ class TraitementController extends Controller
 
             if ($cloture_traitement) {
                 MailModel::where('traitement_id', $en_cours->id)->delete();
-                $validateur = User::find($en_cours->approbateur_id);
-                $demande['validateur'] = $validateur->name;
                 $demande['observation'] = $en_cours->observation;
-                $demande['level'] = $en_cours->level;
+                $demande['success'] = false;
 
-                Mail::to($demande->user->email, $demande->user->name)->send(new TraitementMail($demande));
-                Mail::to($validateur->email, $validateur->name)->send(new TraitementMail($demande, false, true));
+                Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande));
             }
 
             return redirect()->route('demandes.index')->with('success', 'Demande rejetée avec succès');
