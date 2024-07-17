@@ -30,14 +30,13 @@ class SendPendingEmail extends Command
      */
     public function handle()
     {
-        $mails = Mail::where('is_approved','=', false)->get();
-
+        $mails = Mail::where('is_approved', '=', false)->get();
         foreach ($mails as $key => $mail) {
             $traitement_recent = $mail->traitement;
             $demande_recente = $traitement_recent->demande;
             $validateur = User::find($traitement_recent->approbateur_id);
             $demande_recente['validateur'] = $validateur->name;
-
+            $demande_recente['success'] = true;
             DemandeMailer::to($validateur->email, $validateur->name)->send(new DemandeMail($demande_recente, true));
         }
     }

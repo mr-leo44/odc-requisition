@@ -16,7 +16,7 @@ class DemandeMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public $demande, public $is_manager = false)
+    public function __construct(public $demande, public $is_validator = false)
     {
     }
 
@@ -38,11 +38,8 @@ class DemandeMail extends Mailable
         return new Content(
             view: 'mails.demandes',
             with: [
-                'demande_id' => $this->demande->id,
-                'num_demande' => $this->demande->numero,
-                'demandeur' => $this->demande->user->name,
-                'validateur' => $this->demande->validateur,
-                'is_manager' => $this->is_manager
+                'demande' => $this->demande,
+                'is_manager' => $this->is_validator
             ]
         );
     }
