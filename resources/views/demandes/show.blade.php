@@ -100,7 +100,6 @@
 
                 <tr>
                     @foreach ($traitements as $key => $traitement)
-                        {{-- <td>{{ $traitement->level }}</td> --}}
                         @if ($traitement->status === 'en cours')
                             <td scope="col" class="px-6 py-4 text-center hover:bg-gray-50 dark:hover:bg-gray-600">
                                 {{ __(' ') }}</td>
@@ -108,7 +107,6 @@
                             <td scope="col" class="px-6 py-4 text-center hover:bg-gray-50 dark:hover:bg-gray-600">
                                 {{ $date_validate[$key] }}</td>
                         @endif
-                        {{-- <td>{{ $traitement->status }}</td> --}}
                     @endforeach
 
                 </tr>
@@ -129,13 +127,15 @@
                 Rejeter
             </button>
         @endif
-        <form action="{{ route('generate', $demande) }}" method="post">
-            @csrf
-            <button type="submit"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Générer
-                pdf
-            </button>
-        </form>
+        @if ($en_cours->status != 'en cours' && $en_cours->demandeur_id === session()->get('authUser')->id)
+            <form action="{{ route('generate', $demande) }}" method="post">
+                @csrf
+                <button type="submit"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Générer
+                    pdf
+                </button>
+            </form>
+        @endif
     </div>
 
     <x-valider :demande="$demande" />
