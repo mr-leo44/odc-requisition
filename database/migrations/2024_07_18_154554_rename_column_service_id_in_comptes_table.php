@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('comptes', function (Blueprint $table) {
-            //
+            $table->dropIndex('demandes_service_id_foreign');
+            $table->renameColumn('service_id','service');
+            $table->string('service')->change();
         });
     }
 
