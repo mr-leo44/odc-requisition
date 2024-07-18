@@ -50,7 +50,7 @@
                 <tr>
                     <th colspan="2" scope="col" class="px-6 py-3 text-center">
                         <span class="block font-semibold lg:text-sm">Service</span>
-                        <span class="font-normal">{{ $demande->service->name }}</span>
+                        <span class="font-normal">{{ $demande->service }}</span>
                     </th>
                     @foreach ($demande->approbateurs as $key => $approbateur)
                         <th scope="col" class="px-6 py-3 text-center">{{ $approbateur->fonction }}</th>
@@ -154,8 +154,7 @@
             info: true,
             ordering: false,
             paging:true ,
-
-
         });
     </script>
+
 </x-app-layout>
