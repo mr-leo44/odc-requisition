@@ -51,7 +51,7 @@
     </nav>
     <p class="adr">Kinshasa, le {{ date('d/m/Y') }}</p>
     <h1>BON DE REQUISITION INTERNE N° {{ $demande->numero }} </h1>
-    <h3>service demandeur : {{ $demande->service->name }}</h3>
+    <h3>service demandeur : {{ $demande->service}} </h3>
     <table border="1">
         <tr>
             <th class="nom">N°</th>
@@ -72,7 +72,11 @@
     </table>
     <table class="foot">
         <tr>
-            <th colspan="2">Service Demandeur</th>
+            <th>Service démandeur</th>
+            <th>Magasin</th>
+            <th>Responsable moyens généraux</th>
+            <th> Chef de département achat & Logistique</th>
+            {{-- <th colspan="2">Service Demandeur</th>
             @foreach ($approbateurs as $approbateur)
                 <th>{{ $approbateur->fonction }}</th>
             @endforeach
@@ -82,8 +86,14 @@
             <td>{{ $demande->manager }}</td>
             @foreach ($approbateurs as $approbateur)
                 <td>{{ $approbateur->name }}</td>
-            @endforeach
+            @endforeach --}}
 
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
     </table>
     <style>
@@ -117,7 +127,7 @@
 
         }
         .foot{
-            margin-top: 140px;
+            margin-top: 500px;
         }
     </style>
 </body>
