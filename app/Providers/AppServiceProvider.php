@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\RoleEnum;
 use App\Models\User;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
@@ -25,11 +26,13 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         Blade::if('profile', function (string $role) {
-            if ($role === 'admin' && Session::get('authUser')->compte->is_admin === 1) {
+            if ($role === 'user' && Session::get('authUser')->compte->role->value === RoleEnum::USER->value) {
                 $isAdmin = true;
-            } elseif ($role === 'user' && Session::get('authUser')->compte->is_admin === 0) {
+            } elseif ($role === 'admin' && Session::get('authUser')->compte->role->value === RoleEnum::ADMIN->value) {
                 $isAdmin = true;
-            } else {
+            } elseif($role === 'livraison' && Session::get('authUser')->compte->role->value === RoleEnum::LIVRAISON->value){
+                $isAdmin = true;
+            } else{
                 $isAdmin = false;
             }
 
