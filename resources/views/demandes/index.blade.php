@@ -68,7 +68,7 @@
                             {{ $demande->numero }}
                         </th>
                         <td class="px-6 py-4">
-                            {{ $demande->service->name }}
+                            {{ $demande->service }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $demande->user->name }}
