@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Compte;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Direction extends Model
 {
@@ -13,8 +14,8 @@ class Direction extends Model
         'name',
     ];
 
-    public function services()
+    public function comptes()
     {
-        return $this->hasMany(Service::class);
+        return $this->hasMany(Compte::class);
     }
 }
