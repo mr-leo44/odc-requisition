@@ -69,7 +69,7 @@ class DemandeController extends Controller
         $ref = "REQ-{$order}-" . Carbon::now()->year;
         $demande = Demande::create([
             'numero' => $ref,
-            'service_id' => 1,
+            'service' => Session::get('authUser')->compte->service,
             'user_id' => Session::get('authUser')->id
         ]);
         if ($demande) {
