@@ -16,7 +16,7 @@ class Demande extends Model
 
     protected $fillable = [
         'numero',
-        'service_id',
+        'service',
         'user_id',
     ];
 
@@ -28,10 +28,6 @@ class Demande extends Model
     public function mails()
     {
         return $this->hasMany(Mail::class);
-    }
-    public function service()
-    {
-        return $this->belongsTo(Service::class);
     }
     public function demande_details()
     {
