@@ -2,11 +2,11 @@
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
-        <!-- Username Address -->
+        <!-- Email Address -->
         <div>
-            <x-input-label for="username" :value="__('Username')" />
-            <x-text-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required autofocus autocomplete="username" />
-            @error('username')
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input id="email" class="block mt-1 w-full" type="text" name="email" :value="old('email')" required autofocus autocomplete="email" />
+            @error('email')
                 <span class="text-red-600 text-sm mt-2">{{ $message }}</span>
             @enderror
         </div>

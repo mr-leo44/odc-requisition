@@ -32,20 +32,26 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $data = [
-            "username" => $request->username,
-            "password" => $request->password
-        ];
-    
-        $response = Http::withHeaders([
+        
+        $user = User::where('email', $request->email)->first();
+
+        if ($user) {
+            Session::put('authUser', $user);
+            return redirect()->route('demandes.index');
+        } else {
+            $id = $user->id;
+            Session::put('user', $request->email);
+            return redirect()->route('register')->with('id', $id);
+        }
+        /* $response = Http::withHeaders([
             'Content-Type' => 'application/json'
         ])->post('http://10.143.41.70:8000/promo2/odcapi/?method=login', $data);
-    
+
         if ($response->successful()) {
             $request->session()->regenerate();
             $responsefinal = $response->json();
             $user = User::where('email', $responsefinal['user']['email'])->first();
-    
+
             if ($user) {
                 Session::put('authUser', $user);
                 return redirect()->route('demandes.index');
@@ -57,14 +63,16 @@ class AuthenticatedSessionController extends Controller
         } else {
             $errorMessages = [];
 
-        $user = User::where('email', $request->username)->first();
+        $user = User::where('name', $request->username)->first();
+
+
 
         if (!$user) {
-          
+
             $errorMessages['password']= 'Le nom ou le mot de passe est incorrect.';
 
         } else {
-          
+
             if (!Hash::check($request->password, $user->password)) {
                 $errorMessages['password'] = 'Le mot de passe est incorrect.';
             }
@@ -73,9 +81,9 @@ class AuthenticatedSessionController extends Controller
         return redirect()->route('login')
             ->withErrors($errorMessages)
             ->withInput($request->only('username'));
-        }
+        } */
     }
-    
+
     /**
      * Destroy an authenticated session.
      */
