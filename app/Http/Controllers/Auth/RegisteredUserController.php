@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Models\Compte;
-use App\Models\Service;
 use App\Models\Direction;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -25,20 +23,12 @@ class RegisteredUserController extends Controller
     {
         $users = User::all();
         $directions = Direction::all();
-        $services = Service::all();
+        $services = Compte::select('service')->distinct()->get();
         if (Session::has('user')) {
             return view('auth.register', compact('users', 'directions', 'services'));
         } else {
-            return redirect()->route('login');
+            return redirect()->route('login')->with('error', 'Veuillez d\'abord vous connecter');
         }
-    }
-
-    public function search_service(Request $request)
-    {
-        $data = Service::select("name", "id")
-            ->where('name', 'LIKE', '%' . $request->get('search_service') . '%')
-            ->get();
-        return response()->json($data);
     }
 
     /**
@@ -49,36 +39,16 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'direction' => ['required', 'string','exists:directions,name'],
-            'manager' => ['required', 'string','exists:users,name'],
+            'direction' => ['required', 'string'],
+            'manager' => ['required', 'string'],
             'service' => ['required', 'string'],
-        ],['direction.exists'=>'Direction non trouvée.']);
+        ]);
+
+        // dd($request->all());
         $manager = User::where('name', '=', $request->manager)->first();
-        if ($manager){
-            $manager_id = $manager->id;
-        }else{
-            return back()->withErrors('Manager non trouvé');
-        }
         $direction = Direction::where('name', '=', $request->direction)->first();
-        if ($direction){
-            $direction_id = $direction->id;
-        }
-        else{
-            return back()->withError('Direction non trouvée');
-        }
-        $direction_id = $direction['id'];
-
-        $service =DB::table('services')
-            ->select('id')
-            ->where('direction_id','=', $direction_id)
-            ->first();
-
-        if ($service) {
-            $service_id=$service->id;
-        }else{
-            return back()->withErrors(['service'=>'Aucun service correspondant']);
-        }
         $username = session('user');
+
         $response = Http::get("http://10.143.41.70:8000/promo2/odcapi/?method=getUserByUsername&username=$username");
         if ($response->successful()) {
             $userResponse = $response->json();
@@ -91,9 +61,10 @@ class RegisteredUserController extends Controller
             Session::put('authUser', $user);
             if ($user) {
                 Compte::create([
-                    "manager" => $manager_id,
+                    "manager" => $manager->id,
                     "user_id" => $user->id,
-                    "service_id" => $service_id,
+                    "service" => $request->service,
+                    "direction_id" => $direction->id
                 ]);
             }
             event(new Registered($user));
