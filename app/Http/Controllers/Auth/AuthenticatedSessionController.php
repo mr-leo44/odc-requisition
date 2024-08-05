@@ -60,7 +60,9 @@ class AuthenticatedSessionController extends Controller
                 Session::put('user', $request->username);
                 return redirect()->route('register')->with('id', $id);
             }
-        } 
+        }else {
+            return back()->with('error', 'Informations incorrects');
+        }
     }
     
     /**
