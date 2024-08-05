@@ -48,31 +48,20 @@ class AuthenticatedSessionController extends Controller
     
             if ($user) {
                 Session::put('authUser', $user);
-                return redirect()->route('demandes.index');
+                if($user->compte->role->value === 'livraison'){
+                    return redirect()->route('dashboard');
+                } elseif ($user->compte->role->value === 'admin') {
+                    return redirect()->route('approbateurs.index');
+                } else {
+                    return redirect()->route('demandes.index');
+                }
             } else {
                 $id = $responsefinal['user']['id'];
                 Session::put('user', $request->username);
                 return redirect()->route('register')->with('id', $id);
             }
-        } else {
-            $errorMessages = [];
-
-        $user = User::where('email', $request->username)->first();
-
-        if (!$user) {
-          
-            $errorMessages['password']= 'Le nom ou le mot de passe est incorrect.';
-
-        } else {
-          
-            if (!Hash::check($request->password, $user->password)) {
-                $errorMessages['password'] = 'Le mot de passe est incorrect.';
-            }
-        }
-
-        return redirect()->route('login')
-            ->withErrors($errorMessages)
-            ->withInput($request->only('username'));
+        }else {
+            return back()->with('error', 'Informations incorrects');
         }
     }
     
