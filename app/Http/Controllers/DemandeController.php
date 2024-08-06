@@ -24,6 +24,7 @@ class DemandeController extends Controller
     public function index()
     {
         $connected_user = Session::get('authUser'); //signifie que c'est l'utilisateur qui est connecté
+        if ($connected_user->compte->role->value === 'user') {
         $isManager = User::whereHas('compte', function (Builder $query) use ($connected_user) {
             $query->where('manager', $connected_user->id);
         })->exists();
@@ -49,6 +50,21 @@ class DemandeController extends Controller
             $dernier_traitement = Traitement::where('demande_id', $demande->id)->get()->last();
             $demande['level'] = $dernier_traitement->level;
         }
+
+    }
+
+    if($connected_user->compte->role->value === 'livraison'){
+        //
+        $reqs = Demande::all();
+        foreach ($reqs as $key => $req) {
+            $last = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
+            if($last->status === 'validé') {
+                $all_demandes[$key] = $req;
+            }
+        }
+        $demandes_array = collect($all_demandes);
+        $demandes = Demande::whereIn('id', $demandes_array->pluck('id'))->orderBy('created_at', 'desc')->paginate(15);
+    }
         return view('demandes.index', compact('demandes'));
     }
 
