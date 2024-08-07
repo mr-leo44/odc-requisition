@@ -14,7 +14,7 @@
                             </path>
                         </svg>
                     </button>
-                    <a @if (Session::get('authUser')->compte->role->value === 'user') href="{{ route('demandes.index') }}"
+                    <a @if (Session::get('authUser')->compte->role->value === 'user') href="{{ route('demandes.index') }}" 
                         @elseif(Session::get('authUser')->compte->role->value === 'livraison')
                         href="{{ route('dashboard') }}"
                         @else
@@ -34,7 +34,6 @@
                                 aria-expanded="false" data-dropdown-toggle="dropdown-user">
                                 <span class="sr-only">Open user menu</span>
                                 <img class="w-8 h-8 rounded-full" src="{{ asset('img/profil.jpeg') }}" alt="user photo">
-
                             </button>
                         </div>
                         <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
@@ -83,7 +82,6 @@
         aria-label="Sidebar">
         <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
             <ul class="space-y-2 font-medium">
-
                 {{-- @profile('livraison')
                     <li>
                         <a href="{{ route('dashboard') }}"
@@ -100,8 +98,7 @@
                         </a>
                     </li>
                 @endprofile --}}
-
-                @if (Session::get('authUser')->compte->role->value !== 'admin')
+                @profile('user')
                     <li>
                         <div id="accordion-flush" data-accordion="collapse"
                             data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
@@ -123,17 +120,10 @@
                             </h2>
                             <div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
                                 <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-                                    @if (Session::get('authUser')->compte->role->value === 'livraison')
-                                        <p
-                                            class="mb-2 text-gray-800 px-7 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-                                            <a href="{{ route('demandes.index') }}">A livrer</a>
-                                        </p>
-                                    @else
-                                        <p
-                                            class="mb-2 text-gray-800 px-7 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-                                            <a href="{{ route('demandes.index') }}">En cours</a>
-                                        </p>
-                                    @endif
+                                    <p
+                                        class="mb-2 text-gray-800 px-7 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                                        <a href="{{ route('demandes.index') }}">En cours</a>
+                                    </p>
                                     <p
                                         class="text-gray-800 px-7 mb-2 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                                         <a href="{{ route('demandes.historique') }}">Historique</a>
@@ -142,8 +132,7 @@
                             </div>
                         </div>
                     </li>
-                @endif
-
+                @endprofile
 
                 @profile('admin')
                     <li>
@@ -172,6 +161,7 @@
                         </a>
                     </li>
                 @endprofile
+
             </ul>
         </div>
     </aside>
