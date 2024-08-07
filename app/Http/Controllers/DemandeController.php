@@ -54,8 +54,8 @@ class DemandeController extends Controller
     }
 
     if($connected_user->compte->role->value === 'livraison'){
-        //
         $reqs = Demande::all();
+        $all_demandes = [];
         foreach ($reqs as $key => $req) {
             $last = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
             if($last->status === 'validé') {
@@ -106,6 +106,7 @@ class DemandeController extends Controller
             ]);
 
             if ($traitement1) {
+
                 $traitement2 = Traitement::create([
                     'demande_id' => $demande->id,
                     'approbateur_id' => $demande->user->compte->manager,
