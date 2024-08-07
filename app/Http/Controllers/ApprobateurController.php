@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
-class approbateurController extends Controller
+class ApprobateurController extends Controller
 {
     public function index()
     {

@@ -97,12 +97,15 @@
                                 <input type="text" name="email[]" value="{{$approbateur->email}}" class="in bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled>
                             </td>
                             <td class="flex items-center mx-4 space-x-10">
-                                <a onclick="supprimer(event);" class="text-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm ps-2 px-2.5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+                                <a onclick="supprimer(event);" 
                                 data-modal-target="delete-modal"
                                 data-modal-toggle="delete-modal"
                                 href="{{ route('approbateurs.destroy', $approbateur->id) }}"
                                 data-id="{{ $approbateur->id }}" >
-                                    Delete
+                                <svg class="w-[32px] h-[32px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                                </svg>
+                            
                                 </a>
                                 <a href="" class="pe-8">
                                     <svg class=" w-6 h-6 justify-center items-center text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -176,8 +179,7 @@
                                         <a onclick="supprimer(event);" class="text-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm ps-2 px-2.5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
                                         data-modal-target="delete-modal"
                                         data-modal-toggle="delete-modal"
-                                        href="{{ route('approbateurs.destroy', $approbateur->id) }}"
-                                        data-id="{{ $approbateur->id }}" >
+                                        href="{{ route('approbateurs.destroy', '') }}/${approbateur.id}">
                                             Delete
                                         </a>
                                         <a href="" class="pe-8">
@@ -187,7 +189,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                    <input type="hidden" name="id[]" value="{{$approbateur->id}}">
+                                    <input type="hidden" name="id[]" value="${approbateurs.id}">
                                     </td>
                                 </tr>`;
                                 $('#sortable').append(newRow);
@@ -196,6 +198,7 @@
                             console.log('Erreur : Aucune donnée retournée.');
                         }
                     },
+
                         error: function(xhr, status, error) {
                             console.error('Erreur AJAX : ' + error);
                         }
