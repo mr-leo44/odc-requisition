@@ -134,6 +134,14 @@
                 class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                 Rejeter
             </button>
+
+            <button id="reject" onclick="#" data-modal-target="default-modal" data-modal-toggle="default-modal" type="button" @if ($en_cours->status === 'rejeté') class="hidden" @endif
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                Livraison
+            </button>
+
+
+
         @endif
         @if ($en_cours->status != 'en cours' && $en_cours->demandeur_id === session()->get('authUser')->id)
             <form action="{{ route('generate', $demande) }}" method="post">
@@ -148,6 +156,7 @@
 
     <x-valider :demande="$demande" />
     <x-rejeter :demande="$demande" />
+    <x-show-livraison :details="$demande->demande_details" />
 
     <script>
         new DataTable('#example', {
