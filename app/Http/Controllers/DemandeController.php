@@ -69,7 +69,7 @@ class DemandeController extends Controller
         $ref = "REQ-{$order}-" . Carbon::now()->year;
         $demande = Demande::create([
             'numero' => $ref,
-            'service_id' => 1,
+            'service' => Session::get('authUser')->compte->service,
             'user_id' => Session::get('authUser')->id
         ]);
         if ($demande) {
@@ -117,20 +117,55 @@ class DemandeController extends Controller
      */
     public function show(Demande $demande)
     {
-        $en_cours = Traitement::where('demande_id', $demande->id)
-            ->orderBy('id', 'DESC')
-            ->first();
-        $manager_id = User::find($demande->user->compte->manager);
-        $approbateurs = Approbateur::orderBy('level', 'ASC')->get();
-        $traitements = Traitement::where('demande_id', $demande->id)->orderBy('level', 'ASC')->get();
+        {         
+            $en_cours = Traitement::where('demande_id', $demande->id)
+                ->orderBy('id', 'DESC')
+                ->first();
+            $manager_id = User::find($demande->user->compte->manager);
 
-        $date_validate = [];
-        foreach ($traitements as $traitement) {
-            $date_validate[] = $traitement->updated_at->format('d-m-Y H:i:s');
+            $approbateurs = Approbateur::orderBy('level', 'ASC')->get()->keyBy('email');
+
+            $traitements = Traitement::where('demande_id', $demande->id)
+                ->orderBy('level', 'ASC')
+                ->get();
+            $users = User::all();
+    
+            $users_approbateurs = [];
+            $validated_levels = [];
+            foreach ($traitements as $traitement) {
+                if (in_array($traitement->status, ['validé', 'rejeté'])) {
+                    $validated_levels[] = $traitement->level;
+                }
+            }
+            // les autres approbateurs
+            foreach ($users as $user) {
+                if (isset($approbateurs[$user->email])) {
+                    $approbateur = $approbateurs[$user->email];
+                    $a_valide = in_array($approbateur->level, $validated_levels);
+                    // Ajouter seulement si les niveaux inférieurs sont validés
+                    if (empty($validated_levels) || max($validated_levels) >= ($approbateur->level - 1)) {
+                        $users_approbateurs[] = [
+                            'user' => $user,
+                            'level' => $approbateur->level,
+                            'validated' => $a_valide,
+                        ];
+                    }
+                }
+            }
+            // Trier les approbateurs
+            $users_approbateurs = collect($users_approbateurs)->sortBy(function ($item) {
+                return $item['validated'] ? -1 : $item['level'];
+            });
+            // informations finales pour la vue
+            $final_approbateurs = $users_approbateurs->pluck('user');
+            $date_validate = [];
+            foreach ($traitements as $traitement) {
+                $date_validate[] = $traitement->updated_at->format('d-m-Y H:i:s');
+            }
+            $demande['manager'] = $manager_id;
+            $demande['approbateurs'] = $final_approbateurs;
+            return view('demandes.show', compact('demande', 'traitements', 'en_cours', 'date_validate'));
         }
-        $demande['manager'] = $manager_id;
-        $demande['approbateurs'] = $approbateurs;
-        return view('demandes.show', compact('demande', 'traitements', 'en_cours', 'date_validate'));
     }
 
     /**
