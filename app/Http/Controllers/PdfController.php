@@ -32,13 +32,15 @@ class PdfController extends Controller
 
     public function generate(Request $request, Demande $demande)
     {
-        $en_cours = Traitement::where('demande_id', $demande->id)
-            ->orderBy('id', 'DESC')
-            ->first();
-        $manager = User::find($demande->user->compte->manager);
-        $demande['manager'] = $manager->name;
-        $approbateurs = Approbateur::orderBy('level', 'ASC')->get();
-        $html = view('generatePdf.index', compact('demande', 'approbateurs'))->render();
+        $traitements = Traitement::where('demande_id', $demande->id)->get();
+        foreach ($traitements as $key => $traitement) {
+            $approbateur = User::find($traitement->approbateur_id);
+            $traitement['approbateur'] = $approbateur->name;
+        }
+        // dd($traitements, $demande->demande_details);
+        // return view('generatepdf.index', compact('demande', 'traitements'));
+
+        $html = view('generatepdf.index', compact('demande', 'traitements'))->render();
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
         $options->set('isRemoteEnabled', true);
