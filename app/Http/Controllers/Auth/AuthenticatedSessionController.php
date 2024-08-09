@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Auth\LoginRequest;
@@ -36,35 +34,43 @@ class AuthenticatedSessionController extends Controller
             "username" => $request->username,
             "password" => $request->password
         ];
-    
+
         $response = Http::withHeaders([
             'Content-Type' => 'application/json'
         ])->post('http://10.143.41.70:8000/promo2/odcapi/?method=login', $data);
-    
+
         if ($response->successful()) {
             $request->session()->regenerate();
-            $responsefinal = $response->json();
-            $user = User::where('email', $responsefinal['user']['email'])->first();
-    
-            if ($user) {
-                Session::put('authUser', $user);
-                if($user->compte->role->value === 'livraison'){
-                    return redirect()->route('dashboard');
-                } elseif ($user->compte->role->value === 'admin') {
-                    return redirect()->route('approbateurs.index');
-                } else {
-                    return redirect()->route('demandes.index');
-                }
+            $responseFinal = $response->json();
+            if (User::all()->count() == 0) {
+                $responseFinal['user']['password'] = $data['password'];
+                Session::put('admin', $responseFinal['user']);
             } else {
-                $id = $responsefinal['user']['id'];
-                Session::put('user', $request->username);
-                return redirect()->route('register')->with('id', $id);
+                $user = User::where('email', $responseFinal['user']['email'])->first();
+                if ($user) {
+                    Session::put('authUser', $user);
+                    if ($user->compte->role->value === 'livraison') {
+                        return redirect()->route('dashboard');
+                    } elseif ($user->compte->role->value === 'admin') {
+                        return redirect()->route('approbateurs.index');
+                    } elseif ($user->compte->role->value === 'user') {
+                        return redirect()->route('demandes.index');
+                    } else {
+                        Session::put('admin', null);
+                        Session::put('user', $responseFinal['user']);
+                        return redirect()->route('register');
+                    }
+                } else {
+                    Session::put('admin', null);
+                    Session::put('user', $responseFinal['user']);
+                    return redirect()->route('register');
+                }
             }
-        }else {
-            return back()->with('error', 'Informations incorrects');
+        } else {
+            return redirect()->back()->with('error', 'Informations incorrects');
         }
     }
-    
+
     /**
      * Destroy an authenticated session.
      */

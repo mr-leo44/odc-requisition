@@ -62,7 +62,7 @@
             var users = @json($users);
             var usersData = []
             for (var i = 0; i < users.length; i++) {
-                usersData.push(users[i]['name']);
+                usersData.push(users[i]['first_name'] + ' ' + users[i]['last_name']);
             }
 
             $("#search_manager").autocomplete({
