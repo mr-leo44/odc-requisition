@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\RoleEnum;
 use App\Models\User;
 
 use Illuminate\Http\Request;
@@ -44,11 +45,14 @@ class AuthenticatedSessionController extends Controller
             $responseFinal = $response->json();
             if (User::all()->count() == 0) {
                 $responseFinal['user']['password'] = $data['password'];
-                Session::put('admin', $responseFinal['user']);
+                Session::put('user', $responseFinal['user']);
+                Session::put('admin', RoleEnum::ADMIN);
+                return redirect()->route('register');
             } else {
                 $user = User::where('email', $responseFinal['user']['email'])->first();
                 if ($user) {
                     Session::put('authUser', $user);
+                    Session::put('user', $responseFinal['user']['username']);
                     if ($user->compte->role->value === 'livraison') {
                         return redirect()->route('dashboard');
                     } elseif ($user->compte->role->value === 'admin') {
