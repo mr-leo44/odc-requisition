@@ -55,8 +55,20 @@ class RegisteredUserController extends Controller
             ]);
         }
 
+        if (User::where('name', $request->manager)->exists()) {
+            $exist_manager = User::where('name', $request->manager)->first();
+            $manager = $exist_manager->id;
+        } else {
+            $user_array = explode(' ', $request->manager);
+            $response = Http::get("http://10.143.41.70:8000/promo2/odcapi/?method=getUserByName&name=$user_array[0]");
+            if ($response->successful()) {
+                $userResponse = $response->json();
+                $managerData = $userResponse['users'][0];
+                $manager = $managerData['id'];
+            }
+        }
         if (Session::has('admin')) {
-            $adminData = Session::get('admin');
+            $adminData = Session::get('user');
             $userInsert = DB::table('users')->insert([
                 'id' => $adminData['id'],
                 'name' => $adminData['first_name'] .  ' ' . $adminData['last_name'],
@@ -72,21 +84,9 @@ class RegisteredUserController extends Controller
                     "direction_id" => $direction->id,
                     "role" => RoleEnum::ADMIN
                 ]);
+                Session::put('user', $adminData['username']);
             }
         } else {
-            if (User::where('name', $request->manager)->exists()) {
-                $exist_manager = User::where('name', $request->manager)->first();
-                $manager = $exist_manager->id;
-            } else {
-                $user_array = explode(' ', $request->manager);
-                $response = Http::get("http://10.143.41.70:8000/promo2/odcapi/?method=getUserByName&name=$user_array[0]");
-                if ($response->successful()) {
-                    $userResponse = $response->json();
-                    $managerData = $userResponse['users'][0];
-                    $manager = $managerData['id'];
-                }
-            }
-
             $username = session('user')['username'];
             $response = Http::get("http://10.143.41.70:8000/promo2/odcapi/?method=getUserByUsername&username=$username");
             if ($response->successful()) {
@@ -107,6 +107,8 @@ class RegisteredUserController extends Controller
                         "direction_id" => $direction->id,
                         "role" => RoleEnum::USER
                     ]);
+                    Session::put('user', $userData['username']);
+
                 }
             }
         }
