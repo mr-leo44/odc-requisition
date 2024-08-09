@@ -1,180 +1,218 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Profil') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="w-full mb-2 lg:m-0">
-                <div class="grid grid-cols-3 gap-3">
-                    <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg col-span-2 mb-3">
-                        <h2 class="text-2xl lg:text-3xl my-3 font-bold text-gray-900 dark:text-white">
-                            {{ $user->name }}</h2>
-                        {{-- <h5>@username</h5> --}}
-                        <div class="flex gap-2 text-md lg:text-xl font-medium text-gray-900 dark:text-white">
-                            <svg class="w-6 h-6 lg:w-8 lg:h-8 text-gray-800 dark:text-white" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M6 4h12M6 4v16M6 4H5m13 0v16m0-16h1m-1 16H6m12 0h1M6 20H5M9 7h1v1H9V7Zm5 0h1v1h-1V7Zm-5 4h1v1H9v-1Zm5 0h1v1h-1v-1Zm-3 4h2a1 1 0 0 1 1 1v4h-4v-4a1 1 0 0 1 1-1Z" />
-                            </svg>
-                            <p>{{ $user->compte->service }} /
-                                {{ $user->compte->direction->name }}</p>
-                        </div>
-                        <div class="flex gap-2 mt-2 text-md lg:text-xl font-medium text-gray-900 dark:text-white">
-                            <svg class="w-6 h-6 lg:w-8 lg:h-8 text-gray-800 dark:text-white" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                                    d="m3.5 5.5 7.893 6.036a1 1 0 0 0 1.214 0L20.5 5.5M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z" />
-                            </svg>
-
-                            <p>{{ $user->email }}</p>
-                        </div>
-                        <p class="flex gap-2 text-md lg:text-xl font-medium text-gray-900 dark:text-white">
-                            @if ($user->manager !== $user->name)
-                                Manager : {{ $user->manager }}
-                            @endif
-                        </p>
-                    </div>
-                    <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg mb-3">
-                        <h2 class="text-xl font-medium text-gray-900 dark:text-gray-100">
-                            {{ __('Manager') }}
-                        </h2>
-                        <p class="mt-1 text-xl text-gray-600 dark:text-gray-400">
-                            @if ($user->manager === $user->name)
-                                {{ __('Moi') }}
-                            @else
-                                {{ $user->manager }}
-                            @endif
-                        </p>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div
-                        class="p-2 sm:p-8 bg-white dark:bg-gray-800 text-gray-800 dark:text-white shadow sm:rounded-lg">
-                        <div class="flex justify-between items-center p-2">
-                            <div class="my-2">
-                                <span class="text-xl lg:text-2xl font-medium">Mes demandes</span>
-                            </div>
-                            <div
-                                class="flex w-11 h-11 lg:w-16 lg:h-16 items-center justify-center bg-slate-600 rounded-full">
-                                <svg class="w-6 h-6 lg:w-8 lg:h-8 text-gray-800 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 3v4a1 1 0 0 1-1 1H5m4 10v-2m3 2v-6m3 6v-3m4-11v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z" />
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="mt-2 p-2 flex items-end justify-between text-gray-800 dark:text-white">
-                            <h4 class="text-2xl lg:text-3xl font-bold text-black dark:text-white">
-                                {{ $user->demandes->count() }}
-                            </h4>
-                        </div>
-                    </div>
-                    <div
-                        class="p-2 sm:p-8 bg-white dark:bg-gray-800 text-gray-800 dark:text-white shadow sm:rounded-lg">
-                        <div class="flex justify-between items-center p-2">
-                            <div class="my-2">
-                                <span class="text-xl lg:text-2xl font-medium">Demandes du mois</span>
-                            </div>
-                            <div
-                                class="flex w-11 h-11 lg:w-16 lg:h-16 items-center justify-center bg-slate-600 rounded-full">
-                                <svg class="w-6 h-6 lg:w-8 lg:h-8 text-gray-800 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M10 3v4a1 1 0 0 1-1 1H5m8-2h3m-3 3h3m-4 3v6m4-3H8M19 4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1ZM8 12v6h8v-6H8Z" />
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="mt-2 p-2 flex items-end justify-between text-gray-800 dark:text-white">
-                            <h4 class="text-2xl lg:text-3xl font-bold text-black dark:text-white">
-                                {{ $user->this_month_req }}
-                            </h4>
-                            <span class="flex items-center gap-1 text-sm font-medium text-meta-3">
-                                @if ($user->last_month_req < $user->this_month_req)
-                                    <svg class="w-6 h-6 lg:w-10 lg:h-10 text-emerald-500" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                        viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4" />
-                                    </svg>
-                                @elseif ($user->last_month_req > $user->this_month_req)
-                                    <svg class="w-6 h-6 lg:w-10 lg:h-10 text-red-500" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                        viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="M12 19V5m0 14-4-4m4 4 4-4" />
-                                    </svg>
-                                @else
-                                @endif
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="relative overflow-x-auto shadow-md my-4">
-                    <h2 class="text-xl font-medium text-gray-900 my-4 dark:text-gray-100">
-                        {{ __('Mes Collaborateurs') }}
-                    </h2>
-                    <table
-                        class="w-full text-md text-center rtl:text-right text-gray-500 dark:text-gray-400 rounded-lg">
-                        <thead class="text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <th scope="col" class="px-6 py-3">
-                                    N°
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Nom
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Demandes
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Demandes du mois
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if ($collaborateurs->count() > 0)
-                                @foreach ($collaborateurs as $key => $collaborateur)
-                                    <tr
-                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        <th scope="row"
-                                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ $key + 1 }}
-                                        </th>
-                                        <td class="px-6 py-4">
-                                            {{ $collaborateur->name }}
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            {{ $collaborateur->recent_reqs }}
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            {{ $collaborateur->collab_last_reqs }}
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @else
-                                <tr
-                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="px-6 py-4 text-center text-md lg:text-lg" colspan="4">
-                                        {{ __('Pas de collaborateurs') }}
-                                    </td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
+    <div class="h-full bg-white dark:bg-gray-800 p-8">
+        <div class="bg-white dark:bg-gray-100 rounded-lg shadow-xl pb-8">
+            <div class="w-full h-[250px] bg-gray-800 rounded-t-lg dark:rounded-t-none">
+            </div>
+            <div class="flex flex-col items-center -mt-20 dark:rounded-t-lg">
+                <img src="{{ asset('img/orange.png') }}" class="w-40 border-4 border-white rounded-full" alt="profile">
+                <div class="flex items-center space-x-2 mt-2">
+                    <p class="text-3xl">{{ $user->name }}</p>
                 </div>
             </div>
         </div>
+
+        <div class="my-4 flex flex-col 2xl:flex-row space-y-3 2xl:space-y-0 2xl:space-x-4">
+            <div class="w-full flex flex-col gap-3 2xl:w-1/3">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-700 p-8">
+                    <h4 class="text-xl text-gray-900 dark:text-white font-bold">Informations</h4>
+                    <ul class="mt-2 text-gray-700 dark:text-white">
+                        <li class="flex border-y py-2">
+                            <span class="font-bold w-24">Username :</span>
+                            <span class="text-gray-700 dark:text-white">{{ session()->get('user') }}</span>
+                        </li>
+                        <li class="flex border-y py-2">
+                            <span class="font-bold w-24">Direction :</span>
+                            <span class="text-gray-700 dark:text-white">{{ $user->compte->direction->name }}</span>
+                        </li>
+                        <li class="flex border-b py-2">
+                            <span class="font-bold w-24">Service :</span>
+                            <span class="text-gray-700 dark:text-white">{{ $user->compte->service }}</span>
+                        </li>
+                        <li class="flex border-b py-2">
+                            <span class="font-bold w-24">Manager :</span>
+                            <span class="text-gray-700 dark:text-white">
+                                @if ($user->manager === $user->name)
+                                    {{ __('Moi') }}
+                                @else
+                                    {{ $user->manager }}
+                                @endif
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-700 p-8">
+                    <h4 class="text-xl text-gray-900 dark:text-white font-bold">Collaborateurs</h4>
+                    @if ($collaborateurs->count() > 0)
+                        <ul>
+                            @foreach ($collaborateurs as $key => $collaborateur)
+                                <li class="flex border-y py-2">
+                                    <span class="font-bold w-24 text-gray-700 dark:text-white">Username :</span>
+                                    <span class="text-gray-700 dark:text-white">{{ $collaborateur->name }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <ul>
+                            <li class="flex border-none py-2 dark:text-white">{{ __('Pas de collaborateurs') }}</li>
+                        </ul>
+                    @endif
+                </div>
+
+            </div>
+            <div class="flex flex-col w-full 2xl:w-2/3">
+                <div class="flex-1 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-700 mt-4 md:mt-4 lg:mt-0 p-8">
+                    <h4 class="text-xl text-gray-900 dark:text-white font-bold">Mes Statistiques</h4>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
+                        <div class="px-6 py-6 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-xl">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-md text-gray-700 dark:text-white">Total des Requisitions</span>
+                            </div>
+                            <div class="flex items-center justify-between mt-6">
+                                <div>
+                                    <svg class="w-12 h-12 p-2.5 bg-opacity-20 rounded-full text-gray-600 dark:text-white border border-gray-600 dark:border-white"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 3v4a1 1 0 0 1-1 1H5m4 10v-2m3 2v-6m3 6v-3m4-11v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z" />
+                                    </svg>
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="flex items-end">
+                                        <span
+                                            class="text-2xl 2xl:text-3xl font-bold dark:text-white">{{ $user->demandes->count() }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-6 py-6 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-xl">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-md text-gray-700 dark:text-white">Requisitions du mois</span>
+                                <span
+                                    class="text-xs bg-gray-200 dark:bg-gray-500 hover:bg-gray-500 dark:hover:bg-gray-200 text-gray-500 dark:text-white hover:text-gray-200 dark:hover:text-gray-700 px-2 py-1 rounded-lg transition duration-200 cursor-default">{{ Carbon\Carbon::now()->locale('fr')->isoFormat('MMMM YYYY') }}</span>
+                            </div>
+                            <div class="flex items-center justify-between mt-6">
+                                <div>
+                                    <svg class="w-12 h-12 p-2.5 bg-opacity-20 rounded-full text-gray-600 dark:text-white border border-gray-600 dark:border-white"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 3v4a1 1 0 0 1-1 1H5m8-2h3m-3 3h3m-4 3v6m4-3H8M19 4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1ZM8 12v6h8v-6H8Z" />
+                                    </svg>
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="flex items-end">
+                                        <span
+                                            class="text-2xl 2xl:text-3xl font-bold dark:text-white">{{ $user->this_month_req }}</span>
+                                        <div class="flex items-center ml-2 mb-1">
+                                            @if ($user->last_month_req < $user->this_month_req)
+                                                <svg class="w-5 h-5 text-green-500" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 14 14">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="M13.0158 4.74683H9.4939C9.2314 4.74683 9.01265 4.96558 9.01265 5.22808C9.01265 5.49058 9.2314 5.70933 9.4939 5.70933H11.6595L8.85953 7.59058C8.75015 7.67808 8.59703 7.67808 8.46578 7.59058L5.57828 5.68745C5.1189 5.3812 4.55015 5.3812 4.09078 5.68745L0.722027 7.94058C0.503277 8.0937 0.437652 8.39995 0.590777 8.6187C0.678277 8.74995 0.831402 8.83745 1.0064 8.83745C1.0939 8.83745 1.20328 8.81558 1.2689 8.74995L4.65953 6.49683C4.7689 6.40933 4.92203 6.40933 5.05328 6.49683L7.94078 8.42183C8.40015 8.72808 8.9689 8.72808 9.42828 8.42183L12.5127 6.3437V8.77183C12.5127 9.03433 12.7314 9.25308 12.9939 9.25308C13.2564 9.25308 13.4752 9.03433 13.4752 8.77183V5.22808C13.5189 4.96558 13.2783 4.74683 13.0158 4.74683Z">
+                                                    </path>
+                                                </svg>
+                                                <span
+                                                    class="font-bold text-sm text-green-500 ml-1">{{ $user->this_month_req - $user->last_month_req }}</span>
+                                            @elseif ($user->last_month_req > $user->this_month_req)
+                                                <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M13.0157 4.74683C12.7532 4.74683 12.5344 4.96558 12.5344 5.22808V7.6562L9.4063 5.57808C8.94693 5.27183 8.37818 5.27183 7.9188 5.57808L5.0313 7.50308C4.92193 7.59058 4.7688 7.59058 4.63755 7.50308L1.24693 5.24995C1.02818 5.09683 0.721929 5.16245 0.568804 5.3812C0.415679 5.59995 0.481304 5.9062 0.700054 6.05933L4.09068 8.31245C4.55005 8.6187 5.1188 8.6187 5.57818 8.31245L8.46568 6.38745C8.57505 6.29995 8.72818 6.29995 8.85943 6.38745L11.6594 8.2687H9.49381C9.23131 8.2687 9.01255 8.48745 9.01255 8.74995C9.01255 9.01245 9.23131 9.2312 9.49381 9.2312H13.0157C13.2782 9.2312 13.4969 9.01245 13.4969 8.74995V5.22808C13.5188 4.96558 13.2782 4.74683 13.0157 4.74683Z">
+                                                    </path>
+                                                </svg>
+                                                <span
+                                                    class="font-bold text-sm text-gray-500 ml-1">{{ $user->this_month_req - $user->last_month_req }}</span>
+                                            @else
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-6 py-6 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-xl">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-md text-green-600 dark:text-green-400">Requisitions validées</span>
+                                <span
+                                    class="text-xs bg-gray-200 dark:bg-gray-500 hover:bg-gray-500 dark:hover:bg-gray-200 text-gray-500 dark:text-white hover:text-gray-200 dark:hover:text-gray-700 px-2 py-1 rounded-lg transition duration-200 cursor-default">{{ Carbon\Carbon::now()->locale('fr')->isoFormat('MMMM YYYY') }}</span>
+                            </div>
+                            <div class="flex items-center justify-between mt-6">
+                                <div>
+                                    <svg class="w-12 h-12 p-2.5 bg-opacity-20 rounded-full text-green-600 dark:text-green-400 border border-green-600 dark:border-green-400"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 3v4a1 1 0 0 1-1 1H5m4 6 2 2 4-4m4-8v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z" />
+                                    </svg>
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="flex items-end">
+                                        <span
+                                            class="text-2xl 2xl:text-3xl {{ $user->demandes->count() > 0 ? 'text-green-600 dark:text-green-400' : 'text-black dark:text-white' }} font-bold">{{ $user->demandes->count() }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <canvas id="verticalBarChart"
+                            style="display: block; box-sizing: border-box; height: 414px; width: 828px;"
+                            class="w-full dark:text-white"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
+    <script>
+        var collaborateurs = @json($collaborateurs);
+        var collabs_name = []
+        var collabs_req = []
 
-    </div>
-    </div>
+        for (var i = 0; i < collaborateurs.length; i++) {
+            collabs_name.push(collaborateurs[i]['name']);
+            collabs_req.push(collaborateurs[i]['reqs_count']);
+        }
+
+        const dataVerticalBarChart = {
+            labels: collabs_name,
+            datasets: [{
+                label: 'Nombre de demande',
+                data: collabs_req,
+                borderColor: 'rgb(54, 162, 235)',
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                hoverOffset: 25,
+                borderWidth: 3
+            }]
+        };
+        const configVerticalBarChart = {
+            type: 'bar',
+            data: dataVerticalBarChart,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Requisitions de mes collaborateurs'
+                    }
+                }
+            },
+        };
+
+        var verticalBarChart = new Chart(
+            document.getElementById('verticalBarChart'),
+            configVerticalBarChart
+        );
+    </script>
 </x-app-layout>
