@@ -21,3 +21,4 @@ require __DIR__ . '/demande_route.php';
 require __DIR__ . '/webR.php';
 require __DIR__ . '/web_approbateur.php';
 require __DIR__ . '/web_direction.php';
+require __DIR__ . '/web_admin.php';
