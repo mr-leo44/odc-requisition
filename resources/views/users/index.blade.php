@@ -113,5 +113,11 @@
         </div>
     </div>
     <x-change-role :user="$user" />
-    
+    <x-user-create :users="$usersList" :directions="$directions" :services="$services" />
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
 </x-app-layout>
