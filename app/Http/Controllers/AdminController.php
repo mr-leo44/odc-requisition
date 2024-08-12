@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Compte;
+use App\Models\Direction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
@@ -32,6 +37,16 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+    public function changeRole(Request $request, User $user)
+    {
+        $user = User::find($request->id);
+        $profile = Compte::where('user_id', $user->id)->first();
+        $profile->update([
+            'role' => $request->role,
+        ]);
+        return back()->with('success', 'Rôle attribué avec succès');
     }
 
     /**
