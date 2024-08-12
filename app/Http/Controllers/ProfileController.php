@@ -31,7 +31,7 @@ class ProfileController extends Controller
             $collaborateur['recent_reqs'] = $recent_reqs;
             $collaborateur['collab_last_reqs'] = $collab_last_reqs;
         }
-        // dd($collaborateurs);
+        
         $last_month_req = Demande::where('user_id', $user->id)->whereMonth('created_at', Carbon::now()->subMonth()->month)->count();
         $this_month_req = Demande::where('user_id', $user->id)->whereMonth('created_at', Carbon::now()->month)->count(); 
         $user['manager'] = $manager;
