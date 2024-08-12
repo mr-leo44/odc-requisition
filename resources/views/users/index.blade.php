@@ -100,7 +100,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="4" class="text-center px-6 py-4">{{ __('Aucune catégorie trouvée') }}
+                                <td colspan="5" class="text-center px-6 py-4">{{ __('Aucun utilisateur se trouve dans cette application') }}
                                 </td>
                             </tr>
                         @endif
@@ -112,5 +112,6 @@
             </div>
         </div>
     </div>
-
+    <x-change-role :user="$user" />
+    
 </x-app-layout>
