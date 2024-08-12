@@ -45,8 +45,7 @@
                     @if ($collaborateurs->count() > 0)
                         <ul>
                             @foreach ($collaborateurs as $key => $collaborateur)
-                                <li class="flex border-y py-2">
-                                    <span class="font-bold w-24 text-gray-700 dark:text-white">Username :</span>
+                                <li class="flex py-2">
                                     <span class="text-gray-700 dark:text-white">{{ $collaborateur->name }}</span>
                                 </li>
                             @endforeach
@@ -60,13 +59,16 @@
 
             </div>
             <div class="flex flex-col w-full 2xl:w-2/3">
-                <div class="flex-1 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-700 mt-4 md:mt-4 lg:mt-0 p-8">
+                <div
+                    class="flex-1 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-700 mt-4 md:mt-4 lg:mt-0 p-8">
                     <h4 class="text-xl text-gray-900 dark:text-white font-bold">Mes Statistiques</h4>
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
-                        <div class="px-6 py-6 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-xl">
+                        <div
+                            class="px-6 py-6 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-xl">
                             <div class="flex items-center justify-between">
-                                <span class="font-bold text-md text-gray-700 dark:text-white">Total des Requisitions</span>
+                                <span class="font-bold text-md text-gray-700 dark:text-white">Total des
+                                    Requisitions</span>
                             </div>
                             <div class="flex items-center justify-between mt-6">
                                 <div>
@@ -86,9 +88,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="px-6 py-6 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-xl">
+                        <div
+                            class="px-6 py-6 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-xl">
                             <div class="flex items-center justify-between">
-                                <span class="font-bold text-md text-gray-700 dark:text-white">Requisitions du mois</span>
+                                <span class="font-bold text-md text-gray-700 dark:text-white">Requisitions du
+                                    mois</span>
                                 <span
                                     class="text-xs bg-gray-200 dark:bg-gray-500 hover:bg-gray-500 dark:hover:bg-gray-200 text-gray-500 dark:text-white hover:text-gray-200 dark:hover:text-gray-700 px-2 py-1 rounded-lg transition duration-200 cursor-default">{{ Carbon\Carbon::now()->locale('fr')->isoFormat('MMMM YYYY') }}</span>
                             </div>
@@ -135,9 +139,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="px-6 py-6 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-xl">
+                        <div
+                            class="px-6 py-6 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-xl">
                             <div class="flex items-center justify-between">
-                                <span class="font-bold text-md text-green-600 dark:text-green-400">Requisitions validées</span>
+                                <span class="font-bold text-md text-green-600 dark:text-green-400">Requisitions
+                                    validées</span>
                                 <span
                                     class="text-xs bg-gray-200 dark:bg-gray-500 hover:bg-gray-500 dark:hover:bg-gray-200 text-gray-500 dark:text-white hover:text-gray-200 dark:hover:text-gray-700 px-2 py-1 rounded-lg transition duration-200 cursor-default">{{ Carbon\Carbon::now()->locale('fr')->isoFormat('MMMM YYYY') }}</span>
                             </div>
