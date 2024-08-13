@@ -98,7 +98,7 @@
                         </a>
                     </li>
                 @endprofile --}}
-                @profile('user')
+                @profile('not-admin')
                     <li>
                         <div id="accordion-flush" data-accordion="collapse"
                             data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
@@ -173,7 +173,6 @@
                         </a>
                     </li>
                 @endprofile
-
             </ul>
         </div>
     </aside>
