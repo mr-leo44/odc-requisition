@@ -14,8 +14,24 @@ class Livraison extends Model
     'quantite'
   ];
 
-  public function demandeDetail() {
-    return $this->belongsTo(DemandeDetail::class);
+//   public function demandeDetail() {
+//     return $this->belongsTo(DemandeDetail::class);
+//   }
+  public function user()
+  {
+      return $this->belongsTo(User::class);
+  }
+public function demande_details()
+  {
+      return $this->belongsTo(DemandeDetail::class);
+  }
+  public function traitement()
+  {
+      return $this->hasMany(Traitement::class);
+  }
+public function demande()
+  {
+      return $this->hasMany(Demande::class);
   }
 
 }
