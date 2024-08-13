@@ -11,7 +11,7 @@ Route::get('/', function () {
     } else {
         return redirect()->route('login');
     }
-});
+})->name('home');
 
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard')->middleware('auth');
 Route::get('/profile', [ProfileController::class, 'profile'])->name('profile.index')->middleware('auth');
