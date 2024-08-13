@@ -8,7 +8,6 @@ use App\Models\Direction;
 use App\Models\User;
 use App\Models\Traitement;
 use Illuminate\Database\Eloquent\Builder;
-
 class DashboardController extends Controller
 {
     public function dashboard(){
