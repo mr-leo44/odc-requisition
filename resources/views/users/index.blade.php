@@ -83,7 +83,7 @@
                                     <td class="px-6 py-3">
                                         {{ $user->compte->role->value }}
                                     </td>
-                                    <td class="px-6 py-3">
+                                    <td class="flex justify-center items-center gap-2 px-6 py-3">
                                         <button type="button" title="Changer rôle" data-modal-target="change-role"
                                             data-modal-toggle="change-role"
                                             class="font-medium cursor-pointer bg-gray-600 hover:bg-gray-700 dark:bg-gray-900 dark:hover:bg-gray-900 py-2 px-3 rounded me-3 text-white dark:text-white">
@@ -95,12 +95,40 @@
                                                     clip-rule="evenodd" />
                                             </svg>
                                         </button>
+                                        <form action="{{ route('users.activation', $user) }}" method="post">
+                                            @csrf
+                                            @if ($user->compte->is_activated === 0)
+                                                <button type="submit" title="Activer"
+                                                    class="font-medium cursor-pointer bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-700 py-2 px-3 me-2 rounded text-white dark:text-white">
+                                                    <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="2"
+                                                            d="m8.032 12 1.984 1.984 4.96-4.96m4.55 5.272.893-.893a1.984 1.984 0 0 0 0-2.806l-.893-.893a1.984 1.984 0 0 1-.581-1.403V7.04a1.984 1.984 0 0 0-1.984-1.984h-1.262a1.983 1.983 0 0 1-1.403-.581l-.893-.893a1.984 1.984 0 0 0-2.806 0l-.893.893a1.984 1.984 0 0 1-1.403.581H7.04A1.984 1.984 0 0 0 5.055 7.04v1.262c0 .527-.209 1.031-.581 1.403l-.893.893a1.984 1.984 0 0 0 0 2.806l.893.893c.372.372.581.876.581 1.403v1.262a1.984 1.984 0 0 0 1.984 1.984h1.262c.527 0 1.031.209 1.403.581l.893.893a1.984 1.984 0 0 0 2.806 0l.893-.893a1.985 1.985 0 0 1 1.403-.581h1.262a1.984 1.984 0 0 0 1.984-1.984V15.7c0-.527.209-1.031.581-1.403Z" />
+                                                    </svg>
+                                                </button>
+                                            @else
+                                                <button type="submit" title="Désactiver"
+                                                    class="font-medium cursor-pointer bg-red-600 hover:bg-red-700 dark:bg-red-700 py-2 px-3 me-2 rounded text-white dark:text-white">
+                                                    <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-width="2"
+                                                            d="m6 6 12 12m3-6a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                    </svg>
+                                                </button>
+                                            @endif
+                                        </form>
+
                                     </td>
                                 </tr>
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="5" class="text-center px-6 py-4">{{ __('Aucun utilisateur se trouve dans cette application') }}
+                                <td colspan="5" class="text-center px-6 py-4">
+                                    {{ __('Aucun utilisateur se trouve dans cette application') }}
                                 </td>
                             </tr>
                         @endif
@@ -112,7 +140,9 @@
             </div>
         </div>
     </div>
-    <x-change-role :user="$user" />
+    @if ($users->count() > 0)
+        <x-change-role :user="$user" />
+    @endif
     <x-user-create :users="$usersList" :directions="$directions" :services="$services" />
 
 
