@@ -29,11 +29,22 @@
             </button>
         </div>
     @endif
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <div class="flex justify-end my-4">
-            <button type="button" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
-                class=" focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">ajouter</button>
-        </div>
+        <div class="relative flex flex-col min-w-0 break-words bg-gray-800 w-full mt-6 shadow-lg rounded ">
+            <div class="rounded-t mb-0 px-4 py-3 border-0">
+              <div class="flex flex-wrap items-center">
+                <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+                  <h3 class="font-semibold text-base text-blueGray-700"></h3>
+                </div>
+                <div class="flex justify-end my-4">
+                    <button type="button" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
+                        class=" focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Add Direction</button>
+                </div>
+              </div>
+            </div>
+        
+            <div class="block w-full overflow-x-auto">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <form action="" method="post">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -52,6 +63,7 @@
                         </thead>
                             <tbody>
                                 @foreach ($directions as  $key => $direction)
+                                
                                     <tr  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <th scope="row"class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {{ $key+1 }}
@@ -61,26 +73,21 @@
                                             {{ $direction->name }}
                                         </td>
                                         <td class="flex space-x-7">
-                                                <a href="{{ route('directions.destroy', $direction->id) }}"
+                                                <a href="{{ route('directions.destroy', $direction->id) }}" class="text-gray-400 hover:text-gray-100 ml-2"
                                                     onclick="supprimer(event);" 
                                                     data-modal-target="delete-modal"
                                                     data-modal-toggle="delete-modal"
                                                     >
-                                                    <svg class="w-[34px] h-[34px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
-                                                    </svg>
+                                                    <i class="material-icons-round text-base">delete_outline</i>
                                                 </a>
-                                                <a href="#"
-
-                                                onclick="edit(event);"
-                                                    data-modal-target="edit-modal" 
-                                                    data-modal-toggle="edit-modal"
-                                                    data-direction-id="{{ $direction->id }}"
-                                                    data-direction-name="{{ $direction->name }}">
-                                                    <svg class="w-[34px] h-[34px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
-                                                    </svg>
+                                                <a href="#" class="text-gray-400 hover:text-gray-100 ml-2"
+                                                data-modal-target="edit-modal" 
+                                                data-modal-toggle="edit-modal"
+                                                data-direction-id="{{ $direction->id }}"
+                                                data-direction-name="{{ $direction->name }}">
+                                                <i class="material-icons-outlined text-base">edit</i>
                                                 </a>
+                                                
                                         </td>
                                     </tr>
                                 @endforeach
@@ -88,6 +95,7 @@
                     </table>
                 </form>
             
+            </div>
             </div>
     </div>
     <x-createDirection/>
