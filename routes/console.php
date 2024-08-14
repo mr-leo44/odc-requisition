@@ -9,4 +9,5 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 Schedule::command('req:send-pending-email')->everyFifteenMinutes();
+Schedule::command('req:ensure-users-created')->everyThirtyMinutes();
 Schedule::command('req:count-level')->everyThreeMinutes();

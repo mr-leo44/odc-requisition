@@ -11,9 +11,9 @@ Route::get('/', function () {
     } else {
         return redirect()->route('login');
     }
-});
+})->name('home');
 
-Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard')->middleware('auth');
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard')->middleware(['auth', 'role:livraison']);
 Route::get('/profile', [ProfileController::class, 'profile'])->name('profile.index')->middleware('auth');
 
 require __DIR__ . '/auth.php';
@@ -22,3 +22,4 @@ require __DIR__ . '/webR.php';
 require __DIR__ . '/web_approbateur.php';
 require __DIR__ . '/web_direction.php';
 require __DIR__ . '/web_admin.php';
+require __DIR__ . '/web_livraison.php';

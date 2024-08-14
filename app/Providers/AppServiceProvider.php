@@ -32,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
                 $isAdmin = true;
             } elseif($role === 'livraison' && Session::get('authUser')->compte->role->value === RoleEnum::LIVRAISON->value){
                 $isAdmin = true;
+            } elseif($role === 'not-admin' && Session::get('authUser')->compte->role->value !== RoleEnum::ADMIN->value){
+                $isAdmin = true;
             } else{
                 $isAdmin = false;
             }

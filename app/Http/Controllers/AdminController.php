@@ -29,6 +29,23 @@ class AdminController extends Controller
         $services = Compte::select('service')->distinct()->get();
         return view('users.index', compact('users', 'usersList', 'directions', 'services'));
     }
+    
+    public function activateAccount(Request $request, User $user)
+    {
+        $user_account = Compte::where('user_id', $user->id);
+        if($user->compte->is_activated === 0){
+            $user_account->update([
+                'is_activated' => 1
+            ]);
+            return back()->with('success', 'Compte activé avec succès');
+        } else {
+            $user_account->update([
+                'is_activated' => 0
+            ]);
+            return back()->with('success', 'Compte désactivé avec succès');
+        }
+        
+    }
 
     /**
      * Show the form for creating a new resource.

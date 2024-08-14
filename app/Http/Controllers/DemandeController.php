@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Demande;
 use App\Mail\DemandeMail;
+use App\Models\Livraison;
 use App\Models\Traitement;
 use App\Models\Approbateur;
 use Illuminate\Http\Request;
@@ -25,46 +26,45 @@ class DemandeController extends Controller
     {
         $connected_user = Session::get('authUser'); //signifie que c'est l'utilisateur qui est connecté
         if ($connected_user->compte->role->value === 'user') {
-        $isManager = User::whereHas('compte', function (Builder $query) use ($connected_user) {
-            $query->where('manager', $connected_user->id);
-        })->exists();
+            $isManager = User::whereHas('compte', function (Builder $query) use ($connected_user) {
+                $query->where('manager', $connected_user->id);
+            })->exists();
 
-        $isValidator = Approbateur::where('email', $connected_user->email)->exists();
+            $isValidator = Approbateur::where('email', $connected_user->email)->exists();
 
-        if ($isManager || $isValidator) {
-            $demandes = Demande::whereHas('traitement', function (Builder $query) use ($connected_user) {
-                $query->where('approbateur_id', $connected_user->id)
-                    ->where('status', 'en cours');
-            })
-                ->orderBy('created_at', 'desc')
-                ->paginate(15);
-        } else {
-            $demandes = Demande::whereHas('traitement', function ($query) use ($connected_user) {
-                $query->where('demandeur_id', $connected_user->id)->where('status', 'en cours');
-            })
-                ->orderBy('created_at', 'desc')
-                ->paginate(15);
-        }
+            if ($isManager || $isValidator) {
+                $demandes = Demande::whereHas('traitement', function (Builder $query) use ($connected_user) {
+                    $query->where('approbateur_id', $connected_user->id)
+                        ->where('status', 'en cours');
+                })
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(15);
+            } else {
+                $demandes = Demande::whereHas('traitement', function ($query) use ($connected_user) {
+                    $query->where('demandeur_id', $connected_user->id)->where('status', 'en cours');
+                })
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(15);
+            }
 
-        foreach ($demandes as $demande) {
-            $dernier_traitement = Traitement::where('demande_id', $demande->id)->get()->last();
-            $demande['level'] = $dernier_traitement->level;
-        }
-
-    }
-
-    if($connected_user->compte->role->value === 'livraison'){
-        $reqs = Demande::all();
-        $all_demandes = [];
-        foreach ($reqs as $key => $req) {
-            $last = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
-            if($last->status === 'validé') {
-                $all_demandes[$key] = $req;
+            foreach ($demandes as $demande) {
+                $dernier_traitement = Traitement::where('demande_id', $demande->id)->get()->last();
+                $demande['level'] = $dernier_traitement->level;
             }
         }
-        $demandes_array = collect($all_demandes);
-        $demandes = Demande::whereIn('id', $demandes_array->pluck('id'))->orderBy('created_at', 'desc')->paginate(15);
-    }
+
+        if ($connected_user->compte->role->value === 'livraison') {
+            $reqs = Demande::all();
+            $all_demandes = [];
+            foreach ($reqs as $key => $req) {
+                $last = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
+                if ($last->status === 'validé') {
+                    $all_demandes[$key] = $req;
+                }
+            }
+            $demandes_array = collect($all_demandes);
+            $demandes = Demande::whereIn('id', $demandes_array->pluck('id'))->orderBy('created_at', 'desc')->paginate(15);
+        }
         return view('demandes.index', compact('demandes'));
     }
 
@@ -133,8 +133,7 @@ class DemandeController extends Controller
      * Display the specified resource.
      */
     public function show(Demande $demande)
-    {
-        {         
+    { {
             $en_cours = Traitement::where('demande_id', $demande->id)
                 ->orderBy('id', 'DESC')
                 ->first();
@@ -146,7 +145,7 @@ class DemandeController extends Controller
                 ->orderBy('level', 'ASC')
                 ->get();
             $users = User::all();
-    
+
             $users_approbateurs = [];
             $validated_levels = [];
             foreach ($traitements as $traitement) {
@@ -236,5 +235,30 @@ class DemandeController extends Controller
         }
 
         return view('demandes.historique', compact('demandes'));
+    }
+
+    public function updateLivraison(Request $request)
+    {
+        // dd($request->input('details'));
+        $validatedData = $request->validate([
+            'details' => 'required|array',
+
+        ]);
+
+        foreach ($validatedData['details'] as $detail) {
+            Livraison::updateOrCreate(
+                ['demande_detail_id' => $detail['id']],
+                ['quantite' => $detail['quantite']]
+            );
+
+        // Mettre à jour la colonne qte_livree de la table demande_details
+        $demandeDetail = DemandeDetail::find($detail['id']);
+        if ($demandeDetail) {
+            $demandeDetail->qte_livree = $detail['quantite'];
+            $demandeDetail->save();
+        }
+        }
+
+        return redirect()->back()->with('success', 'Livraison mise à jour avec succès');
     }
 }

@@ -2,7 +2,7 @@
 use App\Http\Controllers\approbateurController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth')->group(function(){
+Route::middleware(['auth', 'role:admin'])->group(function(){
     Route::post('/update-levels', [ApprobateurController::class, 'updateLevels'])->name('update.levels');
     Route::resource('approbateurs', ApprobateurController::class);
 });
