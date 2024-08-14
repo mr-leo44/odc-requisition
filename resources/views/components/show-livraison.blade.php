@@ -1,14 +1,14 @@
 @props(['details'])
 <!-- Main modal -->
 @if ($errors->any())
-                        <div class="bg-red-500 text-white px-3 py-2 rounded-lg mb-4">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+    <div class="bg-red-500 text-white px-3 py-2 rounded-lg mb-4">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <form action="{{ route('demandes.updateLivraison') }}" method="POST">
     @csrf
 
@@ -37,6 +37,11 @@
 
 
                 <div class="p-4 md:p-5 space-y-4">
+                    {{-- @if ($allDelivered)
+                        <div class="bg-green-500 text-white px-3 py-2 rounded-lg mb-4">
+                            Toutes les demandées ont été complètement livrées
+                        </div>
+                    @endif --}}
                     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -51,7 +56,10 @@
                                         Quantité demandée
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Quantitée livrée
+                                        Quantité livrée
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Quantité à livrer
                                     </th>
                                 </tr>
                             </thead>
@@ -59,6 +67,7 @@
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 
                                 @foreach ($details as $key => $detail)
+                                    @if ($detail->qte_demandee != $detail->qte_livree)
                                     <tr
                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="px-6 py-4">
@@ -67,31 +76,38 @@
                                         <td class="px-6 py-4">
                                             {{ $detail->qte_demandee }}
                                         </td>
+
+                                        <td class="px-6 py-4">
+                                            {{ $detail->qte_livree }}
+                                        </td>
+
+
+                                        <div>
+                                            <input type="hidden" name="details[{{ $key }}][id]"
+                                                value="{{ $detail->id }}" id="details[{{ $key }}][id]"
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                placeholder="Ex.10" required />
+                                        </div>
+
+
                                         <td class="px-6 py-4">
 
-
-                                            <div>
-
-                                                <input type="hidden" name="details[{{ $key }}][id]"
-                                                    value="{{ $detail->id }}" id="details[{{ $key }}][id]"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    placeholder="Ex.10" required />
-                                            </div>
-
-
-
                                             <div class="flex justify-between gap-3">
-                                                <x-text-input id="designation"
+                                                <x-text-input id="quantite_{{ $key }}"
                                                     class="bg-gray-50 w-[80%] border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
                                                     type="text" name="details[{{ $key }}][quantite]"
-                                                    :value="old('quantite')" placeholder="Ex. 12" required autofocus
-                                                    autocomplete="quantite" />
+                                                    max="{{ $detail->qte_demandee }}" :value="old('quantite')"
+                                                    placeholder="Ex. 12" required autofocus autocomplete="quantite"
+                                                    oninput="validateInput({{ $key }}, {{ $detail->qte_demandee }})" />
                                                 <x-input-error :messages="$errors->get('quantite')" class="mt-2" />
 
 
-                                            </div>
+                                                <div id="error_{{ $key }}" class="text-red-500 text-sm">
+                                                </div>
+
                                         </td>
                                     </tr>
+                                    @endif
                                 @endforeach
 
 
@@ -106,12 +122,39 @@
 
                     <!-- Modal footer -->
                     <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                        <button data-modal-hide="default-modal" type="submit"
+                        <button id="submitBtn" type="submit"
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                            style="margin-left: auto;">Mettre à jour</button>
-
+                            style="margin-left: auto;" disabled>Mettre à jour</button>
                     </div>
                 </div>
             </div>
         </div>
 </form>
+
+<script>
+    function validateInput(key, max) {
+        const input = document.getElementById(`quantite_${key}`);
+        const error = document.getElementById(`error_${key}`);
+        const submitBtn = document.getElementById('submitBtn');
+        let isValid = true;
+
+        if (!input.value) {
+            error.textContent = 'Ce champ doit être rempli';
+            isValid = false;
+        } else if (parseInt(input.value) > max) {
+            error.textContent = `La valeur ne doit pas dépasser ${max}`;
+            isValid = false;
+        } else {
+            error.textContent = '';
+        }
+
+        const allInputs = document.querySelectorAll('input[type="text"]');
+        allInputs.forEach(input => {
+            if (!input.value || parseInt(input.value) > max) {
+                isValid = false;
+            }
+        });
+
+        submitBtn.disabled = !isValid;
+    }
+</script>
