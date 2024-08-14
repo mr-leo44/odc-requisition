@@ -2,9 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Approbateur;
 use App\Models\Demande;
+use App\Models\Mail;
+use App\Models\User;
+use App\Models\Traitement;
 use Illuminate\Console\Command;
-
 use Illuminate\Support\Facades\DB;
 use function Laravel\Prompts\table;
 
@@ -29,13 +32,23 @@ class CountLevel extends Command
      */
     public function handle()
     {
-        $count = DB::table('traitements')
-        ->select('demande_id','status',DB::raw('count(approbateur_id) as approbateurs_count'))
-        ->groupBy('demande_id','status')
-        ->get();
-
-        foreach($count as $count){
-            $this->info("Demande ID: {$count->demande_id} - Nombre d'approbateurs: {$count->approbateurs_count} - Status: {$count->status}");
+            $demandes = Demande::all();
+            foreach($demandes as $demande){
+                $last = Traitement::where('demande_id',$demande->id)->orderBy('created_at','desc')->first();
+                if($last->status == 'en cours'){
+                    $level = $last->level;
+                    if(Approbateur::where('level',$level)->where('deleted_at',null)->exists()){
+                        $approbateurs = Approbateur::where('level',$level)->where('deleted_at',null)->first();
+                        $approbater_users = User::where('email',$approbateurs->email)->first();
+                        if ($last->approbateur_id != $approbater_users->id) {
+                            $last->update(['approbateur_id'=>$approbater_users->id]);
+                        }
+                    }else{
+                        Mail::where('traitement_id',$last->id)->delete();
+                        $last->delete();
+                    }
+                }
+            }
+        echo "Cron job terminé avec succès";
         }
-    }
 }
