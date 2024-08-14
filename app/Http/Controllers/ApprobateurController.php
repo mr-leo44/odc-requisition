@@ -5,6 +5,7 @@ use App\Models\Approbateur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
 
 class ApprobateurController extends Controller
 {
@@ -21,39 +22,60 @@ class ApprobateurController extends Controller
        //
     }
     public function store(Request $request)
-        {
-            $levels = $request->input('level');
-            $names = $request->input('name');
-            $fonctions = $request->input('fonction');
-            $emails = $request->input('email');
-        
-            for ($i = 0; $i < count($levels); $i++) {
-                $user = User::where('name', $names[$i])->where('email', $emails[$i])->first();
-        
-                if ($user) {
-                    $existEmail = Approbateur::where('email', $emails[$i])->first();
-                    $existName = Approbateur::where('name', $names[$i])->first();
-        
-                    if ($existEmail || $existName) {
-                        return redirect()->back()->with('error', 'Un approbateur avec cet email ou nom existe déjà.');
+    {
+        $levels = $request->input('level');
+        $noms = $request->input('name');
+        $fonctions = $request->input('fonction');
+        $emails = $request->input('email');
+    
+        for ($i = 0; $i < count($noms); $i++) {
+            $nom = $noms[$i];
+            $email = $emails[$i];
+    
+            // Vérifier si l'approbateur existe dans l'API
+            if (!$this->checkApproverInAPI($nom, $email)) {
+                return redirect()->back()->with('error', "L'utilisateur $nom avec l'email $email n'a pas été trouvé dans l'API.");
+            }
+            $approbateurExistant = Approbateur::where('name', $nom)->where('email', $email)->first();
+    
+            if ($approbateurExistant) {
+                if ($approbateurExistant->trashed()) {
+                    $approbateurExistant->restore();
+                    $approbateurExistant->update([
+                        'level' => $levels[$i],
+                        'fonction' => $fonctions[$i]
+                    ]);
+                    return redirect()->back()->with('message', "L'approbateur a été réactivé et mis à jour.");
+                } 
+                return redirect()->back()->with('error', "L'approbateur le nom ou l'email existe déjà.");
+            }
+            Approbateur::create([
+                'level' => $levels[$i],
+                'name' => $nom,
+                'fonction' => $fonctions[$i],
+                'email' => $email,
+            ]);
+        }
+    
+        return redirect()->back()->with('message', "L'approbateur a été ajouté avec succès.");
+    }
+    
+    private function checkApproverInAPI($name, $email)
+    {
+        $response = Http::get('http://10.143.41.70:8000/promo2/odcapi/?method=getUsers');  
+        if ($response->successful()) {
+            $data = $response->json();
+            if ($data['success']) {
+                $users = $data['users'];
+                foreach ($users as $user) {
+                    if ($user['first_name'] . ' ' . $user['last_name'] === $name && $user['email'] === $email) {
+                        return true;
                     }
-                } else {
-                    return redirect()->back()->with('error', 'Aucun utilisateur correspondant trouvé pour le nom et l\'email fournis.');
                 }
             }
-            for ($i = 0; $i < count($levels); $i++) {
-                $user = User::where('name', $names[$i])->where('email', $emails[$i])->first();
-                if ($user) {
-                    Approbateur::create([
-                        'level' => $levels[$i],
-                        'name' => $user->name,
-                        'fonction' => $fonctions[$i],
-                        'email' => $user->email,
-                    ]);
-                }
-            }    
-            return redirect()->back()->with('message', 'Approbateur ajouté avec succès');
         }
+        return false;
+    }
     public function edit($id)
     {
         $approbateurs = Approbateur::findOrFail($id);
@@ -83,10 +105,6 @@ class ApprobateurController extends Controller
     {
         $approbateur = Approbateur::findOrFail($id);
         $approbateur->delete();
-            $approubateurs = Approbateur::orderBy('level')->get();
-            foreach ($approubateurs as $index => $approubateur) {
-                $approubateur->update(['level' => $index + 1]);
-            }
                 return  redirect()->back()->with('message', 'Approbateur supprimé avec succès');
     }
     public function updateLevels(Request $request)
