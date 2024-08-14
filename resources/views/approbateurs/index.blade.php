@@ -212,7 +212,7 @@
 						    <input type="text" name="fonction[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                         </td>
 						<td class="p-3">
-                            <input type="email" name="email[]" class="cursor-not-allowed email-approver bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            <input type="email" name="email[]" class="cursor-not-allowed email-approver bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required >
                         </td>
 						<td class="p-3 ">
                             <button type="button" class="delete text-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800" >
@@ -240,32 +240,47 @@
                     document.getElementById('create').style.display = 'none';
                 }
                 });
-                var users = @json($users); 
-                var userData = {}; 
-                users.forEach(function(user) {
-                    userData[user.name] = user.email; 
-                });
-            $('tbody').on('focus', '.name-approver, .email-approver', function() {
-                var current_Input = $(this); 
-                current_Input.autocomplete({
-                    source: function(request, response) {
-                        var term = request.term.toLowerCase();
-                        var filtreItems = Object.keys(userData).filter(function(key) {
-                            return key.toLowerCase().indexOf(term) !== -1 || userData[key].toLowerCase().indexOf(term) !== -1;
-                        });
-                        response(filtreItems); 
-                    },
-                    select: function(event, ui) {
-                        var selectionneValue = ui.item.value; 
-                        current_Input.val(selectionneValue);
-                        if (current_Input.hasClass('name-approver')) {
-                            var selectionneEmail = userData[selectionneValue]; 
-                            current_Input.closest('tr').find('.email-approver').val(selectionneEmail); 
-                        }
-                    }
-                });
+        // autocomplete avec l'API 
+        fetch('http://10.143.41.70:8000/promo2/odcapi/?method=getUsers')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+            var autocompleteData = data.users.reduce((acc, user) => {
+                acc[`${user.first_name} ${user.last_name}`] = user.email;
+                return acc;
+            }, {});
+            initAutocomplete(autocompleteData);
+            } else {
+            console.error('Erreur lors de la récupération des données :', data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des données :', error);
+        });
+        function initAutocomplete(data) {
+        $('tbody').on('focus', '.name-approver, .email-approver', function() {
+            var currentInput = $(this);
+            currentInput.autocomplete({
+            source: function(request, response) {
+                var term = request.term.toLowerCase();
+                var filteredItems = Object.keys(data).filter(function(key) {
+                return key.toLowerCase().indexOf(term) !== -1 || data[key].toLowerCase().indexOf(term) !== -1;
+                })
+                .slice(0, 10) //limiter à 10
+                ;
+                response(filteredItems);
+            },
+            select: function(event, ui) {
+                var selectedValue = ui.item.value;
+                currentInput.val(selectedValue);
+                if (currentInput.hasClass('name-approver')) {
+                var selectedEmail = data[selectedValue];
+                currentInput.closest('tr').find('.email-approver').val(selectedEmail);
+                }
+            }
             });
         });
+        }})
         // update avec ajax
         $('#saveBtn').click(function() {
         $('#add').show();
