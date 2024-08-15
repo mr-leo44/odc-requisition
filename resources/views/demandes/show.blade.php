@@ -154,8 +154,8 @@
                         @elseif($traitement->status == 'rejeté')
                             <td scope="col" class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <svg class="h-6 text-red-600 w-full mx-auto dark:text-red-600" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                    viewBox="0 0 24 24">
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    fill="currentColor" viewBox="0 0 24 24">
                                     <path fill-rule="evenodd"
                                         d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z"
                                         clip-rule="evenodd" />
@@ -188,34 +188,36 @@
     </div>
 
     <div class="flex justify-end mt-4">
-        @if ($en_cours->approbateur_id === session()->get('authUser')->id && $en_cours->status === 'en cours')
-            <button id="accept" onclick="accept(event);" data-modal-target="valider" data-modal-toggle="valider"
-                type="button"
-                class="text-white bg-emerald-700 hover:bg-emerald-800 focus:outline-none focus:ring-4 focus:ring-black-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-black-600 dark:hover:bg-black-700 dark:focus:ring-black-800">
-                Valider
-            </button>
-            <button id="reject" onclick="reject(event)" data-modal-target="popup-modal"
-                data-modal-toggle="popup-modal" type="button" @if ($en_cours->status === 'rejeté') class="hidden" @endif
-                class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                Rejeter
-            </button>
-
-            <button id="reject" onclick="#" data-modal-target="default-modal"
-                data-modal-toggle="default-modal" type="button"
-                @if ($en_cours->status === 'rejeté') class="hidden" @endif
+        @profile('user')
+            @if ($en_cours->approbateur_id === session()->get('authUser')->id && $en_cours->status === 'en cours')
+                <button id="accept" onclick="accept(event);" data-modal-target="valider" data-modal-toggle="valider"
+                    type="button"
+                    class="text-white bg-emerald-700 hover:bg-emerald-800 focus:outline-none focus:ring-4 focus:ring-black-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-black-600 dark:hover:bg-black-700 dark:focus:ring-black-800">
+                    Valider
+                </button>
+                <button id="reject" onclick="reject(event)" data-modal-target="popup-modal"
+                    data-modal-toggle="popup-modal" type="button" @if ($en_cours->status === 'rejeté') class="hidden" @endif
+                    class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                    Rejeter
+                </button>
+            @endif
+            @if ($en_cours->status != 'en cours' && $en_cours->demandeur_id === session()->get('authUser')->id)
+                <form action="{{ route('generate', $demande) }}" method="post">
+                    @csrf
+                    <button type="submit"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Générer
+                        pdf
+                    </button>
+                </form>
+            @endif
+        @endprofile
+        @profile('livraison')
+            <button id="reject" onclick="#" data-modal-target="default-modal" data-modal-toggle="default-modal"
+                type="button" @if ($en_cours->status === 'rejeté') class="hidden" @endif
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                 Livraison
             </button>
-        @endif
-        @if ($en_cours->status != 'en cours' && $en_cours->demandeur_id === session()->get('authUser')->id)
-            <form action="{{ route('generate', $demande) }}" method="post">
-                @csrf
-                <button type="submit"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Générer
-                    pdf
-                </button>
-            </form>
-        @endif
+        @endprofile
     </div>
 
     <x-valider :demande="$demande" />
