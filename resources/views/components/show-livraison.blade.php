@@ -90,19 +90,20 @@
 
                                         <td class="px-6 py-4">
 
-                                            <div class="flex justify-between gap-3">
+                                            <div class="flex flex-col gap-1">
 
                                                 <x-text-input id="quantite_{{ $key }}"
-                                                    class="bg-gray-50 w-[80%] border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                                                    class="bg-gray-50 w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
                                                     type="number" name="details[{{ $key }}][quantite]"
                                                     max="{{ $detail->qte_demandee }}" value="{{ $detail->qte_livree }}"
                                                     placeholder="Ex. 12" required autofocus autocomplete="quantite"
                                                     oninput="validateInput({{ $key }}, {{ $detail->qte_demandee }}, {{ $detail->qte_livree }})" />
 
-                                                <x-input-error :messages="$errors->get('quantite')" class="mt-2" />
+
+                                                    <div id="error_{{ $key }}" class="text-red-500 lowercase text-sm">
+                                                            <x-input-error :messages="$errors->get('quantite')" class="mt-2" />
 
 
-                                                <div id="error_{{ $key }}" class="text-red-500 text-sm">
                                                 </div>
 
                                         </td>
@@ -140,10 +141,10 @@
         const maxAllowed = max - delivered;
 
         if (!input.value) {
-            error.textContent = 'Ce champ doit être rempli';
+            error.textContent = 'Ce champ doit être rempli'.toLowerCase();
             isValid = false;
         } else if (parseInt(input.value) > maxAllowed) {
-            error.textContent = `La valeur ne doit pas dépasser ${maxAllowed}`;
+            error.textContent = `La valeur ne doit pas dépasser ${maxAllowed}`.toLowerCase();
             isValid = false;
         } else {
             error.textContent = '';
