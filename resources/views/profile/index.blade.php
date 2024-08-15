@@ -160,7 +160,7 @@
                                 <div class="flex flex-col">
                                     <div class="flex items-end">
                                         <span
-                                            class="text-2xl 2xl:text-3xl {{ $user->demandes->count() > 0 ? 'text-green-600 dark:text-green-400' : 'text-black dark:text-white' }} font-bold">{{ $user->demandes->count() }}</span>
+                                            class="text-2xl 2xl:text-3xl {{ $user->validated_reqs > 0 ? 'text-green-600 dark:text-green-400' : 'text-black dark:text-white' }} font-bold">{{ $user->validated_reqs }}</span>
                                     </div>
                                 </div>
                             </div>
