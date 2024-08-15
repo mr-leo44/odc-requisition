@@ -28,13 +28,18 @@ class DirectionController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:50',
-        ]);
-        $directions = new Direction();
-        $directions->name = $request->name;
-        $directions->save();
-        return redirect()->route('directions.index')->with('success', 'Direction créée avec succès');
+        $names =    $request->validate([
+                    'name' => 'required|string|max:50',
+                ]);
+        $directionExist = Direction::where('name',$names)->first();
+        if($directionExist) {
+            return redirect()->back()->with('error', 'Direction déjà existante');
+        }else{
+            $directions = new Direction();
+            $directions->name = $request->name;
+            $directions->save();
+        }
+        return redirect()->back()->with('message', 'Direction créée avec succès');
     }
 
     /**
@@ -62,7 +67,7 @@ class DirectionController extends Controller
         $direction->update([
             'name' => $request->name,
         ]);
-        return back()->with('success', 'Direction modifiée avec succès');
+        return back()->with('message', 'Direction modifiée avec succès');
     }
 
     /**
@@ -72,6 +77,6 @@ class DirectionController extends Controller
     {
         
         $direction->delete();
-        return back()->with('success', 'Direction supprimée avec succès');
+        return back()->with('message', 'Direction supprimée avec succès');
     }
 }
