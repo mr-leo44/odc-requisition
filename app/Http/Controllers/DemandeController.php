@@ -239,24 +239,27 @@ class DemandeController extends Controller
 
     public function updateLivraison(Request $request)
     {
-        // dd($request->input('details'));
+
+
         $validatedData = $request->validate([
             'details' => 'required|array',
-
         ]);
 
-        foreach ($validatedData['details'] as $detail) {
-            Livraison::updateOrCreate(
-                ['demande_detail_id' => $detail['id']],
-                ['quantite' => $detail['quantite']]
-            );
 
-        // Mettre à jour la colonne qte_livree de la table demande_details
-        $demandeDetail = DemandeDetail::find($detail['id']);
-        if ($demandeDetail) {
-            $demandeDetail->qte_livree = $detail['quantite'];
-            $demandeDetail->save();
-        }
+        foreach ($validatedData['details'] as $detail) {
+            $demandeDetail = DemandeDetail::find($detail['id']);
+            if ($demandeDetail) {
+                $nouvelleQuantite = $demandeDetail->qte_livree + $detail['quantite'];
+                if ($nouvelleQuantite > $demandeDetail->qte_demandee) {
+                    return redirect()->back()->with('error', 'La quantité livrée ne peut pas être supérieure à la quantité demandée.');
+                }
+                Livraison::updateOrCreate(
+                    ['demande_detail_id' => $detail['id']],
+                    ['quantite' => $detail['quantite']]
+                );
+                $demandeDetail->qte_livree = $nouvelleQuantite;
+                $demandeDetail->save();
+            }
         }
 
         return redirect()->back()->with('success', 'Livraison mise à jour avec succès');
