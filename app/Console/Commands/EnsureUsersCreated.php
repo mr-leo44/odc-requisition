@@ -33,19 +33,36 @@ class EnsureUsersCreated extends Command
     public function handle()
     {
         $managers = Compte::select('manager')->distinct()->get();
+        // $approvers = Approbateur::latest()->first();
+        $approvers = Approbateur::all();
         $response = Http::get("http://10.143.41.70:8000/promo2/odcapi/?method=getUsers");
         if ($response->successful()) {
             $users = $response->json()['users'];
         }
 
+        // $validator = User::find($approvers->id);
+        // dd($approvers, $validator);
+
         foreach ($managers as $key => $managerData) {
             $manager_id = $managerData->manager;
             foreach ($users as $key => $user) {
-                if ($user['id'] === $manager_id && User::where('id', $manager_id)->count() === 0) {
+                if ($user['id'] === $manager_id && User::find($manager_id) === null) {
                     $manager_name = $user['first_name'] . ' ' . $user['last_name'];
                     Mail::to($user['email'], $manager_name)->send(new UserMail($user, true));
                 }
             }
+        }
+
+        foreach ($approvers as $key => $approver) {
+            $validator = User::where('email', $approver->email)->first();
+            if ($validator !== null) {
+                foreach ($users as $key => $user) {
+                    if ($user['email'] === $approver->email) {
+                        Mail::to($approver->email, $approver->name)->send(new UserMail($user));
+                    }
+                }
+            }
+            // dd($validator, User::find($validator->id));
         }
     }
 }
