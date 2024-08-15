@@ -82,7 +82,7 @@
 
                                         <div>
                                             <input type="hidden" name="details[{{ $key }}][id]"
-                                                value="{{ $detail->id }}" id="details[{{ $key }}][id]"
+                                                value="{{ $detail->id}}" id="details[{{ $key }}][id]"
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                 placeholder="Ex.10" required />
                                         </div>
@@ -94,8 +94,8 @@
 
                                                 <x-text-input id="quantite_{{ $key }}"
                                                     class="bg-gray-50 w-[80%] border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
-                                                    type="text" name="details[{{ $key }}][quantite]"
-                                                    max="{{ $detail->qte_demandee }}" :value="old('quantite')"
+                                                    type="number" name="details[{{ $key }}][quantite]"
+                                                    max="{{ $detail->qte_demandee }}" value="{{ $detail->qte_livree }}"
                                                     placeholder="Ex. 12" required autofocus autocomplete="quantite"
                                                     oninput="validateInput({{ $key }}, {{ $detail->qte_demandee }}, {{ $detail->qte_livree }})" />
 
