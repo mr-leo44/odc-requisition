@@ -51,18 +51,23 @@ class AuthenticatedSessionController extends Controller
             } else {
                 $user = User::where('email', $responseFinal['user']['email'])->first();
                 if ($user) {
-                    Session::put('authUser', $user);
-                    Session::put('user', $responseFinal['user']['username']);
-                    if ($user->compte->role->value === 'livraison') {
-                        return redirect()->route('dashboard');
-                    } elseif ($user->compte->role->value === 'admin') {
-                        return redirect()->route('approbateurs.index');
-                    } elseif ($user->compte->role->value === 'user') {
-                        return redirect()->route('demandes.index');
+                    // dd($user->compte->is_activated);
+                    if ($user->compte->is_activated === 0) {
+                        return back()->with('error', 'Votre compte a été désactivé. veuillez contacter l\'admin pour activation');
                     } else {
-                        Session::put('admin', null);
-                        Session::put('user', $responseFinal['user']);
-                        return redirect()->route('register');
+                        Session::put('authUser', $user);
+                        Session::put('user', $responseFinal['user']['username']);
+                        if ($user->compte->role->value === 'livraison') {
+                            return redirect()->route('dashboard');
+                        } elseif ($user->compte->role->value === 'admin') {
+                            return redirect()->route('approbateurs.index');
+                        } elseif ($user->compte->role->value === 'user') {
+                            return redirect()->route('demandes.index');
+                        } else {
+                            Session::put('admin', null);
+                            Session::put('user', $responseFinal['user']);
+                            return redirect()->route('register');
+                        }
                     }
                 } else {
                     Session::put('admin', null);
