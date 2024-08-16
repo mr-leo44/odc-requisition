@@ -55,15 +55,38 @@ class DemandeController extends Controller
 
         if ($connected_user->compte->role->value === 'livraison') {
             $reqs = Demande::all();
-            $all_demandes = [];
+            // dd($reqs);
+            $all_validated_keys = [];
             foreach ($reqs as $key => $req) {
                 $last = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
                 if ($last->status === 'validé') {
-                    $all_demandes[$key] = $req;
+                    $all_validated_keys[$key] = $req->id;
                 }
             }
-            $demandes_array = collect($all_demandes);
-            $demandes = Demande::whereIn('id', $demandes_array->pluck('id'))->orderBy('created_at', 'desc')->paginate(15);
+            $validated_reqs = Demande::whereIn('id', $all_validated_keys)->get();
+            // dd($validated_reqs);
+            $on_going = [];
+            foreach ($validated_reqs as $key => $validated) {
+                $req_details = DemandeDetail::where('demande_id', $validated->id)->get();
+                // dd($req_details);
+                foreach ($req_details as $req_detail) {
+                    $req_count = $req_detail->qte_demandee;
+                    // dd($req_detail->qte_demandee);
+                    $deliveries = Livraison::where('demande_detail_id', $req_detail->id)->get();
+                    $count = 0;
+                    if ($deliveries->count() > 0) {
+                        foreach ($deliveries as $key => $delivery) {
+                            $count += $delivery->quantite;
+                        }
+                    }
+                    if ($req_count > $count) {
+                        $on_going[$key] = $validated;
+                    }
+                }
+            }
+            // dd($on_going);
+            $demandes_array = collect($on_going);
+            $demandes = Demande::whereIn('id', $demandes_array->pluck('id'))->orderBy('created_at', 'desc')->paginate(10);
         }
         return view('demandes.index', compact('demandes'));
     }
