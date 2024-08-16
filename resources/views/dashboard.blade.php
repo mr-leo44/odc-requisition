@@ -68,7 +68,7 @@
                             </div>
                             <div class="ml-2 w-full flex-1">
                                 <div class="mt-4 text-gray-600 dark:text-white text-2xl">
-                                    {{ $stats['all_reqs'] }}
+                                    {{ $stats['ongoing'] }}
                                 </div>
                             </div>
                         </div>
@@ -92,15 +92,14 @@
                             </div>
                             <div class="ml-2 w-full flex-1">
                                 <div class="mt-4 text-gray-600 dark:text-white text-xl">
-                                    {{ $best_direction->name }}</div>
+                                    {{ $best_direction->name }}
+                                </div>
                             </div>
                         </div>
                     </a>
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-3 my-8 px-4">
-                {{-- <div class="shadow-lg p-4 rounded"> --}}
-                {{-- <div class="bg-white dark:bg-gray-700 dark:text-white shadow-lg p-4" id="chartline"></div> --}}
                 <div class="dark:bg-gray-800">
                     <canvas id="verticalBarChart" style="display: block; box-sizing: border-box;"
                         class="w-full dark:text-white"></canvas>
@@ -109,13 +108,54 @@
                     <canvas id="myChart2" height="400" style="display: block; box-sizing: border-box;"
                         class="w-full h-auto dark:text-white"></canvas>
                 </div>
-                {{-- <div class="">
-                    <canvas id="myChart1"></canvas>
-                </div> --}}
-
-
             </div>
-
+            <div class="w-full px-4 my-4">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                N°DEMANDE
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                SERVICE
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                UTILISATEUR
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                ACTIONS
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                <span class="sr-only">Edit</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($ongoing_reqs as $ongoing)
+                        <tr
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <th scope="row"
+                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ $ongoing->numero }}
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ $ongoing->service }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $ongoing->user->name }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <a href="{{ route('demandes.show', $ongoing->id) }}"
+                                    class=" bg-blue-500 px-10 py-1 text-white rounded">Voir</a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <div class="my-3 px-3">
+                    {{ $ongoing_reqs->links() }}
+                </div>
+            </div>
         </div>
     </div>
     </div>
@@ -168,120 +208,7 @@
             document.getElementById('verticalBarChart'),
             configVerticalBarChart
         );
-    </script>
-    {{-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script>
-        var months = @json($months);
 
-        var month_names = []
-        var month_counts = []
-
-        for (var i = 0; i < months.length; i++) {
-            month_names.push(months[i]['name']);
-            month_counts.push(months[i]['count']);
-        }
-
-        console.log(month_counts, month_names);
-    </script> --}}
-    {{-- <script>
-        var chart = document.querySelector('#chartline')
-        var options = {
-            series: [{
-                    name: 'Total',
-                    type: 'area',
-                    data: month_counts
-                },
-                // {
-                //     name: 'POOL B',
-                //     type: 'line',
-                //     data: [55, 69, 45, 61, 43, 54, 37, 52, 44, 61, 43, 41]
-                // }
-            ],
-            chart: {
-                height: 450,
-                with: 300,
-                type: 'line',
-                zoom: {
-                    enabled: false
-                }
-            },
-            stroke: {
-                curve: 'smooth'
-            },
-            fill: {
-                type: 'solid',
-                opacity: [0.35, 1],
-            },
-            labels: month_names,
-            markers: {
-                size: 0
-            },
-            yaxis: [{
-                    title: {
-                        text: 'Toutes les demandes',
-                    },
-                },
-                // {
-                //     opposite: true,
-                //     title: {
-                //         text: 'Series B',
-                //     },
-                // },
-            ],
-            tooltip: {
-                shared: true,
-                intersect: false,
-                y: {
-                    formatter: function(y) {
-                        if (typeof y !== "undefined") {
-                            return y.toFixed(0) + " points";
-                        }
-                        return y;
-                    }
-                }
-            }
-        };
-        var chart = new ApexCharts(chart, options);
-        chart.render();
-    </script> --}}
-    {{-- <script>
-        var chart = document.querySelector('#chartpie')
-        var options = {
-            series: [document.querySelector('#span4').textContent, document.querySelector('#span1').textContent,
-                document.querySelector('#span3').textContent, document.querySelector('#span2').textContent
-            ],
-            chart: {
-                height: 350,
-                type: 'radialBar',
-            },
-            plotOptions: {
-                radialBar: {
-                    dataLabels: {
-                        name: {
-                            fontSize: '22px',
-                        },
-                        value: {
-                            fontSize: '16px',
-                        },
-                        total: {
-                            show: true,
-                            label: 'Total Demandes',
-                            formatter: function(w) {
-                                var total = document.querySelector('#total')
-                                // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
-                                return total.value
-                            }
-                        }
-                    }
-                }
-            },
-            labels: [],
-        };
-        var chart = new ApexCharts(chart, options);
-        chart.render();
-    </script> --}}
-
-    <script>
         const ctx1 = document.getElementById('myChart1');
         var directions = @json($directions);
         var directionsName = []
