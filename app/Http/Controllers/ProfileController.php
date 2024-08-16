@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Demande;
 use Illuminate\View\View;
 use App\Http\Controllers\Controller;
+use App\Models\Traitement;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -34,6 +35,15 @@ class ProfileController extends Controller
         
         $last_month_req = Demande::where('user_id', $user->id)->whereMonth('created_at', Carbon::now()->subMonth()->month)->count();
         $this_month_req = Demande::where('user_id', $user->id)->whereMonth('created_at', Carbon::now()->month)->count(); 
+        $user_reqs = Demande::where('user_id', $user->id)->get();
+        $count = 0;
+        foreach ($user_reqs as $key => $req) {
+            $last_traitement = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
+            if($last_traitement->status === 'validé') {
+                $count = $count + 1;
+            }
+        }
+          $user['validated_reqs'] = $count;
         $user['manager'] = $manager;
         $user['this_month_req'] = $this_month_req;
         $user['last_month_req'] = $last_month_req;
