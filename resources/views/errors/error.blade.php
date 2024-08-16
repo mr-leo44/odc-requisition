@@ -1,7 +1,7 @@
 <x-app-layout>
     <div
-        class="flex-col items-center justify-center rounded shadow border border-gray-200 dark:border-gray-700 bg-white py-14 px-5 shadow-default dark:bg-gray-800 sm:py-20">
-        <div class="min-h-[85vh] flex flex-col sm:justify-center items-center sm:pt-0 dark:bg-slate-800 bg-gray-100">
+        class="flex-col items-center justify-center py-14 px-5 shadow-default bg-gray-200 dark:bg-gray-800 shadow rounded sm:py-20">
+        <div class="min-h-[85vh] flex flex-col sm:justify-center items-center sm:pt-0">
             <div>
                 <img src="{{ asset('img/error_illustration.svg') }}" class="mx-auto w-80" alt="illustration">
             </div>

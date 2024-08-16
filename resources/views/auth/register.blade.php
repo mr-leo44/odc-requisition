@@ -1,59 +1,56 @@
 <x-guest-layout>
-    @if (session('error'))
-        <div id="error-message"
-            class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-            role="alert">
-            <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                viewBox="0 0 20 20">
-                <path
-                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-            </svg>
-            <span class="sr-only">Info</span>
-            <div class="ms-3 text-sm font-medium">
-                {{ session('error') }}
-            </div>
-            <button type="button"
-                class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
-                data-dismiss-target="#error-message" aria-label="Close">
-                <span class="sr-only">Close</span>
-                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                </svg>
-            </button>
-        </div>
-    @endif
-    <form action="{{ route('register') }}" method="POST">
-        @csrf
-        <div class="text-center font-bold">
-            <x-input-label for="type" :value="__('Completez le profil')" />
-        </div>
-        <div class="mt-4 ui-widget" id="direction">
-            <x-input-label for="search_direction" :value="__('Votre direction')" />
-            <x-text-input id="search_direction" class="block mt-1 w-full" type="text" name="direction"
-                :value="old('direction')" required />
-            <x-input-error :messages="$errors->get('direction')" class="mt-2" />
-        </div>
-        <div class="mt-4 ui-widget" id="service">
-            <x-input-label for="search_service" :value="__('Votre service')" />
-            <x-text-input id="search_service" class="block mt-1 w-full" type="text" name="service" :value="old('service')"
-                required />
-            <x-input-error :messages="$errors->get('service')" class="mt-2" />
+    <div class="max-w-5xl mx-auto">
+        <div class="w-full rounded bg-gray-200 dark:bg-slate-800 shadow rounded-l-lg dark:border dark:border-gray-600">
+            <div
+                class="grid bg-gray-200 dark:bg-slate-800 dark:border-gray-600 grid-cols-1  mx-auto shadow-xl lg:grid-cols-2 gap-2 rounded-xl">
+                <div class="hidden items-center lg:flex order-first  w-full rounded-l-lg justify-center">
+                    {{-- <x-login-logo /> --}}
+                    <img src="{{ asset('img/auth.jpg') }}" class="bg-white bg-cover h-full rounded-l-lg" alt="">
+                </div>
+                <div class="flex-col justify-between items-center py-2 lg:py-7 px-3 md:px-4 lg:px-4">
+                    <div class="flex flex-col items-center">
+                        <x-application-logo />
+                        <div class="mt-2 text-base text-gray-500 dark:text-white">
+                            <p
+                                class="font-semibold font-['helvetica'] text-neutral-600 dark:text-white leading-none text-md">
+                                Réquisition</p>
+                        </div>
+                    </div>
+                    <form action="{{ route('register') }}" method="POST">
+                        @csrf
+                        <div class="text-center my-4 font-bold">
+                            <h3 class="text-lg   dark:text-white">Completez votre profil</h3>
+                        </div>
+                        <div class="mt-4 ui-widget" id="direction">
+                            <x-input-label for="search_direction" :value="__('Votre direction')" />
+                            <x-text-input id="search_direction" class="block mt-1 w-full" type="text"
+                                name="direction" :value="old('direction')" required />
+                            <x-input-error :messages="$errors->get('direction')" class="mt-2" />
+                        </div>
+                        <div class="mt-4 ui-widget" id="service">
+                            <x-input-label for="search_service" :value="__('Votre service')" />
+                            <x-text-input id="search_service" class="block mt-1 w-full" type="text" name="service"
+                                :value="old('service')" required />
+                            <x-input-error :messages="$errors->get('service')" class="mt-2" />
 
+                        </div>
+                        <div class="mt-4 ui-widget">
+                            <x-input-label for="search_manager" :value="__('Votre Manager')" />
+                            <x-text-input id="search_manager" class="block mt-1 w-full" type="text" name="manager"
+                                :value="old('manager')" required />
+                            <x-input-error :messages="$errors->get('manager')" class="mt-2" />
+                        </div>
+                        <div class="text-center mt-3">
+                            <x-primary-button class="w-full flex justify-center items-center">
+                                Valider
+                            </x-primary-button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="mt-4 ui-widget">
-            <x-input-label for="search_manager" :value="__('Votre Manager')" />
-            <x-text-input id="search_manager" class="block mt-1 w-full" type="text" name="manager" :value="old('manager')"
-                required />
-            <x-input-error :messages="$errors->get('manager')" class="mt-2" />
-        </div>
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button class="ms-4" type="submit">
-                {{ __('Valider') }}
-            </x-primary-button>
-        </div>
-    </form>
+    </div>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
