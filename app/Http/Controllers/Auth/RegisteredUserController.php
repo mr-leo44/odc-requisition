@@ -47,12 +47,16 @@ class RegisteredUserController extends Controller
             'service' => ['required', 'string'],
         ]);
 
-        if (Direction::where('name', $request->direction)->exists()) {
-            $direction = Direction::where('name', '=', $request->direction)->first();
+        if (Session::get('admin') !== null) {
+            if (Direction::where('name', $request->direction)->exists()) {
+                $direction = Direction::where('name', '=', $request->direction)->first();
+            } else {
+                $direction = Direction::create([
+                    'name' => $request->direction
+                ]);
+            }
         } else {
-            $direction = Direction::create([
-                'name' => $request->direction
-            ]);
+            return back()->with('error', 'Cette direction n\'existe pas!');
         }
 
         if (User::where('name', $request->manager)->exists()) {
@@ -108,7 +112,6 @@ class RegisteredUserController extends Controller
                         "role" => RoleEnum::USER
                     ]);
                     Session::put('user', $userData['username']);
-
                 }
             }
         }

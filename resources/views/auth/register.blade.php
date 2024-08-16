@@ -25,6 +25,9 @@
                             <x-input-label for="search_direction" :value="__('Votre direction')" />
                             <x-text-input id="search_direction" class="block mt-1 w-full" type="text"
                                 name="direction" :value="old('direction')" required />
+                            @if (session('error'))
+                                <x-input-error :messages="session('error')" class="mt-2" />
+                            @endif
                             <x-input-error :messages="$errors->get('direction')" class="mt-2" />
                         </div>
                         <div class="mt-4 ui-widget" id="service">
