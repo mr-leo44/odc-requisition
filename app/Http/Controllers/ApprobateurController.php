@@ -31,30 +31,30 @@ class ApprobateurController extends Controller
         for ($i = 0; $i < count($noms); $i++) {
             $nom = $noms[$i];
             $email = $emails[$i];
-    
             // Vérifier si l'approbateur existe dans l'API
             if (!$this->checkApproverInAPI($nom, $email)) {
                 return redirect()->back()->with('error', "L'utilisateur $nom avec l'email $email n'a pas été trouvé dans l'API.");
             }
-            $approbateurExistant = Approbateur::where('name', $nom)->where('email', $email)->first();
-    
-            if ($approbateurExistant) {
-                if ($approbateurExistant->trashed()) {
-                    $approbateurExistant->restore();
-                    $approbateurExistant->update([
-                        'level' => $levels[$i],
-                        'fonction' => $fonctions[$i]
-                    ]);
-                    return redirect()->back()->with('message', "L'approbateur a été réactivé et mis à jour.");
-                } 
-                return redirect()->back()->with('error', "L'approbateur le nom ou l'email existe déjà.");
-            }
-            Approbateur::create([
-                'level' => $levels[$i],
-                'name' => $nom,
-                'fonction' => $fonctions[$i],
-                'email' => $email,
-            ]);
+            $approbateurExistant = Approbateur::withTrashed()->where('name', $nom)->where('email', $email)->first();
+            
+                if ($approbateurExistant) {
+                    if ($approbateurExistant->trashed()) {
+                        Approbateur::create([
+                            'level' => $levels[$i],
+                            'name' => $nom,
+                            'fonction' => $fonctions[$i],
+                            'email' => $email,
+                        ]);
+                        return redirect()->back()->with('message', "L'approbateur a été ajouté.");
+                    } 
+                    return redirect()->back()->with('error', "L'approbateur le nom ou l'email existe déjà.");
+                }
+                Approbateur::create([
+                    'level' => $levels[$i],
+                    'name' => $nom,
+                    'fonction' => $fonctions[$i],
+                    'email' => $email,
+                ]);
         }
     
         return redirect()->back()->with('message', "L'approbateur a été ajouté avec succès.");
