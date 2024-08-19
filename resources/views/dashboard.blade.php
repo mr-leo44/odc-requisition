@@ -109,7 +109,8 @@
                         class="w-full h-auto dark:text-white"></canvas>
                 </div>
             </div>
-            <div class="w-full px-4 my-4">
+            <div class="w-full px-4 my-6">
+                <h2 class="dark:text-white text-2xl font-bold my-3">Demandes en cours</h2>
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -150,8 +151,8 @@
                             @endforeach
                         @else
                             <tr>
-                                <td class="px-6 py-4" colspan="4">
-                                    __('Pas de réquisition à livrer pour l\'instant!')
+                                <td class="px-6 py-4 text-center" colspan="4">
+                                    {{ __('Pas de réquisition à livrer pour l\'instant!') }}
                                 </td>
                             </tr>
                         @endif
