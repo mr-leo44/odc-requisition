@@ -53,7 +53,7 @@
         <div class="rounded-t mb-0 px-4 py-3 border-0">
             <div class="flex flex-wrap items-center">
                 <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-                    <h3 class=" font-bold text-base dark:text-white">Page Approvers</h3>
+                    <h3 class=" font-bold text-base dark:text-white">Approvers</h3>
                 </div>
                 <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
                     <div class="flex justify-end my-2 space-x-1">
@@ -61,8 +61,9 @@
                         <i class="material-icons-outlined text-green-400 font-bold text-xl">add</i>
                         </button>
                         <a id="enableAllBtn" onclick="editAction()"
-                            class=" px-2 py-2  text-gray-400 hover:text-gray-100  mx-2"><i
-                                class="material-icons-outlined text-base">edit</i></a>
+                            class=" px-2 py-2  text-gray-400 hover:text-gray-100  mx-2">
+                            <i class="material-icons-outlined text-base">edit</i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -73,11 +74,11 @@
                 @csrf
                 <table class="table w-full text-gray-400 border-separate space-y-6 text-sm">
                     <thead class="dark:bg-gray-800 text-gray-500">
-                        <tr class="text-white">
+                        <tr class="text-black dark:text-white">
                             <th class="p-3 text-left"></th>
-                            <th class="p-3 text-left">Name</th>
-                            <th class="p-3 text-left">Function</th>
-                            <th class="p-3 text-left">Email</th>
+                            <th class="p-3 text-left">Names</th>
+                            <th class="p-3 text-left">Functions</th>
+                            <th class="p-3 text-left">Emails</th>
                             <th class="p-3 text-left">Action</th>
                         </tr>
                     </thead>
@@ -126,36 +127,9 @@
             </form>
         </div>
     </div>
-    <link
-        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
-        rel="stylesheet">
     <div>
         <x-deleteApprobateur/>
     </div>
-    <!--Scripts-->
-    <style>
-        .table {
-            border-spacing: 0 15px;
-        }
-    
-        i {
-            font-size: 1rem !important;
-        }
-    
-        .table tr {
-            border-radius: 20px;
-        }
-    
-        tr td:nth-child(n+5),
-        tr th:nth-child(n+5) {
-            border-radius: 0 .625rem .625rem 0;
-        }
-    
-        tr td:nth-child(1),
-        tr th:nth-child(1) {
-            border-radius: .625rem 0 0 .625rem;
-        }
-    </style>
     <script src="https:ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
@@ -202,9 +176,15 @@
             inputs.forEach(function(input) {
                 input.removeAttribute('disabled');
             });
-            document.getElementById('saveBtn').style.display = 'block';
-            document.getElementById('create').style.display = 'none';   
-            $('tr.new-row').remove();// supprimer les lignes ajoutées si elles ne sont pas valider
+            var a = document.getElementById('sortable');
+            var b = a.rows.length
+            if (b == 0) {
+                document.getElementById('saveBtn').style.display = 'none';
+            }else{
+                document.getElementById('saveBtn').style.display = 'block';
+                document.getElementById('create').style.display = 'none';   
+                $('tr.new-row').remove();// supprimer les lignes ajoutées si elles ne sont pas valider
+            }
         }
         $(document).ready(function() {
             $("#add").click(function() {
@@ -236,9 +216,6 @@
                                 <i class="material-icons-outlined text-green-400 font-bold text-xl">cancel</i>
                             </button>
 						</td>
-                        <td>
-                            <input type="hidden" name="id[]" value="{{ $approbateur->id }}">
-                            </td>
 					</tr>
                     
                 `;

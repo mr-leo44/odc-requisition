@@ -1,10 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
-            {{ __('Directions') }}
-        </h2>
-    </x-slot>
- <div>
+    <div>
         @if (session()->has('message'))
                 <div id="alert-3"
                     class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
@@ -47,28 +42,36 @@
             @endif
     </div>
     <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+    <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded ">
+        <div class="rounded-t mb-0 px-4  border-0">
+            <div class="rounded-t mb-0 px-4 py-3 border-0">
+                <div class="flex flex-wrap items-center">
+                    <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+                        <h3 class=" font-bold text-base dark:text-white">Directions</h3>
+                    </div>
+                    <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                        <div class="flex justify-end my-2 space-x-1">
+                            <button type="button" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
+                                <i class="material-icons-outlined text-green-400 font-bold text-xl">add</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div class="relative flex flex-col min-w-0 break-words bg-white dark:bg-gray-800 w-full mt-6 shadow-lg rounded ">
-            <div class="rounded-t mb-0 px-4 py-3 border-0">
-              <div class="flex justify-end">
-                <div class="flex justify-end my-4">
-                    <button type="button" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
-                        <i class="material-icons-outlined text-green-400 font-bold text-xl">add</i>
-                    </button>
-                </div>
-              </div>
-            </div>
-        
-            <div class="block w-full overflow-x-auto mt-3 dark:bg-gray-800">
+            <div class="block w-full overflow-x-auto dark:bg-gray-800 rounded ">
                 <form action="" method="post">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class="dark:bg-gray-800 text-gray-500">
-                            <tr class="text-white">
+                        <thead class=" uppercase bg-slate-300 dark:bg-gray-700 text-black dark:text-white">
+                            <tr class="text-black dark:text-white">
                                 <th scope="col" class="px-6 py-3">
-                                    Numero
+                                    N° 
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Noms
+                                    Names
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Actions
@@ -99,7 +102,7 @@
                                                 data-modal-toggle="edit-modal"
                                                 data-direction-id="{{ $direction->id }}"
                                                 data-direction-name="{{ $direction->name }}">
-                                                <i class="material-icons-outlined text-base text-white">edit</i>
+                                                <i class="material-icons-outlined text-base dark:text-white">edit</i>
                                                 </a>
                                                 
                                         </td>
