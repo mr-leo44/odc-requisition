@@ -95,8 +95,8 @@
                                                 <x-text-input id="quantite_{{ $key }}"
                                                     class="bg-gray-50 w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
                                                     type="number" name="details[{{ $key }}][quantite]"
-                                                    max="{{ $detail->qte_demandee }}" value="{{ $detail->qte_livree }}"
-                                                    placeholder="Ex. 12" required autofocus autocomplete="quantite"
+                                                    max="{{ $detail->qte_demandee }}"
+                                                    placeholder="Ex. 12" autofocus autocomplete="quantite"
                                                     oninput="validateInput({{ $key }}, {{ $detail->qte_demandee }}, {{ $detail->qte_livree }})" />
 
 
