@@ -262,38 +262,29 @@ class DemandeController extends Controller
 
     public function updateLivraison(Request $request)
     {
+
+
         $validatedData = $request->validate([
             'details' => 'required|array',
         ]);
 
+
         foreach ($validatedData['details'] as $detail) {
-            if ($detail['quantite'] !== null) {
-                $demandeDetail = DemandeDetail::find($detail['id']);
-                $new_quantity = $demandeDetail->qte_livree + $detail['quantite'];
-                if ($new_quantity > $demandeDetail->qte_demandee) {
+            $demandeDetail = DemandeDetail::find($detail['id']);
+            if ($demandeDetail) {
+                $nouvelleQuantite = $demandeDetail->qte_livree + $detail['quantite'];
+                if ($nouvelleQuantite > $demandeDetail->qte_demandee) {
                     return redirect()->back()->with('error', 'La quantité livrée ne peut pas être supérieure à la quantité demandée.');
-                } else {
-                    $delivery = Livraison::create([
-                        'demande_detail_id' => $detail['id'],
-                        'quantite' => $detail['quantite']
-                    ]);
-
-                    if ($delivery) {
-                        $demandeDetail->update([
-                            'qte_livree' =>$new_quantity
-                        ]);
-                    }
                 }
-
+                Livraison::updateOrCreate(
+                    ['demande_detail_id' => $detail['id']],
+                    ['quantite' => $detail['quantite']]
+                );
+                $demandeDetail->qte_livree = $nouvelleQuantite;
+                $demandeDetail->save();
             }
-            // if ($demandeDetail) {
-            //     Livraison::updateOrCreate(
-            //     );
-            //     $demandeDetail->qte_livree = $nouvelleQuantite;
-            //     $demandeDetail->save();
-            // }
         }
 
-        return redirect()->route('demandes.index')->with('success', 'Livraison mise à jour avec succès');
+        return redirect()->back()->with('success', 'Livraison mise à jour avec succès');
     }
 }
