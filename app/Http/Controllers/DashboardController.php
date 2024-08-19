@@ -8,7 +8,6 @@ use App\Models\Demande;
 use App\Models\Direction;
 use App\Models\Livraison;
 use App\Models\Traitement;
-use Illuminate\Http\Request;
 use App\Models\DemandeDetail;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Builder;
@@ -49,24 +48,28 @@ class DashboardController extends Controller
         $on_going = [];
         foreach ($validated_reqs as $key => $validated) {
             $req_details = DemandeDetail::where('demande_id', $validated->id)->get();
+            $delivered = 0;
             foreach ($req_details as $req_detail) {
                 $req_count = $req_detail->qte_demandee;
-                $deliveries = Livraison::where('demande_detail_id', $req_detail->id)->get();
                 $count = 0;
-                if ($deliveries->count() > 0) {
+                if(Livraison::where('demande_detail_id', $req_detail->id)->exists()) {
+                    $deliveries = Livraison::where('demande_detail_id', $req_detail->id)->get();
                     foreach ($deliveries as $key => $delivery) {
                         $count += $delivery->quantite;
                     }
-                }
-                if ($req_count > $count) {
-                    $on_going[$key] = $validated;
+                    if ($req_count === $count) {
+                        $delivered += 1;
+                    }
                 }
             }
+            if ($delivered < $req_details->count()) {
+                $on_going[] = $validated;
+            }
         }
-        // dd($on_going);
         $reqs_array = collect($on_going);
         $ongoing_reqs = Demande::whereIn('id', $reqs_array->pluck('id'))->latest()->paginate(5);
         $reqs_count = Demande::whereIn('id', $reqs_array->pluck('id'))->count();
+        $stats['ongoing_reqs'] = $ongoing_reqs;
         $stats['ongoing'] = $reqs_count;
         $directions = Direction::all();
         $array_direction_req_count = [];
@@ -98,6 +101,6 @@ class DashboardController extends Controller
             $array_direction_req_count[$key] = $users_count;
         }
         $best_direction = $directions->where('req_count', max($array_direction_req_count))->first();
-        return view('dashboard', compact('stats', 'directions', 'best_direction', 'months', 'ongoing_reqs'));
+        return view('dashboard', compact('stats', 'directions', 'best_direction', 'months'));
     }
 }

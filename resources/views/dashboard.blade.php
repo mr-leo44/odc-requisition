@@ -101,7 +101,7 @@
             </div>
             <div class="grid grid-cols-2 gap-3 my-8 px-4">
                 <div class="dark:bg-gray-800">
-                    <canvas id="verticalBarChart" style="display: block; box-sizing: border-box;"
+                    <canvas id="verticalBarChart" height="400" style="display: block; box-sizing: border-box;"
                         class="w-full dark:text-white"></canvas>
                 </div>
                 <div class="dark:bg-gray-800">
@@ -125,35 +125,40 @@
                             <th scope="col" class="px-6 py-3">
                                 ACTIONS
                             </th>
-                            <th scope="col" class="px-6 py-3">
-                                <span class="sr-only">Edit</span>
-                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($ongoing_reqs as $ongoing)
-                        <tr
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $ongoing->numero }}
-                            </th>
-                            <td class="px-6 py-4">
-                                {{ $ongoing->service }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $ongoing->user->name }}
-                            </td>
-                            <td class="px-6 py-4">
-                                <a href="{{ route('demandes.show', $ongoing->id) }}"
-                                    class=" bg-blue-500 px-10 py-1 text-white rounded">Voir</a>
-                            </td>
-                        </tr>
-                        @endforeach
+                        @if ($stats['ongoing_reqs']->count() > 0)
+                            @foreach ($stats['ongoing_reqs'] as $ongoing)
+                                <tr
+                                    class="bg-white border-b w-full dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <th scope="row"
+                                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $ongoing->numero }}
+                                    </th>
+                                    <td class="px-6 py-4">
+                                        {{ $ongoing->service }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $ongoing->user->name }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <a href="{{ route('demandes.show', $ongoing->id) }}"
+                                            class=" bg-blue-500 px-10 py-1 text-white rounded">Voir</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td class="px-6 py-4" colspan="4">
+                                    __('Pas de réquisition à livrer pour l\'instant!')
+                                </td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
                 <div class="my-3 px-3">
-                    {{ $ongoing_reqs->links() }}
+                    {{ $stats['ongoing_reqs']->links() }}
                 </div>
             </div>
         </div>
