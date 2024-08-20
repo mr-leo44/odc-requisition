@@ -60,7 +60,7 @@
                         <button id="add">
                         <i class="material-icons-outlined text-green-400 font-bold text-xl">add</i>
                         </button>
-                        <a id="enableAllBtn" onclick="editAction()"
+                        <a  onclick="editAction()"
                             class=" px-2 py-2  text-gray-400 hover:text-gray-100  mx-2">
                             <i class="material-icons-outlined text-base">edit</i>
                         </a>
@@ -71,19 +71,19 @@
 
         <div class="block w-full overflow-x-auto mt-3 dark:bg-gray-800 rounded-xl">
             <form action="{{ route('approbateurs.store') }}" method="post">
-                @csrf
                 <table class="table w-full text-gray-400 border-separate space-y-6 text-sm">
                     <thead class="dark:bg-gray-800 text-gray-500">
                         <tr class="text-black dark:text-white">
                             <th class="p-3 text-left"></th>
                             <th class="p-3 text-left">Names</th>
                             <th class="p-3 text-left">Functions</th>
-                            <th class="p-3 text-left">Emails</th>
+                            <th class="p-3 text-left"></th>
                             <th class="p-3 text-left">Action</th>
                         </tr>
                     </thead>
                     <tbody id="sortable">
                         @foreach ($approbateurs as $approbateur)
+                        @csrf
                             <tr data-id="{{ $approbateur->id }}" class="dark:bg-gray-800">
                                 <td class="p-3">
                                     <input type="number" value="{{ $approbateur->level }}" name="level[]"
@@ -101,7 +101,7 @@
                                         disabled>
                                 </td>
                                 <td class="p-3">
-                                    <input type="text" name="email[]" value="{{ $approbateur->email }}"
+                                    <input type="hidden" name="email[]" value="{{ $approbateur->email }}"
                                         class="in bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         disabled>
                                 </td>
@@ -197,7 +197,6 @@
                 document.getElementById('create').style.display = 'block';
                 document.getElementById('saveBtn').style.display = 'none';
                 var tr = `
-
                     <tr class="new-row ui-widget bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td class="p-3">
                             <input type="hidden" name="level[]" value="${i}"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
@@ -209,7 +208,7 @@
 						    <input type="text" name="fonction[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                         </td>
 						<td class="p-3">
-                            <input type="email" name="email[]" class="cursor-not-allowed email-approver bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required >
+                            <input type="hidden" name="email[]" class="cursor-not-allowed email-approver bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required >
                         </td>
 						<td class="p-3 ">
                             <button type="button" class="delete ">
@@ -251,7 +250,6 @@
                     .catch(error => {
                         console.error('Erreur lors de la récupération des données :', error);
                     });
-
                 function initAutocomplete(data) {
                     $('tbody').on('focus', '.name-approver, .email-approver', function() {
                         var currentInput = $(this);
@@ -279,46 +277,51 @@
                     });
                 }
             })
+
+
             // update avec ajax
-            $('#saveBtn').click(function() {
-                $('#add').show();
-                $('input').prop('disabled', true);
-                $('#saveBtn').hide("drop", {
-                    direction: "down"
-                }, "slow");
-                var approbateurs = [];
+            $('#saveBtn').click(function(event) {
+                event.preventDefault();
+                $('#add').show();//
+                $('input').prop('disabled', true);//
+                $('#saveBtn').hide("drop", { direction: "down" }, "slow");//
+                var approbateurs = [];//
                 $('tbody tr').each(function() {
                     var id = $(this).data('id');
-                    var level = $(this).find('input[name="level[]"]').val();
                     var name = $(this).find('input[name="name[]"]').val();
                     var fonction = $(this).find('input[name="fonction[]"]').val();
                     var email = $(this).find('input[name="email[]"]').val();
+                    console.log(id, level, fonction);
+                    
                     approbateurs.push({
                         id: id,
-                        level: level,
                         name: name,
                         fonction: fonction,
-                        email: email
+                        email:email
                     });
                 });
+
                 $.ajax({
-                    url: "approbateurs/update",
+                    url: "approbateurs/update", 
                     method: 'PUT',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     contentType: 'application/json',
                     data: JSON.stringify({
-                        approbateurs: approbateurs
+                        approbateurs: approbateurs // Envoie les données des approbateurs
                     }),
                     success: function(response) {
-                        location.reload();
+                        console.log('Les modifications ont été sauvegardées avec succès',);
+                        // Recharge la page en cas de succès
                     },
                     error: function(xhr) {
                         console.log('Une erreur s\'est produite lors de la sauvegarde des modifications');
                     }
                 });
             });
+        
+
         </script>
 
 </x-app-layout>
