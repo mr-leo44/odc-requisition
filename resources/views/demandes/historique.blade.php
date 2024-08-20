@@ -1,83 +1,68 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
-            {{ __('Historique des demandes') }}
-        </h2>
-    </x-slot>
-
     <head>
         <!-- DataTables CSS -->
         <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
         <!-- DataTables JS -->
         <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
     </head>
-
-
-
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table id="example" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="px-6 py-3">
-                        N°DEMANDE
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        SERVICE
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        UTILISATEUR
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        ACTION
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        DATE DE CREATION
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($demandes as $demande)
-                    <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <th scope="row"
-                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $demande->numero }}
-                        </th>
-                        <td class="px-6 py-4">
-                            {{ $demande->service }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ $demande->user->name }}
-                        </td>
-                        <td class="px-6 py-4">
-                            <a href="{{ route('demandes.show', $demande->id) }}"
-                                class=" bg-blue-500 px-10 py-1 text-white rounded">Voir</a>
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ ucfirst($demande->created_at->locale('fr')->isoFormat('LLLL')) }}
-                        </td>
+    <div class="bg-white dark:bg-gray-900 p-4 shadow-md sm:rounded-lg">
+        <div class="overflow-x-auto">
+            <table id="example" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">N°</th>
+                        <th scope="col" class="px-6 py-3">Service</th>
+                        <th scope="col" class="px-6 py-3">Users</th>
+                        <th scope="col" class="px-6 py-3">Action</th>
+                        <th scope="col" class="px-6 py-3">Date de création</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        {{ $demandes->links() }}
-
-        {{-- <x-showDemande :demande="$demande" /> --}}
+                </thead>
+                <tbody class="bg-white dark:bg-gray-900">
+                    @foreach ($demandes as $demande)
+                        <tr class="border-b hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                {{ $demande->numero }}
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ $demande->service }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $demande->user->name }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <a href="{{ route('demandes.show', $demande->id) }}"
+                                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">
+                                    Voir
+                                </a>
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ ucfirst($demande->created_at->locale('fr')->isoFormat('LLLL')) }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-4">
+            {{ $demandes->links() }}
+        </div>
         <x-createDemande />
         <x-deleteDemande />
     </div>
-
-
     <script>
         new DataTable('#example', {
             info: false,
-            ordering: false,
+            ordering: true,
             paging: true,
-
-
+            pageLength: {{ $demandes->perPage() }},
+            language: {
+                searchPlaceholder: "Rechercher dans l'historique...",
+                paginate: {
+                    previous: "Précédent",
+                    next: "Suivant"
+                }
+            },
+            lengthChange: false, // Désactive la sélection du nombre d'éléments par page
         });
     </script>
-
-
 </x-app-layout>
