@@ -55,7 +55,6 @@ class DemandeController extends Controller
 
         if ($connected_user->compte->role->value === 'livraison') {
             $reqs = Demande::all();
-            // dd($reqs);
             $all_validated_keys = [];
             foreach ($reqs as $key => $req) {
                 $last = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
@@ -64,27 +63,27 @@ class DemandeController extends Controller
                 }
             }
             $validated_reqs = Demande::whereIn('id', $all_validated_keys)->get();
-            // dd($validated_reqs);
             $on_going = [];
             foreach ($validated_reqs as $key => $validated) {
                 $req_details = DemandeDetail::where('demande_id', $validated->id)->get();
-                // dd($req_details);
+                $delivered = 0;
                 foreach ($req_details as $req_detail) {
                     $req_count = $req_detail->qte_demandee;
-                    // dd($req_detail->qte_demandee);
-                    $deliveries = Livraison::where('demande_detail_id', $req_detail->id)->get();
                     $count = 0;
-                    if ($deliveries->count() > 0) {
+                    if (Livraison::where('demande_detail_id', $req_detail->id)->exists()) {
+                        $deliveries = Livraison::where('demande_detail_id', $req_detail->id)->get();
                         foreach ($deliveries as $key => $delivery) {
                             $count += $delivery->quantite;
                         }
-                    }
-                    if ($req_count > $count) {
-                        $on_going[$key] = $validated;
+                        if ($req_count === $count) {
+                            $delivered += 1;
+                        }
                     }
                 }
+                if ($delivered < $req_details->count()) {
+                    $on_going[] = $validated;
+                }
             }
-            // dd($on_going);
             $demandes_array = collect($on_going);
             $demandes = Demande::whereIn('id', $demandes_array->pluck('id'))->orderBy('created_at', 'desc')->paginate(10);
         }
@@ -233,30 +232,53 @@ class DemandeController extends Controller
         $demande->delete();
         return redirect()->route('demandes.index')->with('success', 'Suppression éffectuée avec succès');
     }
+
     public function historique()
     {
-        $connected_user = Session::get('authUser')->id;
-
-        $isDemandeur = Demande::whereHas('traitement', function ($query) use ($connected_user) {
-            $query->where('demandeur_id', $connected_user);
-        })->exists();
-
-        if ($isDemandeur) {
+        $connected_user = Session::get('authUser');
+        if ($connected_user->compte->role->value === 'user') {
             $demandes = Demande::whereHas('traitement', function (Builder $query) use ($connected_user) {
-                $query->where('demandeur_id', $connected_user)
-                    ->where('status', '!=', 'en cours');
-            })
-                ->orderBy('created_at', 'desc')
-                ->paginate(15);
-        } else {
-            $demandes = Demande::whereHas('traitement', function ($query) use ($connected_user) {
-                $query->where('approbateur_id', $connected_user)
+                $query->where('approbateur_id', $connected_user->id)
+                    ->orWhere('demandeur_id', $connected_user->id)
                     ->where('status', '!=', 'en cours');
             })
                 ->orderBy('created_at', 'desc')
                 ->paginate(15);
         }
-
+        if ($connected_user->compte->role->value === 'livraison') {
+            $reqs = Demande::all();
+            $all_validated_keys = [];
+            foreach ($reqs as $key => $req) {
+                $last = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
+                if ($last->status === 'validé') {
+                    $all_validated_keys[$key] = $req->id;
+                }
+            }
+            $validated_reqs = Demande::whereIn('id', $all_validated_keys)->get();
+            $reqs_delivered = [];
+            foreach ($validated_reqs as $key => $validated) {
+                $req_details = DemandeDetail::where('demande_id', $validated->id)->get();
+                $delivered = 0;
+                foreach ($req_details as $req_detail) {
+                    $req_count = $req_detail->qte_demandee;
+                    $deliveries = Livraison::where('demande_detail_id', $req_detail->id)->get();
+                    $count = 0;
+                    if ($deliveries->count() > 0) {
+                        foreach ($deliveries as $key => $delivery) {
+                            $count += $delivery->quantite;
+                        }
+                    }
+                    if ($req_count === $count) {
+                        $delivered += 1;
+                    }
+                }
+                if ($delivered === $req_details->count()) {
+                    $reqs_delivered[] = $validated;
+                }
+            }
+            $demandes_array = collect($reqs_delivered);
+            $demandes = Demande::whereIn('id', $demandes_array->pluck('id'))->orderBy('created_at', 'desc')->paginate(10);
+        }
         return view('demandes.historique', compact('demandes'));
     }
 
@@ -280,18 +302,11 @@ class DemandeController extends Controller
 
                     if ($delivery) {
                         $demandeDetail->update([
-                            'qte_livree' =>$new_quantity
+                            'qte_livree' => $new_quantity
                         ]);
                     }
                 }
-
             }
-            // if ($demandeDetail) {
-            //     Livraison::updateOrCreate(
-            //     );
-            //     $demandeDetail->qte_livree = $nouvelleQuantite;
-            //     $demandeDetail->save();
-            // }
         }
 
         return redirect()->route('demandes.index')->with('success', 'Livraison mise à jour avec succès');
