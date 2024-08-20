@@ -82,24 +82,20 @@ class ApprobateurController extends Controller
         return view('approbateurs.index', compact('approbateurs'));
     }
     public function update(Request $request, $id)
-    {
-        $dataVal = $request->validate([
-            'approbateurs' => 'required|array',
-            'approbateurs.*.id' => 'nullable|exists:approbateurs,id',
-            'approbateurs.*.level' => 'required|integer',
-            'approbateurs.*.name' => 'required|string|max:255',
-            'approbateurs.*.fonction' => 'required|string|max:255',
-            'approbateurs.*.email' => 'required|email|max:255',
-        ]);
-        foreach ($dataVal['approbateurs'] as $Data) {
-            if (isset($Data['id'])) {
-                $approbateur = Approbateur::find($Data['id']);
-                $approbateur->update($Data);
-            } else { 
-                Approbateur::create($Data);
+    {    $approbateurs = $request->input('approbateurs');
+
+        foreach ($approbateurs as $data) {
+            $approbateur = Approbateur::findOrFail($data['id']);
+            if ($this->checkApproverInAPI($data['name'], $data['email'])) {
+                $approbateur->name = $data['name'];
+                $approbateur->fonction = $data['fonction'];
+                $approbateur->save();
+
+            } else {
+                return redirect()->with('error','Le nom ou l\'email de l\'approbateur n\'est pas valide');
             }
         }
-        return back();
+        return redirect()->with('message', "la fonction a été modifié avec succes");
     }
     public function destroy($id)
     {

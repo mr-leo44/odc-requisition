@@ -1,9 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
-            {{ __('Demandes') }}
-        </h2>
-    </x-slot>
+
     @if (session('success'))
         <div id="alert-3"
             class="flex items-center p-4 my-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
@@ -35,9 +31,8 @@
         @if (Session::get('authUser')->compte->role->value !== 'livraison')
             <div class="flex justify-end my-2">
                 <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
-                    class="px-5 py-2.5 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     type="button">
-                    Ajouter
+                    <i class="material-icons-round text-base text-orange-500">add</i>
                 </button>
             </div>
         @endif
@@ -83,8 +78,9 @@
                             <td class="px-6 py-4 text-right">
                                 <a onclick="supprimer(event);" data-modal-target="delete-modal"
                                     data-modal-toggle="delete-modal"
-                                    href="{{ route('demandes.destroy', $demande->id) }}"
-                                    class=" bg-orange-700 px-6 py-1 text-white rounded">Supprimer</a>
+                                    href="{{ route('demandes.destroy', $demande->id) }}"> 
+                                    <i class="material-icons-round text-base text-red-500">delete_outline</i>
+                                </a>
                             </td>
                         @else
                             <td></td>
