@@ -15,6 +15,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard')->middleware(['auth', 'role:livraison']);
 Route::get('/profile', [ProfileController::class, 'profile'])->name('profile.index')->middleware('auth');
+Route::put('/profile/{user}/update', [ProfileController::class, 'profileUpdate'])->name('profile.update')->middleware('auth');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/demande_route.php';
