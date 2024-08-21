@@ -39,6 +39,12 @@
                             </span>
                         </li>
                     </ul>
+                    <div class="flex justify-end my-4">
+                        <button data-modal-target="modal" data-modal-toggle="modal" type="button" id="user-update"
+                            class="px-3 py-2 bg-orange-500 opacity-85 hover:bg-orange-500 hover:opacity-95 text-white rounded">
+                            Mettre  à jour mes informations
+                        </button>
+                    </div>
                 </div>
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-700 p-8">
                     <h4 class="text-xl text-gray-900 dark:text-white font-bold">Collaborateurs</h4>
@@ -175,8 +181,9 @@
                 </div>
             </div>
         </div>
-
+        <x-user-update :user="$user" :users="$users" :directions="$directions" :services="$services" />
     </div>
+    
 
     <script>
         var collaborateurs = @json($collaborateurs);
