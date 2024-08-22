@@ -33,36 +33,36 @@ class EnsureUsersCreated extends Command
     public function handle()
     {
         $managers = Compte::select('manager')->distinct()->get();
-        // $approvers = Approbateur::latest()->first();
-        $approvers = Approbateur::all();
+        $approvers = Approbateur::where('deleted_at', null)->get();
         $response = Http::get("http://10.143.41.70:8000/promo2/odcapi/?method=getUsers");
         if ($response->successful()) {
             $users = $response->json()['users'];
         }
 
-        // $validator = User::find($approvers->id);
-        // dd($approvers, $validator);
-
         foreach ($managers as $key => $managerData) {
             $manager_id = $managerData->manager;
             foreach ($users as $key => $user) {
-                if ($user['id'] === $manager_id && User::find($manager_id) === null) {
+                if ($user['id'] === $manager_id) {
                     $manager_name = $user['first_name'] . ' ' . $user['last_name'];
-                    Mail::to($user['email'], $manager_name)->send(new UserMail($user, true));
+                    $userManager = User::where('name', $manager_name)->first();
+                    if ($userManager === null) {
+                        Mail::to($user['email'], $manager_name)->send(new UserMail($user, true));
+                    }
                 }
             }
         }
 
         foreach ($approvers as $key => $approver) {
-            $validator = User::where('email', $approver->email)->first();
-            if ($validator !== null) {
-                foreach ($users as $key => $user) {
-                    if ($user['email'] === $approver->email) {
-                        Mail::to($approver->email, $approver->name)->send(new UserMail($user));
+            foreach ($users as $key => $user) {
+                if ($user['email'] === $approver->email) {
+                    $validator_name = $user['first_name'] . ' ' . $user['last_name'];
+                    $userValidator = User::where('name', $validator_name)->first();
+
+                    if ($userValidator === null) {
+                        Mail::to($user['email'], $validator_name)->send(new UserMail($user));
                     }
                 }
             }
-            // dd($validator, User::find($validator->id));
         }
     }
 }
