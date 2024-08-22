@@ -87,7 +87,7 @@
                                     </td>
                                     <td class="flex justify-center items-center gap-2 px-6 py-3">
                                         <button type="button" title="Changer rôle" data-modal-target="change-role" data-modal-toggle="change-role">
-                                            <i class="material-icons-outlined text-white">
+                                            <i class="material-icons-outlined text-black dark:text-white">
                                                 manage_accounts
                                             </i>
                                         </button>
