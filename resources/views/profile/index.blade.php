@@ -31,10 +31,13 @@
                         <li class="flex border-b py-2">
                             <span class="font-bold w-24">Manager :</span>
                             <span class="text-gray-700 dark:text-white">
-                                @if ($user->manager === $user->name)
-                                    {{ __('Moi') }}
+                                @if ($user->manager)
+                                    @if ($user->manager === $user->name)
+                                        {{ __('Moi') }}
+                                    @else
+                                        {{ $user->manager }}
+                                    @endif
                                 @else
-                                    {{ $user->manager }}
                                 @endif
                             </span>
                         </li>
@@ -42,7 +45,7 @@
                     <div class="flex justify-end my-4">
                         <button data-modal-target="modal" data-modal-toggle="modal" type="button" id="user-update"
                             class="px-3 py-2 bg-orange-500 opacity-85 hover:bg-orange-500 hover:opacity-95 text-white rounded">
-                            Mettre  à jour mes informations
+                            Mettre à jour mes informations
                         </button>
                     </div>
                 </div>
@@ -183,7 +186,7 @@
         </div>
         <x-user-update :user="$user" :users="$users" :directions="$directions" :services="$services" />
     </div>
-    
+
 
     <script>
         var collaborateurs = @json($collaborateurs);

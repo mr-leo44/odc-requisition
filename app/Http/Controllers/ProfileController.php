@@ -20,15 +20,10 @@ class ProfileController extends Controller
     /**
      * Display the user's profile.
      */
-    public function profile(): View
+    public function profile()
     {
         $user = Session::get('authUser');
         $user = User::with('compte.direction')->find($user->id);
-        $manager = User::find($user->compte->manager)->name;
-        $collaborateurs = User::whereHas('compte', function (Builder $query) use ($user) {
-            $query->where('manager', $user->id)->where('user_id', '!=', $user->id);
-        })->get();
-
         $response = Http::get("http://10.143.41.70:8000/promo2/odcapi/?method=getUsers");
         if ($response->successful()) {
             $users = $response->json()['users'];
@@ -36,6 +31,16 @@ class ProfileController extends Controller
 
         $directions = Direction::all();
         $services = Compte::select('service')->distinct()->get();
+
+        $manager = User::find($user->compte->manager);
+        if ($manager) {
+            $manager_name = $manager->name;
+            $user['manager'] = $manager_name;
+        }
+        $collaborateurs = User::whereHas('compte', function (Builder $query) use ($user) {
+            $query->where('manager', $user->id)->where('user_id', '!=', $user->id);
+        })->get();
+
         foreach ($collaborateurs as $key => $collaborateur) {
             $reqs_count = Demande::where('user_id', $collaborateur->id)->count();
             $collaborateur['reqs_count'] = $reqs_count;
@@ -44,7 +49,6 @@ class ProfileController extends Controller
             $collaborateur['recent_reqs'] = $recent_reqs;
             $collaborateur['collab_last_reqs'] = $collab_last_reqs;
         }
-
         $last_month_req = Demande::where('user_id', $user->id)->whereMonth('created_at', Carbon::now()->subMonth()->month)->count();
         $this_month_req = Demande::where('user_id', $user->id)->whereMonth('created_at', Carbon::now()->month)->count();
         $user_reqs = Demande::where('user_id', $user->id)->get();
@@ -57,7 +61,6 @@ class ProfileController extends Controller
         }
 
         $user['validated_reqs'] = $count;
-        $user['manager'] = $manager;
         $user['this_month_req'] = $this_month_req;
         $user['last_month_req'] = $last_month_req;
         return view('profile.index', compact('user', 'collaborateurs', 'users', 'directions', 'services'));
@@ -70,34 +73,32 @@ class ProfileController extends Controller
             'service' => 'required|string|max:255',
             'manager' => 'required|string|max:255',
         ]);
-    
+
         $compte = $user->compte;
-    
-       
+
+
         $direction = Direction::where('name', $request->direction)->first();
         if ($direction) {
-            $compte->direction_id = $direction->id; 
+            $compte->direction_id = $direction->id;
         }
-    
-        
+
+
         $manager = User::where('name', $request->manager)->first();
         if ($manager) {
-            $compte->manager = $manager->id;  
+            $compte->manager = $manager->id;
         } else {
             $user_array = explode(' ', $request->manager);
             $response = Http::get("http://10.143.41.70:8000/promo2/odcapi/?method=getUserByName&name={$user_array[0]}");
             if ($response->successful()) {
                 $userResponse = $response->json();
                 $managerData = $userResponse['users'][0];
-                $compte->manager = $managerData['id'];  
+                $compte->manager = $managerData['id'];
             }
         }
-    
+
         $compte->service = $request->service;
-       $compte->save();
+        $compte->save();
 
         return redirect()->route('profile.index')->with('success', 'Vos informations ont été mises à jour avec succès');
     }
-    
-
 }
