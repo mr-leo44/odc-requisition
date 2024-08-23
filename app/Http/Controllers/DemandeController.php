@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RoleEnum;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Demande;
@@ -155,58 +156,85 @@ class DemandeController extends Controller
      * Display the specified resource.
      */
     public function show(Demande $demande)
-    { {
-            $en_cours = Traitement::where('demande_id', $demande->id)
-                ->orderBy('id', 'DESC')
-                ->first();
-            $manager_id = User::find($demande->user->compte->manager);
-            $connected_user = Session::get('authUser');
-            if ($connected_user->id === $en_cours->demandeur_id || $connected_user->id === $en_cours->approbateur_id) {
+    {
+        $en_cours = Traitement::where('demande_id', $demande->id)
+            ->orderBy('id', 'DESC')
+            ->first();
+        $manager_id = User::find($demande->user->compte->manager);
+        $demande['manager'] = $manager_id;
+        $connected_user = Session::get('authUser');
+
+        if ($connected_user->id === $en_cours->demandeur_id || $connected_user->id === $en_cours->approbateur_id) {
+            $manager = User::find($manager_id);
+            $approbateurs = Approbateur::orderBy('level', 'ASC')->get()->keyBy('email');
+            $traitements = Traitement::where('demande_id', $demande->id)
+                ->orderBy('level', 'ASC')
+                ->get();
+            $users = User::all();
+
+            $users_approbateurs = [];
+            $validated_levels = [];
+            foreach ($traitements as $traitement) {
+                if (in_array($traitement->status, ['validé', 'rejeté'])) {
+                    $validated_levels[] = $traitement->level;
+                }
+            }
+            // les autres approbateurs
+            foreach ($users as $user) {
+                if (isset($approbateurs[$user->email])) {
+                    $approbateur = $approbateurs[$user->email];
+                    $a_valide = in_array($approbateur->level, $validated_levels);
+                    // Ajouter seulement si les niveaux inférieurs sont validés
+                    if (empty($validated_levels) || max($validated_levels) >= ($approbateur->level - 1)) {
+                        $users_approbateurs[] = [
+                            'user' => $user,
+                            'level' => $approbateur->level,
+                            'validated' => $a_valide,
+                        ];
+                    }
+                }
+            }
+            // Trier les approbateurs
+            $users_approbateurs = collect($users_approbateurs)->sortBy(function ($item) {
+                return $item['validated'] ? -1 : $item['level'];
+            });
+            // informations finales pour la vue
+            $final_approbateurs = $users_approbateurs->pluck('user');
+            $date_validate = [];
+            foreach ($traitements as $traitement) {
+                $date_validate[] = $traitement->updated_at->format('d-m-Y H:i:s');
+            }
+            // $demande['manager'] = $manager_id;
+            $demande['approbateurs'] = $final_approbateurs;
+            // dd($demande);
+            return view('demandes.show', compact('demande', 'traitements', 'en_cours', 'date_validate'));
+        } elseif ($connected_user->compte->role->value === RoleEnum::LIVRAISON->value) {
+            if ($en_cours->status === 'validé') {
+
                 $manager = User::find($manager_id);
-                $approbateurs = Approbateur::orderBy('level', 'ASC')->get()->keyBy('email');
+
                 $traitements = Traitement::where('demande_id', $demande->id)
                     ->orderBy('level', 'ASC')
                     ->get();
-                $users = User::all();
-
-                $users_approbateurs = [];
-                $validated_levels = [];
+                $approvers = [];
                 foreach ($traitements as $traitement) {
-                    if (in_array($traitement->status, ['validé', 'rejeté'])) {
-                        $validated_levels[] = $traitement->level;
+                    if ($traitement->level !== 0) {
+                        $user = User::find($traitement->approbateur_id);
+                        $approvers[] = $user;
                     }
                 }
-                // les autres approbateurs
-                foreach ($users as $user) {
-                    if (isset($approbateurs[$user->email])) {
-                        $approbateur = $approbateurs[$user->email];
-                        $a_valide = in_array($approbateur->level, $validated_levels);
-                        // Ajouter seulement si les niveaux inférieurs sont validés
-                        if (empty($validated_levels) || max($validated_levels) >= ($approbateur->level - 1)) {
-                            $users_approbateurs[] = [
-                                'user' => $user,
-                                'level' => $approbateur->level,
-                                'validated' => $a_valide,
-                            ];
-                        }
-                    }
-                }
-                // Trier les approbateurs
-                $users_approbateurs = collect($users_approbateurs)->sortBy(function ($item) {
-                    return $item['validated'] ? -1 : $item['level'];
-                });
-                // informations finales pour la vue
-                $final_approbateurs = $users_approbateurs->pluck('user');
+                $demande['approbateurs'] = collect($approvers);
+
                 $date_validate = [];
                 foreach ($traitements as $traitement) {
                     $date_validate[] = $traitement->updated_at->format('d-m-Y H:i:s');
                 }
-                $demande['manager'] = $manager_id;
-                $demande['approbateurs'] = $final_approbateurs;
                 return view('demandes.show', compact('demande', 'traitements', 'en_cours', 'date_validate'));
             } else {
                 return response()->view('errors.error', ['status_code' => 403], 403);
             }
+        } else {
+            return response()->view('errors.error', ['status_code' => 403], 403);
         }
     }
 
