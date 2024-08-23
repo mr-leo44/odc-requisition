@@ -12,6 +12,7 @@ class DirectionController extends Controller
     public function index()
     {
         $directions = Direction::all();
+        $directions = Direction::paginate();
         return view('directions.index', compact('directions'));
     }
 
@@ -63,11 +64,7 @@ class DirectionController extends Controller
      */
     public function update(Request $request)
     {
-        $direction = Direction::find($request->id);
-        $direction->update([
-            'name' => $request->name,
-        ]);
-        return back()->with('message', 'Direction modifiée avec succès');
+        //
     }
 
     /**
