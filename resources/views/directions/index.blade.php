@@ -1,4 +1,23 @@
 <x-app-layout>
+    
+    <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded ">
+        <div class="rounded-t mb-0 px-4  border-0">
+            <div class="rounded-t mb-0 px-4 py-3 border-0">
+                <div class="flex flex-wrap items-center">
+                    <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+                        <h3 class=" font-bold text-base dark:text-white">Directions</h3>
+                    </div>
+                    <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                        <div class="flex justify-end my-2 space-x-1">
+                            <button type="button" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
+                                <i class="material-icons-outlined text-green-400 font-bold text-xl">add</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div>
         @if (session()->has('message'))
                 <div id="alert-3"
@@ -42,44 +61,32 @@
             @endif
     </div>
     <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
-    <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded ">
-        <div class="rounded-t mb-0 px-4  border-0">
-            <div class="rounded-t mb-0 px-4 py-3 border-0">
-                <div class="flex flex-wrap items-center">
-                    <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-                        <h3 class=" font-bold text-base dark:text-white">Directions</h3>
-                    </div>
-                    <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-                        <div class="flex justify-end my-2 space-x-1">
-                            <button type="button" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
-                                <i class="material-icons-outlined text-green-400 font-bold text-xl">add</i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <div class="relative flex flex-col min-w-0 break-words bg-white dark:bg-gray-800 w-full mt-6 shadow-lg rounded ">
-            <div class="block w-full overflow-x-auto dark:bg-gray-800 rounded ">
-                <form action="" method="post">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class=" uppercase bg-slate-300 dark:bg-gray-700 text-black dark:text-white">
-                            <tr class="text-black dark:text-white">
-                                <th scope="col" class="px-6 py-3">
-                                    N° 
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Names
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-                            <tbody>
-                                @foreach ($directions as  $key => $direction)
+    
+    <head>
+        <!-- DataTables CSS -->
+        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
+        <!-- DataTables JS -->
+        <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+    </head>
+    
+    <div class="bg-white dark:bg-gray-900 p-4 shadow-md sm:rounded-lg">
+        <div class="overflow-x-auto">
+            <table id="example" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
+                     <tr class="text-black dark:text-white">
+                        <th scope="col" class="px-6 py-3">
+                            N° 
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Names
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white dark:bg-gray-900">
+                     @foreach ($directions as  $key => $direction)
                                 
                                     <tr  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <th scope="row"class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -89,32 +96,40 @@
                                         <td class="px-6 py-3">
                                             {{ $direction->name }}
                                         </td>
-                                        <td class="flex space-x-7">
-                                                <a href="{{ route('directions.destroy', $direction->id) }}" class="text-gray-400 hover:text-gray-100 ml-2"
+                                        <td class="px-6 py-3">
+                                                <a href="{{ route('directions.destroy', $direction->id) }}" class=" justify-items-start"
                                                     onclick="supprimer(event);" 
                                                     data-modal-target="delete-modal"
                                                     data-modal-toggle="delete-modal"
                                                     >
                                                     <i class="material-icons-round text-base text-red-500">delete_outline</i>
-                                                </a>
-                                                <a href="#" class="text-gray-400 hover:text-gray-100 ml-2"
-                                                data-modal-target="edit-modal" 
-                                                data-modal-toggle="edit-modal"
-                                                data-direction-id="{{ $direction->id }}"
-                                                data-direction-name="{{ $direction->name }}">
-                                                <i class="material-icons-outlined text-base dark:text-white">edit</i>
-                                                </a>
-                                                
-                                        </td>
-                                    </tr>
-                                @endforeach
-                        </tbody>
-                    </table>
-                </form>
-            </div>
+                                     </a>                          
+                                </td>
+                                </tr>
+                        @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-4">
+            {{ $directions->links() }}
+        </div>
     </div>
     <x-createDirection/>
     <x-deleteDirection :message="__('Voulez-vous  vraiment supprimer cette Direction ?')"/>
-    <x-editDirection/>
-
+    <script>
+        new DataTable('#example', {
+            info: false,
+            ordering: true,
+            paging: true,
+            pageLength: {{ $directions->perPage() }},
+            language: {
+                searchPlaceholder: "Search...",
+                paginate: {
+                    previous: "Précédent",
+                    next: "Suivant"
+                }
+            },
+            lengthChange: false, // Désactive la sélection du nombre d'éléments par page
+        });
+    </script>
 </x-app-layout>
