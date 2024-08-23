@@ -2,7 +2,7 @@
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <x-slot name="header">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Demandes') }}
+                {{ __('Details de la Demande n°') }} {{$demande->numero}}
             </h2>
         </x-slot>
         @if ($errors->any())
@@ -113,8 +113,12 @@
                         <span class="block font-semibold lg:text-sm">Service</span>
                         <span class="font-normal">{{ $demande->service }}</span>
                     </th>
-                    @foreach ($demande->approbateurs as $key => $approbateur)
-                        <th scope="col" class="px-6 py-3 text-center">{{ $approbateur->fonction }}</th>
+                    @foreach ($demande->approbateurs as $approbateur)
+                        @if ($approbateur->fonction)
+                            <th scope="col" class="px-6 py-3 text-center">{{ $approbateur->fonction }}</th>
+                        @else
+                            <th scope="col" class="px-6 py-3 text-center">{{ __(' ') }}</th>
+                        @endif
                     @endforeach
                 </tr>
                 <tr
@@ -130,10 +134,9 @@
                             <span class="font-normal">{{ $demande->manager->name }}</span>
                         @endif
                     </td>
-                    @foreach ($demande->approbateurs as $key => $approbateur)
+                    @foreach ($demande->approbateurs as $approbateur)
                         <td scope="col" class="px-6 py-3 text-center">{{ $approbateur->name }}</th>
                     @endforeach
-
                 </tr>
             </thead>
             <tbody>
@@ -221,13 +224,4 @@
     <x-valider :demande="$demande" />
     <x-rejeter :demande="$demande" />
     <x-show-livraison :details="$demande->demande_details" />
-
-    <script>
-        new DataTable('#example', {
-            info: true,
-            ordering: false,
-            paging: true,
-        });
-    </script>
-
 </x-app-layout>
