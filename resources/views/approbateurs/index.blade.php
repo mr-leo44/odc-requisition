@@ -152,7 +152,7 @@
                         approbateurIds.push($(this).data('id'));
                     });
                     $.ajax({
-                        url: '{{route('update.levels')}}',
+                        url: "{{route('update.levels')}}",
                         type: 'POST',
                         data: {
                             _token: $('meta[name="csrf-token"]').attr('content'),
