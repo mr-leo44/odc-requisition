@@ -13,22 +13,22 @@
 
         <div class="my-4 flex flex-col 2xl:flex-row space-y-3 2xl:space-y-0 2xl:space-x-4">
             <div class="w-full flex flex-col gap-3 2xl:w-1/3">
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-700 p-8">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
                     <h4 class="text-xl text-gray-900 dark:text-white font-bold">Informations</h4>
                     <ul class="mt-2 text-gray-700 dark:text-white">
-                        <li class="flex border-y py-2">
+                        <li class="flex border-y dark:border-gray-600 py-2">
                             <span class="font-bold w-24">Username :</span>
                             <span class="text-gray-700 dark:text-white">{{ session()->get('user') }}</span>
                         </li>
-                        <li class="flex border-y py-2">
+                        <li class="flex border-b dark:border-gray-600 py-2">
                             <span class="font-bold w-24">Direction :</span>
                             <span class="text-gray-700 dark:text-white">{{ $user->compte->direction->name }}</span>
                         </li>
-                        <li class="flex border-b py-2">
+                        <li class="flex border-b dark:border-gray-600 py-2">
                             <span class="font-bold w-24">Service :</span>
                             <span class="text-gray-700 dark:text-white">{{ $user->compte->service }}</span>
                         </li>
-                        <li class="flex border-b py-2">
+                        <li class="flex border-b dark:border-gray-600 py-2">
                             <span class="font-bold w-24">Manager :</span>
                             <span class="text-gray-700 dark:text-white">
                                 @if ($user->manager)
@@ -49,27 +49,24 @@
                         </button>
                     </div>
                 </div>
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-700 p-8">
-                    <h4 class="text-xl text-gray-900 dark:text-white font-bold">Collaborateurs</h4>
-                    @if ($collaborateurs->count() > 0)
-                        <ul>
-                            @foreach ($collaborateurs as $key => $collaborateur)
-                                <li class="flex py-2">
-                                    <span class="text-gray-700 dark:text-white">{{ $collaborateur->name }}</span>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @else
-                        <ul>
-                            <li class="flex border-none py-2 dark:text-white">{{ __('Pas de collaborateurs') }}</li>
-                        </ul>
-                    @endif
-                </div>
-
+                @if ($user->isManager)
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
+                        <h4 class="text-xl text-gray-900 dark:text-white font-bold">Collaborateurs</h4>
+                        @if ($collaborateurs->count() > 0)
+                            <ul>
+                                @foreach ($collaborateurs as $key => $collaborateur)
+                                    <li class="flex py-2">
+                                        <span class="text-gray-700 dark:text-white">{{ $collaborateur->name }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                @endif
             </div>
             <div class="flex flex-col w-full 2xl:w-2/3">
                 <div
-                    class="flex-1 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-700 mt-4 md:mt-4 lg:mt-0 p-8">
+                    class="flex-1 bg-white dark:bg-gray-800 rounded-lg shadow-2xl mt-4 md:mt-4 lg:mt-0 p-8">
                     <h4 class="text-xl text-gray-900 dark:text-white font-bold">Mes Statistiques</h4>
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
@@ -189,20 +186,21 @@
 
 
     <script>
-        var collaborateurs = @json($collaborateurs);
-        var collabs_name = []
-        var collabs_req = []
+        var months = @json($months);
 
-        for (var i = 0; i < collaborateurs.length; i++) {
-            collabs_name.push(collaborateurs[i]['name']);
-            collabs_req.push(collaborateurs[i]['reqs_count']);
+        var month_names = []
+        var month_counts = []
+
+        for (var i = 0; i < months.length; i++) {
+            month_names.push(months[i]['name']);
+            month_counts.push(months[i]['count']);
         }
 
         const dataVerticalBarChart = {
-            labels: collabs_name,
+            labels: month_names,
             datasets: [{
                 label: 'Nombre de demande',
-                data: collabs_req,
+                data: month_counts,
                 borderColor: 'rgb(54, 162, 235)',
                 backgroundColor: 'rgba(54, 162, 235, 0.5)',
                 hoverOffset: 25,
@@ -218,10 +216,6 @@
                     legend: {
                         position: 'bottom',
                     },
-                    title: {
-                        display: true,
-                        text: 'Requisitions de mes collaborateurs'
-                    }
                 }
             },
         };

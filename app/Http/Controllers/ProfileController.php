@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\Compte;
 use App\Models\Demande;
 use App\Models\Direction;
-use Illuminate\View\View;
 use App\Models\Traitement;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -41,6 +40,18 @@ class ProfileController extends Controller
             $query->where('manager', $user->id)->where('user_id', '!=', $user->id);
         })->get();
 
+        Carbon::setlocale('fr');
+
+        $months = [];
+        if ($user->compte->role->value === 'user') {
+            for ($month = 0; $month <= 11; $month++) {
+                $months[$month]['name'] = Carbon::create()->month($month + 1)->translatedFormat('F');
+                $months[$month]['count'] = Demande::where('user_id', $user->id)->whereMonth('created_at', $month + 1)->whereYear('created_at', Carbon::now()->year)->count();
+            }
+            // dd($months);
+        }
+
+
         foreach ($collaborateurs as $key => $collaborateur) {
             $reqs_count = Demande::where('user_id', $collaborateur->id)->count();
             $collaborateur['reqs_count'] = $reqs_count;
@@ -63,7 +74,7 @@ class ProfileController extends Controller
         $user['validated_reqs'] = $count;
         $user['this_month_req'] = $this_month_req;
         $user['last_month_req'] = $last_month_req;
-        return view('profile.index', compact('user', 'collaborateurs', 'users', 'directions', 'services'));
+        return view('profile.index', compact('user', 'months', 'collaborateurs', 'users', 'directions', 'services'));
     }
 
     public function profileUpdate(Request $request, User $user)
