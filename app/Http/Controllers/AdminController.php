@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Models\Compte;
 use App\Models\Direction;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
@@ -29,11 +28,11 @@ class AdminController extends Controller
         $services = Compte::select('service')->distinct()->get();
         return view('users.index', compact('users', 'usersList', 'directions', 'services'));
     }
-    
+
     public function activateAccount(Request $request, User $user)
     {
         $user_account = Compte::where('user_id', $user->id);
-        if($user->compte->is_activated === 0){
+        if ($user->compte->is_activated === 0) {
             $user_account->update([
                 'is_activated' => 1
             ]);
@@ -44,7 +43,6 @@ class AdminController extends Controller
             ]);
             return back()->with('success', 'Compte désactivé avec succès');
         }
-        
     }
 
     /**
@@ -61,12 +59,12 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:50',
+            'name' => 'required|string|max:50|unique',
             'direction' => ['required', 'string'],
             'manager' => ['required', 'string'],
             'service' => ['required', 'string'],
         ]);
-        
+
         $user_array = explode(' ', $request->name);
         $manager_array = explode(' ', $request->manager);
         $response = Http::get("http://10.143.41.70:8000/promo2/odcapi/?method=getUserByName&name=$user_array[0]");
@@ -80,24 +78,33 @@ class AdminController extends Controller
             $managerData = $dataResponse['users'][0];
             $manager = $managerData['id'];
         }
-        $direction = Direction::where('name', $request->direction)->first();
-        
-        $userInsert = DB::table('users')->insert([
+
+        if (Direction::where('name', $request->direction)->exists()) {
+            $direction = Direction::where('name', '=', $request->direction)->first();
+        } else {
+            if (Session::get('admin') === null) {
+                return back()->with('error', 'Cette direction n\'existe pas!');
+            } else {
+                $direction = Direction::create([
+                    'name' => $request->direction
+                ]);
+            }
+        }
+        $userInserted = User::create([
             'id' => $userData['id'],
             'name' => $userData['first_name'] .  ' ' . $userData['last_name'],
             'email' => $userData['email'],
             'password' => Hash::make('password'),
         ]);
-        if ($userInsert) {
-            $user = User::find($userData['id']);
+        if ($userInserted) {
             Compte::create([
                 "manager" => $manager,
-                "user_id" => $user->id,
+                "user_id" => $userInserted->id,
                 "service" => $request->service,
                 "direction_id" => $direction->id,
                 "role" => $request->role
-            ]);         
-        }   
+            ]);
+        }
         return redirect()->route('users.index')->with('success', 'user créée avec succès');
     }
 
