@@ -323,6 +323,29 @@ class DemandeController extends Controller
             $demandes_array = collect($reqs_delivered);
             $demandes = Demande::whereIn('id', $demandes_array->pluck('id'))->orderBy('created_at', 'desc')->paginate(10);
         }
+
+        $requests = $demandes ;
+        foreach ($requests as $key => $req) {
+            $last_flow = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
+            if($last_flow->status === 'rejeté') {
+                $req['status'] = 'Rejected';
+            } elseif ($last_flow->status === 'validé') {
+                $details = $req->demande_details()->get();
+                $count = 0;
+                foreach ($details as $key => $detail) {
+                    if($detail->qte_demandee === $detail->qte_livree){
+                       $count += 1;
+                    }
+                }
+                if ($count === $details->count()) {
+                    $req['status'] = 'Delivered';
+                } else{
+                    $req['status'] = 'In progress';
+                }
+            } else {
+                $req['status'] = 'In progress';
+            }
+        }
         return view('demandes.historique', compact('demandes'));
     }
 
