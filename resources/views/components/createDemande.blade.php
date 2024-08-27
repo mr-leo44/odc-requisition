@@ -48,13 +48,13 @@
                                         <div class="">
                                             <x-input-label
                                                 class="flex-start font-bold block mb-2 text-sm text-gray-900 dark:text-white"
-                                                for="qte_demandee" :value="__('Quantité')" />
+                                                for="qte_demandee" :value="__('Quantity')" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="flex justify-end mb-4">
                                     <button type="button"
-                                        class="add-input  text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-md p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        class="add-input  text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-md p-2.5 text-center inline-flex items-center me-2">
                                         <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             fill="none" viewBox="0 0 24 24">
@@ -65,7 +65,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="grid gap-4 mb-6 md:grid-cols-6 input-group ">
+                            <div class="grid gap-4 mb-3 md:grid-cols-6 input-group ">
                                 <div class="col-span-5">
                                     <div class="flex justify-between gap-3">
                                         <x-text-input id="designation"
@@ -82,9 +82,9 @@
                                         <x-input-error :messages="$errors->get('qte_demandee')" class="mt-2" />
                                     </div>
                                 </div>
-                                <div class="flex justify-end mb-4">
+                                <div class="flex justify-end mb-2">
                                     <button type="button"
-                                        class="delete-input text-white bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-md p-2.5 text-center inline-flex items-center me-2 dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800">
+                                        class="delete-input text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-md p-2.5 text-center inline-flex items-center me-2">
                                         <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             fill="none" viewBox="0 0 24 24">
@@ -98,10 +98,9 @@
 
                             </div>
                         </div>
-                        <div class="flex justify-end mb-4">
-                            <button type="submit" class="block text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-20 py-2.5 text-center dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800
-                                ">
-                                Envoyer
+                        <div class="flex justify-end mb-1">
+                            <button type="submit" class="block text-white focus:ring-4 bg-orange-500 focus:outline-none font-bold rounded-lg text-sm px-10 py-2 text-center"> 
+                            Send
                             </button>
                         </div>
                     </form>

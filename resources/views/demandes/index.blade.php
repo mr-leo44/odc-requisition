@@ -1,14 +1,16 @@
 <x-app-layout>
     <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded ">
-        <div class="rounded-t mb-0 px-4 py-3 border-0">
+        <div class="bg-slate-300 dark:bg-gray-800 rounded-t mb-0 px-4 py-3 border-0">
             <div class="flex flex-wrap items-center">
                 <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-                    <h3 class=" font-bold text-base dark:text-white">Requests</h3>
+                    <h3 class=" font-bold text-base dark:text-white">Requests In progress</h3>
                 </div>
                 <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
                     @if (Session::get('authUser')->compte->role->value !== 'livraison')
                     <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" type="button">
-                        <i class="material-icons-outlined text-orange-500 font-bold text-xl">add</i>
+                        <svg class="w-[44px] h-[44px] text-orange-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z" clip-rule="evenodd"/>
+                        </svg>
                     </button>
                     @endif
                 </div>
@@ -49,10 +51,10 @@
         <!-- DataTables JS -->
         <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
     </head>
-    <div class="bg-white dark:bg-gray-900 p-4 shadow-md sm:rounded-lg">
+    <div class="bg-white dark:bg-gray-800 p-4 shadow-md sm:rounded-lg">
         <div class="overflow-x-auto">
             <table id="example" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-slate-300 dark:bg-gray-800 dark:text-white">
                     <tr>
                         <th scope="col" class="px-6 py-3">
                             N° Requests
@@ -93,7 +95,9 @@
                             <a onclick="supprimer(event);" data-modal-target="delete-modal"
                                 data-modal-toggle="delete-modal"
                                 href="{{ route('demandes.destroy', $demande->id) }}">
-                                <i class="material-icons-round text-base text-red-500">delete_outline</i>
+                                <svg class="w-[32px] h-[32px] text-red-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                                </svg> 
                             </a>
                             @else
                             <a href="#"></a>
