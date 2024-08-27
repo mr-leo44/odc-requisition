@@ -72,7 +72,7 @@ class DashboardController extends Controller
         $stats['ongoing_reqs'] = $ongoing_reqs;
         $stats['ongoing'] = $reqs_count;
         $directions = Direction::withTrashed()->get();
-        dd($directions);
+        // dd($directions);
         $array_direction_req_count = [];
         foreach ($directions as $key => $direction) {
             $userD = User::whereHas('compte', function (Builder $query) use ($direction) {
