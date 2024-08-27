@@ -7,6 +7,10 @@
                         {{ __('Details de la Demande n°') }} {{$demande->numero}}
                     </h3>
                 </div>
+
+                <h3 class="font-bold text-base dark:text-white text-right mb-4">
+    {{ __('Service') }} {{$demande->service}}
+    </h3>
             </div>
         </div>
     </div>
@@ -21,7 +25,8 @@
     </div>
     @endif
 
-
+    
+    
     @if (session('success'))
     <div id="alert-3"
         class="flex items-center p-4 my-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
@@ -126,11 +131,7 @@
 
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th colspan="2" scope="col" class="px-6 py-3 text-center">
-                    <span class="block font-semibold lg:text-sm">Service</span>
-                    <span class="font-normal">{{ $demande->service }}</span>
-                </th>
+            <tr class="border-b hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-700">
                 @foreach ($demande->approbateurs as $key => $approbateur)
                 <th scope="col" class="px-6 py-3 text-center">{{ $approbateur->fonction }}</th>
                 @endforeach

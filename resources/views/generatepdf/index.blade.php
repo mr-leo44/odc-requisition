@@ -131,11 +131,11 @@ VYdGRhdGU6bW9kaWZ5ADIwMjMtMDgtMjZUMTE6MTQ6MTIrMDA6MDAZfMFWAAAAAElFTkSuQmCC" styl
         </tr>
         @foreach ($demande->demande_details as $key => $item)
         <tr class="items">
-            <td> {{ $key + 1 }}</td>
-            <td> {{ $item->designation }} </td>
-            <td> {{ $item->qte_demandee }} </td>
-            <td>{{ $item->qte_livree }} </td>
-            <td>{{ $demande->user->name }}</td>
+            <td class="center"> {{ $key + 1 }}</td>
+            <td class="center"> {{ $item->designation }} </td>
+            <td class="center"> {{ $item->qte_demandee }} </td>
+            <td class="center">{{ $item->qte_livree }} </td>
+            <td class="center">{{ $demande->user->name }}</td>
         </tr>
         @endforeach
     </table>
@@ -171,16 +171,19 @@ VYdGRhdGU6bW9kaWZ5ADIwMjMtMDgtMjZUMTE6MTQ6MTIrMDA6MDAZfMFWAAAAAElFTkSuQmCC" styl
         width: 100%;
         border-collapse: collapse;
     }
+    .center{
+        text-align: center;
+    }
 
     h1 {
         text-align: center;
         margin-top: 80px;
         font-size: 20px;
-        margin-left: 25%;
+        /* margin-left: 25%; */
     }
 
     h3 {
-        margin-left: 180px;
+        margin-left: 120px;
         margin-bottom: 45px;
     }
 
