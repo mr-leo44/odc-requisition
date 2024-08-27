@@ -177,7 +177,7 @@
             month_counts.push(months[i]['count']);
         }
 
-        console.log(month_counts, month_names);
+        // console.log(month_counts, month_names);  
 
         const dataVerticalBarChart = {
             labels: month_names,
@@ -221,10 +221,11 @@
         var directionsReq = []
 
         for (var i = 0; i < directions.length; i++) {
-            directionsName.push(directions[i]['name']);
-            directionsReq.push(directions[i]['req_count']);
-        }
-        console.log(directionsName);
+            if(directions[i]['req_count'] > 0) {
+                directionsName.push(directions[i]['name']);
+                directionsReq.push(directions[i]['req_count']);
+            }
+        }        
 
         new Chart(ctx1, {
             type: 'line',
