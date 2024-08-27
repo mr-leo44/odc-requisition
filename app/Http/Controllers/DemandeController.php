@@ -160,13 +160,18 @@ class DemandeController extends Controller
         $en_cours = Traitement::where('demande_id', $demande->id)
             ->orderBy('id', 'DESC')
             ->first();
-        $manager_id = User::find($demande->user->compte->manager);
-        $demande['manager'] = $manager_id;
+        $manager = User::find($demande->user->compte->manager);
+        $manager_validator = Traitement::where('demande_id', $demande->id)->where('level', 0)->orderBy('id', 'desc')->first();
+        // dd($demande, $manager, $manager_validator);
+        if($manager_validator->approbateur_id === $manager->id){
+            $demande['manager'] = $manager;
+        } else {
+            $demande['manager'] = User::find($manager_validator->approbateur_id);
+        }
         $connected_user = Session::get('authUser');
-
         if ($connected_user->id === $en_cours->demandeur_id || $connected_user->id === $en_cours->approbateur_id) {
-            $manager = User::find($manager_id);
             $approbateurs = Approbateur::orderBy('level', 'ASC')->get()->keyBy('email');
+            // dd($approbateurs);
             $traitements = Traitement::where('demande_id', $demande->id)
                 ->orderBy('level', 'ASC')
                 ->get();
@@ -204,15 +209,22 @@ class DemandeController extends Controller
             foreach ($traitements as $traitement) {
                 $date_validate[] = $traitement->updated_at->format('d-m-Y H:i:s');
             }
-            // $demande['manager'] = $manager_id;
             $demande['approbateurs'] = $final_approbateurs;
-            // dd($demande);
             return view('demandes.show', compact('demande', 'traitements', 'en_cours', 'date_validate'));
         } elseif ($connected_user->compte->role->value === RoleEnum::LIVRAISON->value) {
             if ($en_cours->status === 'validé') {
 
-                $manager = User::find($manager_id);
-
+                
+                $details = $demande->demande_details()->get();
+                $count = 0;
+                foreach ($details as $key => $detail) {
+                    if($detail->qte_demandee === $detail->qte_livree){
+                       $count += 1;
+                    }
+                }
+                if ($count === $details->count()) {
+                    $demande['delivered'] = true;
+                }
                 $traitements = Traitement::where('demande_id', $demande->id)
                     ->orderBy('level', 'ASC')
                     ->get();
