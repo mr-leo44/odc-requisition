@@ -13,13 +13,13 @@ class ApprobateurController extends Controller
     {
         $users = User::all();
         $approbateurs = Approbateur::query()
-        ->orderBy('level','asc')
-        ->get();
-        return view('approbateurs.index', compact('approbateurs','users'));
+            ->orderBy('level', 'asc')
+            ->get();
+        return view('approbateurs.index', compact('approbateurs', 'users'));
     }
     public function create()
     {
-       //
+        //
     }
     public function store(Request $request)
     {
@@ -27,7 +27,7 @@ class ApprobateurController extends Controller
         $noms = $request->input('name');
         $fonctions = $request->input('fonction');
         $emails = $request->input('email');
-    
+
         for ($i = 0; $i < count($noms); $i++) {
             $nom = $noms[$i];
             $email = $emails[$i];
@@ -36,33 +36,33 @@ class ApprobateurController extends Controller
                 return redirect()->back()->with('error', "L'utilisateur $nom avec l'email $email n'a pas été trouvé dans l'API.");
             }
             $approbateurExistant = Approbateur::withTrashed()->where('name', $nom)->where('email', $email)->first();
-            
-                if ($approbateurExistant) {
-                    if ($approbateurExistant->trashed()) {
-                        Approbateur::create([
-                            'level' => $levels[$i],
-                            'name' => $nom,
-                            'fonction' => $fonctions[$i],
-                            'email' => $email,
-                        ]);
-                        return redirect()->back()->with('message', "L'approbateur a été ajouté.");
-                    } 
-                    return redirect()->back()->with('error', "L'approbateur le nom ou l'email existe déjà.");
+
+            if ($approbateurExistant) {
+                if ($approbateurExistant->trashed()) {
+                    Approbateur::create([
+                        'level' => $levels[$i],
+                        'name' => $nom,
+                        'fonction' => $fonctions[$i],
+                        'email' => $email,
+                    ]);
+                    return redirect()->back()->with('message', "L'approbateur a été ajouté.");
                 }
-                Approbateur::create([
-                    'level' => $levels[$i],
-                    'name' => $nom,
-                    'fonction' => $fonctions[$i],
-                    'email' => $email,
-                ]);
+                return redirect()->back()->with('error', "L'approbateur le nom ou l'email existe déjà.");
+            }
+            Approbateur::create([
+                'level' => $levels[$i],
+                'name' => $nom,
+                'fonction' => $fonctions[$i],
+                'email' => $email,
+            ]);
         }
-    
+
         return redirect()->back()->with('message', "L'approbateur a été ajouté avec succès.");
     }
-    
+
     private function checkApproverInAPI($name, $email)
     {
-        $response = Http::get('http://10.143.41.70:8000/promo2/odcapi/?method=getUsers');  
+        $response = Http::get('http://10.143.41.70:8000/promo2/odcapi/?method=getUsers');
         if ($response->successful()) {
             $data = $response->json();
             if ($data['success']) {
@@ -81,21 +81,26 @@ class ApprobateurController extends Controller
         $approbateurs = Approbateur::findOrFail($id);
         return view('approbateurs.index', compact('approbateurs'));
     }
-    public function update(Request $request, $id)
-    {    $approbateurs = $request->input('approbateurs');
-
+    public function update(Request $request)
+    {
+        $approbateurs = $request->input('approbateurs');
+        $updated = [];
         foreach ($approbateurs as $data) {
             $approbateur = Approbateur::findOrFail($data['id']);
             if ($this->checkApproverInAPI($data['name'], $data['email'])) {
                 $approbateur->name = $data['name'];
                 $approbateur->fonction = $data['fonction'];
                 $approbateur->save();
-
+                $updated[] = $approbateur;
             } else {
-                return redirect()->with('error','Le nom ou l\'email de l\'approbateur n\'est pas valide');
+                return response()->json(['error'=>'le nom de l\'approbateur n\'est pas reconnue']);
             }
         }
-        return redirect()->with('message', "la fonction a été modifié avec succes");
+        if (count($updated) > 0) {
+            return response()->json(['message'=>"modification éffectu"]);
+        } else {
+            return response()->json(['error'=>'Une erreur est survenue lors de la modification des approbateurs']);
+        }
     }
     public function destroy($id)
     {
@@ -114,10 +119,10 @@ class ApprobateurController extends Controller
             $datas[$key]['fonction'] = $approbateur['fonction'];
             $datas[$key]['level'] = $key + 1;
         }
-            Approbateur::truncate();
+        Approbateur::truncate();
         foreach ($datas as $data) {
             DB::table('approbateurs')->Insert($data);
-            
+
         }
         $stock = Approbateur::all();
         return response()->json([
