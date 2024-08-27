@@ -7,6 +7,7 @@ use App\Models\Compte;
 use App\Models\Direction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
@@ -90,16 +91,17 @@ class AdminController extends Controller
                 ]);
             }
         }
-        $userInserted = User::create([
+        $userInserted = DB::table('users')->insert([
             'id' => $userData['id'],
             'name' => $userData['first_name'] .  ' ' . $userData['last_name'],
             'email' => $userData['email'],
             'password' => Hash::make('password'),
         ]);
         if ($userInserted) {
+            $user = User::find($userData['id']);
             Compte::create([
                 "manager" => $manager,
-                "user_id" => $userInserted->id,
+                "user_id" => $user->id,
                 "service" => $request->service,
                 "direction_id" => $direction->id,
                 "role" => $request->role
