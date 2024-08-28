@@ -51,14 +51,16 @@ class ProfileController extends Controller
             // dd($months);
         }
 
-
-        foreach ($collaborateurs as $key => $collaborateur) {
-            $reqs_count = Demande::where('user_id', $collaborateur->id)->count();
-            $collaborateur['reqs_count'] = $reqs_count;
-            $collab_last_reqs = Demande::where('user_id', $collaborateur->id)->whereMonth('created_at', Carbon::now()->subMonth()->month)->count();
-            $recent_reqs = Demande::where('user_id', $collaborateur->id)->whereMonth('created_at', Carbon::now()->month)->count();
-            $collaborateur['recent_reqs'] = $recent_reqs;
-            $collaborateur['collab_last_reqs'] = $collab_last_reqs;
+        if($collaborateurs->count() > 0) {
+            $user['isManager'] = true;
+            foreach ($collaborateurs as $key => $collaborateur) {
+                $reqs_count = Demande::where('user_id', $collaborateur->id)->count();
+                $collaborateur['reqs_count'] = $reqs_count;
+                $collab_last_reqs = Demande::where('user_id', $collaborateur->id)->whereMonth('created_at', Carbon::now()->subMonth()->month)->count();
+                $recent_reqs = Demande::where('user_id', $collaborateur->id)->whereMonth('created_at', Carbon::now()->month)->count();
+                $collaborateur['recent_reqs'] = $recent_reqs;
+                $collaborateur['collab_last_reqs'] = $collab_last_reqs;
+            }
         }
         $last_month_req = Demande::where('user_id', $user->id)->whereMonth('created_at', Carbon::now()->subMonth()->month)->count();
         $this_month_req = Demande::where('user_id', $user->id)->whereMonth('created_at', Carbon::now()->month)->count();
