@@ -4,15 +4,19 @@
             <div class="rounded-t mb-0 px-4 py-3 border-0">
                 <div class="flex flex-wrap items-center">
                     <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-                        <h3 class=" font-bold text-base dark:text-white">Users 
-                            <p> Total Users in System:  {{ $users->count() }}</p> 
+                        <h3 class=" font-bold text-base dark:text-white">Users
+                            <p> Total Users in System: {{ $users->count() }}</p>
                         </h3>
                     </div>
                     <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
                         <div class="flex justify-end my-2 space-x-1">
                             <button data-modal-target="modal" data-modal-toggle="modal" type="button">
-                                <svg class="w-[44px] h-[44px] text-orange-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z" clip-rule="evenodd"/>
+                                <svg class="w-[44px] h-[44px] text-orange-500" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd"
+                                        d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z"
+                                        clip-rule="evenodd" />
                                 </svg>
                             </button>
                         </div>
@@ -34,9 +38,9 @@
                 <span class="sr-only">Info</span>
                 <div class="ms-3 text-sm font-medium">
                     @foreach ($errors->all() as $error)
-                    <ul>
-                        <li>{{$error }}</li>
-                    </ul>
+                        <ul>
+                            <li>{{ $error }}</li>
+                        </ul>
                     @endforeach
                 </div>
                 <button type="button"
@@ -134,22 +138,32 @@
                                             manage_accounts
                                         </i>
                                     </button>
-                                    <form action="{{ route('users.activation', $user) }}" method="post">
-                                        @csrf
-                                        @if ($user->compte->is_activated === 0)
-                                            <button type="submit" title="Activer">
-                                                <i class="material-icons-outlined text-red-500">
+                                    @if ($user->compte->is_activated === 0)
+                                        <button type="submit" title="Activer">
+
+                                            <i class="material-icons-outlined text-red-500">
+                                                <a href="{{ route('users.activation', $user->id) }}"
+                                                    onclick="activerUser(event);"
+                                                    data-modal-target="activerUser-modal"
+                                                    data-modal-toggle="activerUser-modal">
                                                     toggle_off
-                                                </i>
-                                            </button>
-                                        @else
-                                            <button type="submit" title="Désactiver">
-                                                <i class="material-icons-outlined text-green-500">
+                                                </a>
+                                            </i>
+
+
+                                        </button>
+                                    @else
+                                        <button type="submit" title="Désactiver">
+                                            <i class="material-icons-outlined text-green-500">
+                                                <a href="{{ route('users.activation', $user->id) }}"
+                                                    onclick="desactiverUser(event);"
+                                                    data-modal-target="desactiverUser-modal"
+                                                    data-modal-toggle="desactiverUser-modal">
                                                     toggle_on
-                                                </i>
-                                            </button>
-                                        @endif
-                                    </form>
+                                                </a>
+                                            </i>
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -171,6 +185,8 @@
         <x-change-role :user="$user" />
     @endif
     <x-user-create :users="$usersList" :directions="$directions" :services="$services" />
+    <x-activateUser : message="Voulez-vous activer cet utilisateur?" />
+    <x-desactivateUser : message="Voulez-vous desactiver cet utilisateur?" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>

@@ -85,7 +85,7 @@
                 @profile('livraison')
                     <li>
                         <a href="{{ route('dashboard') }}"
-                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group
+                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white group
                              {{ request()->routeIs('dashboard') ? ' bg-orange-400 dark:bg-orange-400' : 'bg-white dark:bg-gray-800' }}">
                             <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -106,7 +106,7 @@
                             data-inactive-classes="text-gray-500 dark:text-white">
                             <h2 id="accordion-flush-heading-2">
                                 <button type="button"
-                                    class="flex items-center w-full font-medium p-2 text-gray-800 dark:text-gray-400 gap-3 dark:hover:text-white dark:hover:bg-gray-700 rounded-lg
+                                    class="flex items-center w-full font-medium p-2 text-gray-800 dark:text-gray-400 gap-3 rounded-lg
                                     {{ request()->routeIs('demandes.*') ? ' bg-orange-400' : 'bg-white dark:bg-gray-800' }}"
                                     data-accordion-target="#accordion-flush-body-2" aria-expanded="true"
                                     aria-controls="accordion-flush-body-2">
@@ -125,7 +125,7 @@
                                     <p
                                         class="mb-2 py-1 px-3 rounded
                                         {{ request()->routeIs('demandes.index') ? ' bg-orange-400 dark:bg-orange-400' : 'bg-white dark:bg-gray-800' }}">
-                                        
+
                                         <a href="{{ route('demandes.index') }}">En cours</a>
                                     </p>
                                     <p
@@ -142,7 +142,7 @@
                 @profile('admin')
                     <li>
                         <a href="{{ route('approbateurs.index') }}"
-                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group
+                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white group
                             {{ request()->routeIs('approbateurs.index') ? ' bg-orange-400 dark:bg-orange-400' : 'bg-white dark:bg-gray-800' }}">
                             <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -155,7 +155,7 @@
                     </li>
                     <li>
                         <a href="{{ route('directions.index') }}"
-                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group
+                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white group
                             {{ request()->routeIs('directions.index') ? ' bg-orange-400 dark:bg-orange-400' : 'bg-white dark:bg-gray-800' }}">
                             <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -169,7 +169,7 @@
                     </li>
                     <li>
                         <a href="{{ route('users.index') }}"
-                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group
+                            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  group
                             {{ request()->routeIs('users.index') ? ' bg-orange-400 dark:bg-orange-400' : 'bg-white dark:bg-gray-800' }}">
                             <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
