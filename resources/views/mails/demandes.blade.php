@@ -38,6 +38,8 @@
                 Bonjour {{ $demande->validateur }}, La demande de requisition numéro {{ $demande->numero }} a été
                 rejetée avec
                 succès.
+                <br><br>
+                Motif : {{ $demande->observation  }}
             @else
                 Bonjour {{ $demande->user->name }}, Votre demande de
                 requisition enregistrée par le numéro {{ $demande->numero }} a été rejetée.
