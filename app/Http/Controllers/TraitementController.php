@@ -38,7 +38,7 @@ class TraitementController extends Controller
                     Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande));
                     Mail::to($validateur->email, $validateur->name)->send(new DemandeMail($demande, true));
                 }
-                return redirect()->route('demandes.index')->with('Validation reussie');
+                return redirect()->back()->with('success', 'Validation reussie');
             } else { // Pendant le passage des flow
                 $prochain_level = (int)($en_cours->level) + 1;
                 $prochain_approb = Approbateur::where('level', $prochain_level)->first();
@@ -67,7 +67,7 @@ class TraitementController extends Controller
                         Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande)); 
                     }
                 }
-                return redirect()->route('demandes.index')->with('success', 'Validation reussie');
+                return redirect()->back()->with('success', 'Validation reussie');
             }
         } elseif ($request->status === 'rejeté') {
             $cloture_traitement = $en_cours->update([
@@ -77,13 +77,14 @@ class TraitementController extends Controller
 
             if ($cloture_traitement) {
                 MailModel::where('traitement_id', $en_cours->id)->delete();
-                $demande['observation'] = $en_cours->observation;
+                $demande['observation'] = $request->observation;
                 $demande['success'] = false;
 
+                // dd($demande);
                 Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande));
             }
 
-            return redirect()->route('demandes.index')->with('success', 'Demande rejetée avec succès');
+            return redirect()->back()->with('success', 'Demande rejetée avec succès');
         } else {
             return redirect()->back();
         }
