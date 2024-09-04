@@ -31,34 +31,27 @@ class DemandeController extends Controller
             $isManager = User::whereHas('compte', function (Builder $query) use ($connected_user) {
                 $query->where('manager', $connected_user->id);
             })->exists();
-            if($isManager) {
+
+            if ($isManager) {
                 Session::put('manager', true);
             }
-            
+
             $isValidator = Approbateur::where('email', $connected_user->email)->exists();
-            if($isValidator) {
+            if ($isValidator) {
                 Session::put('approver', true);
             }
 
-            // dd(Session::all());
-
-            if ($isManager || $isValidator) {
-                $demandes = Demande::whereHas('traitement', function (Builder $query) use ($connected_user) {
-                    $query->where('approbateur_id', $connected_user->id)
-                        ->where('status', 'en cours');
-                })
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(15);
-            } else {
-                $demandes = Demande::whereHas('traitement', function ($query) use ($connected_user) {
-                    $query->where('demandeur_id', $connected_user->id)->where('status', 'en cours');
-                })
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(15);
-            }
+            $demandes = Demande::whereHas('traitement', function ($query) use ($connected_user) {
+                $query->where('demandeur_id', $connected_user->id)->where('status', 'en cours');
+            })
+                ->orderBy('created_at', 'desc')
+                ->paginate(12);
 
             foreach ($demandes as $demande) {
                 $dernier_traitement = Traitement::where('demande_id', $demande->id)->get()->last();
+                if($dernier_traitement->approbateur_id === $connected_user->id) {
+                    $demande['status'] = $dernier_traitement->status;
+                }
                 $demande['level'] = $dernier_traitement->level;
             }
         }
@@ -95,7 +88,17 @@ class DemandeController extends Controller
                 }
             }
             $demandes_array = collect($on_going);
-            $demandes = Demande::whereIn('id', $demandes_array->pluck('id'))->orderBy('created_at', 'desc')->paginate(10);
+            $demandes = Demande::whereIn('id', $demandes_array->pluck('id'))->orderBy('created_at', 'desc')->paginate(12);
+        }
+
+        foreach ($demandes as $demande) {
+            $details = $demande->demande_details;
+            $to_deliver = 0;
+            foreach ($details as $detail) {
+                $sub = $detail->qte_demandee - $detail->qte_livree;
+                $to_deliver += $sub;
+                $demande['to_deliver'] = $to_deliver;
+            }
         }
 
         return view('demandes.index', compact('demandes'));

@@ -59,7 +59,7 @@
         </div>
     </div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-3" id="cardGridView">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-cols-1 gap-3" id="cardGridView">
         @if ($demandes->count() > 0)
             @foreach ($demandes as $demande)
                 <div
@@ -78,10 +78,14 @@
                     </div>
                     <div class="flex justify-between items-center p-4">
                         <div>
-                            <p class="text-gray-700 dark:text-gray-400 text-sm">40 Pièces à livrer</p>
+                            <p class="text-gray-700 dark:text-gray-400 text-sm">{{ $demande->to_deliver }}
+                                {{ __('Pièce') }}@if ($demande->to_deliver > 1)
+                                    s
+                                @endif à livrer</p>
                         </div>
                         <div class="flex justify-end items-center gap-2">
-                            <a href="" class="bg-orange-500 px-3 py-2 rounded">
+                            <button data-modal-target="show-req-modal" data-modal-toggle="show-req-modal"
+                                class="bg-orange-500 px-3 py-2 rounded">
                                 <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                     viewBox="0 0 24 24">
@@ -90,7 +94,7 @@
                                     <path stroke="currentColor" stroke-width="2"
                                         d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                 </svg>
-                            </a>
+                            </button>
                             @if (session()->get('authUser')->id == $demande->user_id && $demande->level === 0)
                                 <a onclick="supprimer(event);" data-modal-target="delete-modal"
                                     data-modal-toggle="delete-modal"
@@ -105,25 +109,16 @@
                                     </svg>
                                 </a>
                             @endif
-                            <a href="" class="bg-red-600 px-3 py-2 rounded">
-                                <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                    viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M5 17v-5h1.5a1.5 1.5 0 1 1 0 3H5m12 2v-5h2m-2 3h2M5 10V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1v6M5 19v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1M10 3v4a1 1 0 0 1-1 1H5m6 4v5h1.375A1.627 1.627 0 0 0 14 15.375v-1.75A1.627 1.627 0 0 0 12.375 12H11Z" />
-                                </svg>
-                            </a>
                         </div>
                     </div>
                 </div>
             @endforeach
         @else
-            <div class="col-span-1 md:col-span-2 lg:col-span-3">
+            <div class="col-span-1 md:col-span-2 xl:col-span-4 lg:col-span-3">
                 <div class="text-center">
                     <h5
                         class="mb-2 text-md md:text-xl xl:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                        pas de requisition</h5>
+                        Pas de requisition</h5>
                 </div>
             </div>
         @endif
@@ -134,7 +129,9 @@
     <div class="mt-4">
         {{ $demandes->links() }}
     </div>
-
+    @if ($demandes->count() > 0)
+        <x-showRequisition :req="$demande" />
+    @endif
     <x-createDemande />
     <x-deleteDemande />
 
