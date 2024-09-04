@@ -120,7 +120,7 @@ class RegisteredUserController extends Controller
             if ($user->compte->role->value === 'livraison') {
                 return redirect()->route('dashboard');
             } elseif ($user->compte->role->value === 'admin') {
-                return redirect()->route('approbateurs.index');
+                return redirect()->route('users.index');
             } elseif ($user->compte->role->value === 'user') {
                 return redirect()->route('demandes.index');
             }
