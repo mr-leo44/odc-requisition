@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\RoleEnum;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Enums\RoleEnum;
 use App\Models\Demande;
 use App\Mail\DemandeMail;
 use App\Models\Livraison;
 use App\Models\Traitement;
 use App\Models\Approbateur;
+use App\Mail\DeliveriesMail;
 use Illuminate\Http\Request;
 use App\Models\DemandeDetail;
 use App\Models\Mail as MailModel;
@@ -30,8 +31,16 @@ class DemandeController extends Controller
             $isManager = User::whereHas('compte', function (Builder $query) use ($connected_user) {
                 $query->where('manager', $connected_user->id);
             })->exists();
-
+            if($isManager) {
+                Session::put('manager', true);
+            }
+            
             $isValidator = Approbateur::where('email', $connected_user->email)->exists();
+            if($isValidator) {
+                Session::put('approver', true);
+            }
+
+            // dd(Session::all());
 
             if ($isManager || $isValidator) {
                 $demandes = Demande::whereHas('traitement', function (Builder $query) use ($connected_user) {
@@ -88,6 +97,7 @@ class DemandeController extends Controller
             $demandes_array = collect($on_going);
             $demandes = Demande::whereIn('id', $demandes_array->pluck('id'))->orderBy('created_at', 'desc')->paginate(10);
         }
+
         return view('demandes.index', compact('demandes'));
     }
 
@@ -163,7 +173,7 @@ class DemandeController extends Controller
         $manager = User::find($demande->user->compte->manager);
         $manager_validator = Traitement::where('demande_id', $demande->id)->where('level', 0)->orderBy('id', 'desc')->first();
         // dd($demande, $manager, $manager_validator);
-        if($manager_validator->approbateur_id === $manager->id){
+        if ($manager_validator->approbateur_id === $manager->id) {
             $demande['manager'] = $manager;
         } else {
             $demande['manager'] = User::find($manager_validator->approbateur_id);
@@ -214,12 +224,12 @@ class DemandeController extends Controller
         } elseif ($connected_user->compte->role->value === RoleEnum::LIVRAISON->value) {
             if ($en_cours->status === 'validé') {
 
-                
+
                 $details = $demande->demande_details()->get();
                 $count = 0;
                 foreach ($details as $key => $detail) {
-                    if($detail->qte_demandee === $detail->qte_livree){
-                       $count += 1;
+                    if ($detail->qte_demandee === $detail->qte_livree) {
+                        $count += 1;
                     }
                 }
                 if ($count === $details->count()) {
@@ -324,22 +334,22 @@ class DemandeController extends Controller
             $demandes = Demande::whereIn('id', $demandes_array->pluck('id'))->orderBy('created_at', 'desc')->paginate(10);
         }
 
-        $requests = $demandes ;
+        $requests = $demandes;
         foreach ($requests as $key => $req) {
             $last_flow = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
-            if($last_flow->status === 'rejeté') {
+            if ($last_flow->status === 'rejeté') {
                 $req['status'] = 'Rejected';
             } elseif ($last_flow->status === 'validé') {
                 $details = $req->demande_details()->get();
                 $count = 0;
                 foreach ($details as $key => $detail) {
-                    if($detail->qte_demandee === $detail->qte_livree){
-                       $count += 1;
+                    if ($detail->qte_demandee === $detail->qte_livree) {
+                        $count += 1;
                     }
                 }
                 if ($count === $details->count()) {
                     $req['status'] = 'Delivered';
-                } else{
+                } else {
                     $req['status'] = 'In progress';
                 }
             } else {
@@ -373,6 +383,26 @@ class DemandeController extends Controller
                         ]);
                     }
                 }
+            }
+
+            $req = Demande::find($demandeDetail->id);
+            $req_details = DemandeDetail::where('demande_id', $req->id)->get();
+            $delivered = 0;
+            foreach ($req_details as $req_detail) {
+                $req_count = $req_detail->qte_demandee;
+                $deliveries = Livraison::where('demande_detail_id', $req_detail->id)->get();
+                $count = 0;
+                if ($deliveries->count() > 0) {
+                    foreach ($deliveries as $key => $delivery) {
+                        $count += $delivery->quantite;
+                    }
+                }
+                if ($req_count === $count) {
+                    $delivered += 1;
+                }
+            }
+            if ($delivered === $req_details->count()) {
+                Mail::to($req->user->email, $req->user->name)->send(new DeliveriesMail($req));
             }
         }
 
