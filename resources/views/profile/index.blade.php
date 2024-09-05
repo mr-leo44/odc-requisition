@@ -1,12 +1,14 @@
 <x-app-layout>
     <div class="h-full bg-white dark:bg-gray-800 p-8">
-        <div class="bg-white dark:bg-gray-100 rounded-lg shadow-xl pb-8">
-            <div class="w-full h-[250px] bg-gray-800 rounded-t-lg dark:rounded-t-none">
+
+        <div class="bg-white dark:bg-gray-100 rounded-lg shadow-xl pb-8" style="background-image: url('img/bg.gif')">
+            
+            <div class="w-full h-[250px] bg-gray-800 rounded-t-lg dark:rounded-t-none" style="background-image: url('img/bg.gif');">
             </div>
             <div class="flex flex-col items-center -mt-20 dark:rounded-t-lg">
-                <img src="{{ asset('img/orange.png') }}" class="w-40 border-4 border-white rounded-full" alt="profile">
+                <img src="{{ asset('img/profil.png') }}" class="w-40 border-4 border-white rounded-full" alt="profile">
                 <div class="flex items-center space-x-2 mt-2">
-                    <p class="text-3xl">{{ $user->name }}</p>
+                    <p class="text-7xl text-white dark:text-white bg-gray-800 rounded-full p-2 " >{{ $user->name }}</p>
                 </div>
             </div>
         </div>
@@ -14,22 +16,22 @@
         <div class="my-4 flex flex-col 2xl:flex-row space-y-3 2xl:space-y-0 2xl:space-x-4">
             <div class="w-full flex flex-col gap-3 2xl:w-1/3">
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
-                    <h4 class="text-xl text-gray-900 dark:text-white font-bold">Informations</h4>
+                    <h4 class="flex border-b text-xl  dark:border-gray-600 text-gray-900 dark:text-white font-bold">Informations</h4>
                     <ul class="mt-2 text-gray-700 dark:text-white">
-                        <li class="flex border-y dark:border-gray-600 py-2">
-                            <span class="font-bold w-24">Username :</span>
+                        <li class="flex  dark:border-gray-600 py-2">
+                            <span class="font-bold w-24 text-[#ff7900]">Username  :</span>
                             <span class="text-gray-700 dark:text-white">{{ session()->get('user') }}</span>
                         </li>
-                        <li class="flex border-b dark:border-gray-600 py-2">
-                            <span class="font-bold w-24">Direction :</span>
+                        <li class="flex  dark:border-gray-600 py-2">
+                            <span class="font-bold w-24 text-[#ff7900]">Direction :</span>
                             <span class="text-gray-700 dark:text-white">{{ $user->compte->direction->name }}</span>
                         </li>
-                        <li class="flex border-b dark:border-gray-600 py-2">
-                            <span class="font-bold w-24">Service :</span>
+                        <li class="flex  dark:border-gray-600 py-2">
+                            <span class="font-bold w-24 text-[#ff7900]">Service :</span>
                             <span class="text-gray-700 dark:text-white">{{ $user->compte->service }}</span>
                         </li>
-                        <li class="flex border-b dark:border-gray-600 py-2">
-                            <span class="font-bold w-24">Manager :</span>
+                        <li class="flex  dark:border-gray-600 py-2">
+                            <span class="font-bold w-24 text-[#ff7900]">Manager :</span>
                             <span class="text-gray-700 dark:text-white">
                                 @if ($user->manager)
                                     @if ($user->manager === $user->name)
@@ -39,12 +41,12 @@
                                     @endif
                                 @else
                                 @endif
-                            </span>
+                            </span>cv
                         </li>
                     </ul>
                     <div class="flex justify-end my-4">
                         <button data-modal-target="modal" data-modal-toggle="modal" type="button" id="user-update"
-                            class="px-3 py-2 bg-orange-500 opacity-85 hover:bg-orange-500 hover:opacity-95 text-white rounded">
+                            class="px-3 py-2 bg-[#ff7900] opacity-85 hover:bg-gray-800  hover:opacity-500 hover:opacity-95 text-white rounded">
                             Mettre à jour mes informations
                         </button>
                     </div>
