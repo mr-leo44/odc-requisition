@@ -85,6 +85,7 @@ class ProfileController extends Controller
             'direction' => 'required|string|max:255',
             'service' => 'required|string|max:255',
             'manager' => 'required|string|max:255',
+            'city'=> 'required|string|max:255',
         ]);
 
         $compte = $user->compte;
@@ -110,6 +111,9 @@ class ProfileController extends Controller
         }
 
         $compte->service = $request->service;
+        $compte->save();
+
+        $compte->city = $request->city;
         $compte->save();
 
         return redirect()->route('profile.index')->with('success', 'Vos informations ont été mises à jour avec succès');
