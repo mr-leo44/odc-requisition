@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Compte;
 use App\Models\Direction;
+use App\Models\Approbateur;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -23,11 +24,11 @@ class AdminController extends Controller
         $response = Http::get("http://10.143.41.70:8000/promo2/odcapi/?method=getUsers");
         if ($response->successful()) {
             $usersList = $response->json()['users'];
-        }
-
+        }        // dd($usersList);
+        $approbateurs = Approbateur::all();
         $directions = Direction::all();
         $services = Compte::select('service')->distinct()->get();
-        return view('users.index', compact('users', 'usersList', 'directions', 'services'));
+        return view('users.index', compact('users', 'approbateurs','usersList', 'directions', 'services'));
     }
 
     public function activateAccount(Request $request, User $user)
