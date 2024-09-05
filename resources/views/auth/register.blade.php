@@ -1,13 +1,13 @@
 <x-guest-layout>
-    <div class="flex flex-col lg:flex-row h-screen">
+    <div class="flex flex-col lg:flex-row h-screen dark:bg-slate-400">
         <!-- Image desktop -->
-        <div class="hidden lg:block lg:w-3/5"> <!-- Ajustement de lg:w-3/5 pour 60% de largeur -->
-            <img src="{{asset('img/requisition Req.png')}}" class="object-cover w-full h-full" alt="">
+        <div class="hidden lg:block lg:w-3/5 bg-slate-100"> 
+            <img src="{{asset('img/register.png')}}" class="object-cover w-full h-full" alt="">
         </div>
   
         <!-- l'image sur mobile -->
-        <div class="block order-first lg:hidden w-full h-1/4 mb-8">
-            <img class="object-cover w-full h-full" src="{{asset('img/requisition Req.png')}}" alt="">
+        <div class="block order-first lg:hidden w-full h-1/4 mb-8 bg-slate-100">
+            <img class="object-cover w-full h-full" src="{{asset('img/register.png')}}" alt="">
             <div class="flex flex-col items-center -mt-20">
                 <img src="{{ asset('img/orange.png') }}" class="w-40 border-1" alt="profile">
             </div>
@@ -23,7 +23,7 @@
         </div>
   
         <!-- Partie Formulaire -->
-        <div class="flex items-center justify-center w-full lg:w-2/5 px-6 py-3 mt-32 md:mt-16 lg:mt-0">
+        <div class="flex items-center justify-center w-full lg:w-2/5 px-6 py-3 mt-16 md:mt-16 lg:mt-0">
             <div class="w-full max-w-md">
                 <div class="hidden lg:flex justify-start mb-4">
                   <svg class="w-[42px] h-[42px] text-orange-500 dark:text-orange-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
