@@ -26,9 +26,18 @@ class RegisteredUserController extends Controller
         }
 
         $directions = Direction::all();
+
+
         $services = Compte::select('service')->distinct()->get();
+
+        $city = Compte::select('city')->distinct()->get();
+
         if (Session::has('user')) {
-            return view('auth.register', compact('users', 'directions', 'services'));
+
+
+
+
+            return view('auth.register', compact('users', 'directions', 'services', 'city'));
         } else {
             return redirect()->route('login')->with('error', 'Veuillez d\'abord vous connecter');
         }
@@ -45,6 +54,7 @@ class RegisteredUserController extends Controller
             'direction' => ['required', 'string'],
             'manager' => ['required', 'string'],
             'service' => ['required', 'string'],
+            'city' => ['required', 'string'],
         ]);
 
         if (Direction::where('name', $request->direction)->exists()) {
@@ -57,6 +67,12 @@ class RegisteredUserController extends Controller
                     'name' => $request->direction
                 ]);
             }
+        }
+
+        if (Compte::where('city', $request->city)->exists()) {
+            $city = Compte::where('city', $request->city)->first();
+        } else {
+            $city = $request->city;
         }
 
         if (User::where('name', $request->manager)->exists()) {
@@ -86,13 +102,15 @@ class RegisteredUserController extends Controller
                     "user_id" => $user->id,
                     "service" => $request->service,
                     "direction_id" => $direction->id,
-                    "role" => RoleEnum::ADMIN
+                    "role" => RoleEnum::ADMIN,
+                    "city" => $city
                 ]);
                 Session::put('user', $adminData['username']);
             }
         } else {
             $username = session('user')['username'];
             $response = Http::get("http://10.143.41.70:8000/promo2/odcapi/?method=getUserByUsername&username=$username");
+
             if ($response->successful()) {
                 $userResponse = $response->json();
                 $userData = $userResponse['users'][0];
@@ -103,10 +121,12 @@ class RegisteredUserController extends Controller
                     'password' => Hash::make('password'),
                 ]);
                 if ($userInsert) {
+
                     $user = User::find($userData['id']);
                     Compte::create([
                         "manager" => $manager,
                         "user_id" => $user->id,
+                        "city" => $city,
                         "service" => $request->service,
                         "direction_id" => $direction->id,
                         "role" => RoleEnum::USER

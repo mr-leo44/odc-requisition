@@ -1,36 +1,41 @@
 <x-guest-layout>
     <div class="flex flex-col lg:flex-row h-screen dark:bg-slate-400">
         <!-- Image desktop -->
-        <div class="hidden lg:block lg:w-3/5 bg-slate-100"> 
-            <img src="{{asset('img/register.png')}}" class="object-cover w-full h-full" alt="">
+        <div class="hidden lg:block lg:w-3/5 bg-slate-100">
+            <img src="{{ asset('img/register.png') }}" class="object-cover w-full h-full" alt="">
         </div>
-  
+
         <!-- l'image sur mobile -->
         <div class="block order-first lg:hidden w-full h-1/4 mb-8 bg-slate-100">
-            <img class="object-cover w-full h-full" src="{{asset('img/register.png')}}" alt="">
+            <img class="object-cover w-full h-full" src="{{ asset('img/register.png') }}" alt="">
             <div class="flex flex-col items-center -mt-20">
                 <img src="{{ asset('img/orange.png') }}" class="w-40 border-1" alt="profile">
             </div>
             <!-- Nom de l'application pour mobile -->
             <div class="flex justify-center mt-1">
-              <svg class="w-[32px] h-[32px] text-orange-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16.153 19 21 12l-4.847-7H3l4.848 7L3 19h13.153Z"/>
-              </svg>
+                <svg class="w-[32px] h-[32px] text-orange-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                        d="M16.153 19 21 12l-4.847-7H3l4.848 7L3 19h13.153Z" />
+                </svg>
                 <h1 class="flex space-x-1text-2xl font-bold text-gray-700 mt-1">
-                  Réquisition
+                    Réquisition
                 </h1>
             </div>
         </div>
-  
+
         <!-- Partie Formulaire -->
         <div class="flex items-center justify-center w-full lg:w-2/5 px-6 py-3 mt-16 md:mt-16 lg:mt-0">
             <div class="w-full max-w-md">
                 <div class="hidden lg:flex justify-start mb-4">
-                  <svg class="w-[42px] h-[42px] text-orange-500 dark:text-orange-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16.153 19 21 12l-4.847-7H3l4.848 7L3 19h13.153Z"/>
-                  </svg>
-                  <h1 class=" flex space-x-2 text-2xl font-bold text-gray-700 mt-1">
-                      Réquisition</h1>
+                    <svg class="w-[42px] h-[42px] text-orange-500 dark:text-orange-500" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                        viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                            d="M16.153 19 21 12l-4.847-7H3l4.848 7L3 19h13.153Z" />
+                    </svg>
+                    <h1 class=" flex space-x-2 text-2xl font-bold text-gray-700 mt-1">
+                        Réquisition</h1>
                 </div>
                 <div class="flex justify-center">
                     <div class="hidden lg:block">
@@ -41,10 +46,11 @@
                 <form action="{{ route('register') }}" method="POST">
                     @csrf
                     <div class="mt-4 ui-widget" id="direction">
-                        
+
                         <label for="search_direction" class="font-bold">Direction :</label>
-                        <input type="text" name="direction" id="search_direction" class="border-gray-500 bg-transparent block w-full px-5 py-3 text-base text-black placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
-                        
+                        <input type="text" name="direction" id="search_direction"
+                            class="border-gray-500 bg-transparent block w-full px-5 py-3 text-base text-black placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
+
                         @if (session('error'))
                             <x-input-error :messages="session('error')" class="mt-2" />
                         @endif
@@ -52,17 +58,29 @@
                     </div>
                     <div class="mt-4 ui-widget" id="service">
                         <label for="search_service" class="font-bold">Service :</label>
-                        <input type="text" name="service" id="search_service" class="border-gray-500 bg-transparent block w-full px-5 py-3 text-base text-black placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
-                        
+                        <input type="text" name="service" id="search_service"
+                            class="border-gray-500 bg-transparent block w-full px-5 py-3 text-base text-black placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
+
                         <x-input-error :messages="$errors->get('service')" class="mt-2" />
-            
+
                     </div>
                     <div class="mt-4 ui-widget">
                         <label for="search_manager" class="font-bold">Manager :</label>
-                        <input type="text" name="manager" id="search_manager" class="border-gray-500 bg-transparent block w-full px-5 py-3 text-base text-black placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
-                        
+                        <input type="text" name="manager" id="search_manager"
+                            class="border-gray-500 bg-transparent block w-full px-5 py-3 text-base text-black placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
+
                         <x-input-error :messages="$errors->get('manager')" class="mt-2" />
                     </div>
+
+                    <div class="mt-4 ui-widget">
+                        <label for="search_city" class="font-bold">Ville :</label>
+                        <input type="text" name="city" id="search_city"
+                            class="border-gray-500 bg-transparent block w-full px-5 py-3 text-base text-black placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
+
+                        <x-input-error :messages="$errors->get('city')" class="mt-2" />
+                    </div>
+
+
                     <div class="text-center mt-3">
                         <x-primary-button class="w-full flex justify-center items-center">
                             Valider
@@ -71,7 +89,7 @@
                 </form>
             </div>
         </div>
-    </div>    
+    </div>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -109,10 +127,28 @@
                 source: servicesData
             });
 
+
+
+            var cities = @json($city);
+            var citiesData = []
+
+            for (var i = 0; i < cities.length; i++) {
+                citiesData.push(cities[i]['city']);
+            }
+
+            $("#search_city").autocomplete({
+                source: citiesData
+            });
+
+
             // Logique pour afficher les erreurs sous les champs respectifs
             @if ($errors->has('direction'))
                 $('html, body').animate({
                     scrollTop: $("#search_direction").offset().top
+                }, 1000);
+            @elseif ($errors->has('city'))
+                $('html, body').animate({
+                    scrollTop: $("#search_city").offset().top
                 }, 1000);
             @elseif ($errors->has('manager'))
                 $('html, body').animate({
