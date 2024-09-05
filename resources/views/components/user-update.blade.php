@@ -48,13 +48,25 @@
                             <x-input-error :messages="$errors->get('service')" class="mt-2" />
 
                         </div>
+
+
+                        <div class="mt-4 ui-widget" id="city">
+                            <x-input-label for="search_city" :value="__('Ville')" />
+                            <x-text-input id="search_city" class="block mt-1 w-full" type="text" name="city"
+                                :value="old('city', $city = $user->compte->city)" required />
+                            <x-input-error :messages="$errors->get('city')" class="mt-2" />
+
+                                
+                        </div>
+
                         <div class="mt-4 ui-widget">
                             <x-input-label for="search_manager" :value="__('Manager')" />
                             <x-text-input id="search_manager" class="block mt-1 w-full" type="text" name="manager"
                                 :value="old('manager', $user->manager)" required />
                             <x-input-error :messages="$errors->get('manager')" class="mt-2" />
                         </div>
-                        
+
+
                         <div class="flex justify-start mt-3 mb-4">
                             <button type="submit"
                                 class="text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
@@ -69,51 +81,65 @@
 </div>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script type="text/javascript">
-        $(function() {
-            var users = @json($users);
-            var usersData = []
-            for (var i = 0; i < users.length; i++) {
-                usersData.push(users[i]['first_name'] + ' ' + users[i]['last_name']);
-            }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
-            $("#search_manager").autocomplete({
-                source: usersData,
-            });
+<script type="text/javascript">
+    $(function() {
 
-            var directions = @json($directions);
-            var directionsData = []
+        var users = @json($users);
+        var usersData = []
+        for (var i = 0; i < users.length; i++) {
+            usersData.push(users[i]['first_name'] + ' ' + users[i]['last_name']);
+        }
+        $("#search_manager").autocomplete({
+            source: usersData,
+        });
 
-            for (var i = 0; i < directions.length; i++) {
-                directionsData.push(directions[i]['name']);
-            }
+        var directions = @json($directions);
+        var directionsData = []
+        for (var i = 0; i < directions.length; i++) {
+            directionsData.push(directions[i]['name']);
+        }
+        $("#search_direction").autocomplete({
+            source: directionsData
+        });
 
-            $("#search_direction").autocomplete({
-                source: directionsData
-            });
 
-            var services = @json($services);
-            var servicesData = []
+        var services = @json($services);
+        var servicesData = []
+        for (var i = 0; i < services.length; i++) {
+            servicesData.push(services[i]['service']);
+        }
+        $("#search_service").autocomplete({
+            source: servicesData
+        });
 
-            for (var i = 0; i < services.length; i++) {
-                servicesData.push(services[i]['service']);
-            }
 
-            $("#search_service").autocomplete({
-                source: servicesData
-            });
+        var cities = @json($city);
+        var citiesData = [];
+        for (var i = 0; i < cities.length; i++) {
+            citiesData.push(cities[i]['city']);
+        }
+        $("#search_city").autocomplete({
+            source: citiesData
+        });
 
-            // Logique pour afficher les erreurs sous les champs respectifs
-            @if ($errors->has('direction'))
-                $('html, body').animate({
-                    scrollTop: $("#search_direction").offset().top
-                }, 1000);
-            @elseif ($errors->has('manager'))
-                $('html, body').animate({
-                    scrollTop: $("#search_manager").offset().top
-                }, 1000);
-            @endif
-        })
-    </script>
+
+
+        // Logique pour afficher les erreurs sous les champs respectifs
+        @if ($errors->has('direction'))
+            $('html, body').animate({
+                scrollTop: $("#search_direction").offset().top
+            }, 1000);
+        @elseif ($errors->has('manager'))
+            $('html, body').animate({
+                scrollTop: $("#search_manager").offset().top
+            }, 1000);
+        @elseif ($errors->has('city'))
+            $('html, body').animate({
+                scrollTop: $("#search_city").offset().top
+            }, 1000);
+        @endif
+    })
+</script>

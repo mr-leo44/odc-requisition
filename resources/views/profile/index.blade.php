@@ -2,7 +2,7 @@
     <div class="h-full bg-white dark:bg-gray-800 p-8">
 
         <div class="bg-white dark:bg-gray-100 rounded-lg shadow-xl pb-8" style="background-image: url('img/bg.gif')">
-            
+
             <div class="w-full h-[250px] bg-gray-800 rounded-t-lg dark:rounded-t-none" style="background-image: url('img/bg.gif');">
             </div>
             <div class="flex flex-col items-center -mt-20 dark:rounded-t-lg">
@@ -31,6 +31,11 @@
                             <span class="text-gray-700 dark:text-white">{{ $user->compte->service }}</span>
                         </li>
                         <li class="flex  dark:border-gray-600 py-2">
+                            <span class="font-bold w-24 text-[#ff7900]">Ville :</span>
+                            <span class="text-gray-700 dark:text-white">{{ $user->compte->city }}</span>
+                        </li>
+
+                        <li class="flex  dark:border-gray-600 py-2">
                             <span class="font-bold w-24 text-[#ff7900]">Manager :</span>
                             <span class="text-gray-700 dark:text-white">
                                 @if ($user->manager)
@@ -41,12 +46,12 @@
                                     @endif
                                 @else
                                 @endif
-                            </span>cv
+                            </span>
                         </li>
                     </ul>
                     <div class="flex justify-end my-4">
                         <button data-modal-target="modal" data-modal-toggle="modal" type="button" id="user-update"
-                            class="px-3 py-2 bg-[#ff7900] opacity-85 hover:bg-gray-800  hover:opacity-500 hover:opacity-95 text-white rounded">
+                            class="px-3 py-2 bg-[#ff7900] opacity-85 hover:bg-black hover:opacity-500 hover:opacity-95 text-white rounded">
                             Mettre à jour mes informations
                         </button>
                     </div>

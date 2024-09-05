@@ -119,6 +119,7 @@ class RegisteredUserController extends Controller
                     'name' => $userData['first_name'] .  ' ' . $userData['last_name'],
                     'email' => $userData['email'],
                     'password' => Hash::make('password'),
+                    "city" => $city
                 ]);
                 if ($userInsert) {
 
@@ -126,7 +127,6 @@ class RegisteredUserController extends Controller
                     Compte::create([
                         "manager" => $manager,
                         "user_id" => $user->id,
-                        "city" => $city,
                         "service" => $request->service,
                         "direction_id" => $direction->id,
                         "role" => RoleEnum::USER
