@@ -3,12 +3,14 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <a @if (Session::get('authUser')->compte->role->value === 'user') href="{{ route('demandes.index') }}" 
-                    @elseif(Session::get('authUser')->compte->role->value === 'livraison')
-                    href="{{ route('dashboard') }}"
+                <a @if (Session::get('authUser')->compte->role->value === 'user') 
+                        href="{{ route('demandes.index') }}" 
+                    @elseif(Session::get('authUser')->compte->role->value === 'livraison') 
+                        href="{{ route('dashboard') }}"
                     @else
-                    href="{{ route('approbateurs.index') }}" @endif
-                    class="flex ms-2 md:me-24 items-center">
+                        href="{{ route('users.index') }}" 
+                        
+                    @endif class="flex ms-2 md:me-24 items-center">
                     <img src="{{ asset('img/orange.png') }}" class="h-9 me-3" alt="FlowBite Logo" />
                     <span
                         class="ms-2 self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Requisition
