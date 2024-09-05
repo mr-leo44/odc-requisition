@@ -1,12 +1,12 @@
 <x-guest-layout>
   <div class="flex flex-col lg:flex-row h-screen dark:bg-slate-400">
       <!-- Image desktop -->
-      <div class="hidden lg:block lg:w-3/5">
+      <div class="hidden lg:block lg:w-3/5 ">
           <img class="object-cover w-full h-full" src="{{asset('img/requisition Req.png')}}" alt="">
       </div>
 
       <!-- l'image sur mobile -->
-      <div class="block order-first lg:hidden w-full h-1/4 mb-8">
+      <div class="block order-first lg:hidden w-full h-1/4 mb-8 bg-slate-200">
           <img class="object-cover w-full h-full" src="{{asset('img/requisition.svg')}}" alt="">
           <div class="flex flex-col items-center -mt-20">
               <img src="{{ asset('img/orange.png') }}" class="w-40 border-1" alt="profile">
