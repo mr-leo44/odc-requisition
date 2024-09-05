@@ -22,11 +22,14 @@ class Ongoing extends Component
     {
         $connected_user = Session::get('authUser'); //signifie que c'est l'utilisateur qui est connecté
         if ($connected_user->compte->role->value === 'user') {
-            $isManager = User::whereHas('compte', function (Builder $query) use ($connected_user) {
+            $collaborators = User::whereHas('compte', function (Builder $query) use ($connected_user) {
                 $query->where('manager', $connected_user->id);
-            })->exists();
+            });
+            $isManager = $collaborators->exists();
             if ($isManager) {
-                Session::put('manager', true);
+                if($collaborators->count() > 1 && $collaborators->first()->id !== $connected_user->id) {
+                    Session::put('manager', true);
+                }
             }
             $isValidator = Approbateur::where('email', $connected_user->email)->exists();
             if ($isValidator) {
@@ -41,6 +44,11 @@ class Ongoing extends Component
                 $dernier_traitement = Traitement::where('demande_id', $demande->id)->get()->last();
                 if ($dernier_traitement->approbateur_id === $connected_user->id) {
                     $demande['status'] = $dernier_traitement->status;
+                    if($demande->approbateur_id === $connected_user->id) {
+                        $demande['validator'] = true;
+                    } else {
+                        $demande['validator'] = false;
+                    }
                 }
                 $demande['level'] = $dernier_traitement->level;
             }
