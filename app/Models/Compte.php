@@ -18,7 +18,9 @@ class Compte extends Model
         "role",
         "user_id",
         "direction_id",
+        "city",
     ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
