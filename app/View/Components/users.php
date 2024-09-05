@@ -2,10 +2,11 @@
 
 namespace App\View\Components;
 
-use App\Models\User;
 use Closure;
-use Illuminate\Contracts\View\View;
+use App\Models\User;
 use Illuminate\View\Component;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Session;
 
 class users extends Component
 {
@@ -16,7 +17,7 @@ class users extends Component
 
     public function __construct($users)
     {
-        $this->users = User::all();
+        $this->users = User::with('compte')->where('id', '!=', Session::get('authUser')->id)->latest()->get();
     }
 
     /**
