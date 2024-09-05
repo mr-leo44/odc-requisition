@@ -19,7 +19,7 @@
             </button>
         </div>
         <div class="flex justify-between items-center gap-3">
-            <button type="button"
+            <button type="button" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
                 class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-orange-500 rounded-lg">
                 <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24">
@@ -94,7 +94,9 @@
                                 </svg>
                             </button>
                             @if (session()->get('authUser')->id == $req->user_id && $req->level === 0)
-                                <a href="" class="bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded">
+                                <a onclick="supprimer(event);" data-modal-target="delete-modal"
+                                    data-modal-toggle="delete-modal"
+                                    class="bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded">
                                     <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         fill="none" viewBox="0 0 24 24">
@@ -183,7 +185,9 @@
                                     </svg>
                                 </button>
                                 @if (session()->get('authUser')->id == $req->user_id && $req->level === 0)
-                                    <a href="" class="bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded">
+                                    <a onclick="supprimer(event);" data-modal-target="delete-modal"
+                                        data-modal-toggle="delete-modal"
+                                        class="bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded">
                                         <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             fill="none" viewBox="0 0 24 24">
@@ -202,6 +206,8 @@
     </div>
 </div>
 
+<x-createDemande />
+<x-deleteDemande />
 <x-showRequisition />
 
 <script>
