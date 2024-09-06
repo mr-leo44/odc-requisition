@@ -33,10 +33,6 @@ class RegisteredUserController extends Controller
         $city = Compte::select('city')->distinct()->get();
 
         if (Session::has('user')) {
-
-
-
-
             return view('auth.register', compact('users', 'directions', 'services', 'city'));
         } else {
             return redirect()->route('login')->with('error', 'Veuillez d\'abord vous connecter');
@@ -70,7 +66,7 @@ class RegisteredUserController extends Controller
         }
 
         if (Compte::where('city', $request->city)->exists()) {
-            $city = Compte::where('city', $request->city)->first();
+            $city = Compte::select('city')->distinct()->where('city', $request->city)->first()->city;
         } else {
             $city = $request->city;
         }
@@ -118,8 +114,7 @@ class RegisteredUserController extends Controller
                     'id' => $userData['id'],
                     'name' => $userData['first_name'] .  ' ' . $userData['last_name'],
                     'email' => $userData['email'],
-                    'password' => Hash::make('password'),
-                    "city" => $city
+                    'password' => Hash::make('password')
                 ]);
                 if ($userInsert) {
 
@@ -129,7 +124,8 @@ class RegisteredUserController extends Controller
                         "user_id" => $user->id,
                         "service" => $request->service,
                         "direction_id" => $direction->id,
-                        "role" => RoleEnum::USER
+                        "role" => RoleEnum::USER,
+                        "city" => $city
                     ]);
                     Session::put('user', $userData['username']);
                 }
