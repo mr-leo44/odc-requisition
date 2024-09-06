@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Reqs;
 
+use Closure;
 use App\Models\User;
 use App\Models\Demande;
 use App\Models\Livraison;
@@ -18,19 +19,22 @@ class Ongoing extends Component
     /**
      * Get the view / contents that represent the component.
      */
-    public function render(): View
+    public function render(): View|Closure|string
     {
         $connected_user = Session::get('authUser'); //signifie que c'est l'utilisateur qui est connecté
         if ($connected_user->compte->role->value === 'user') {
-            $isManager = User::whereHas('compte', function (Builder $query) use ($connected_user) {
+            $collaborators = User::whereHas('compte', function (Builder $query) use ($connected_user) {
                 $query->where('manager', $connected_user->id);
-            })->exists();
+            });
+            $isManager = $collaborators->exists();
             if ($isManager) {
-                Session::put('manager', true);
+                if($collaborators->count() > 1 && $collaborators->first()->id !== $connected_user->id) {
+                    $connected_user['manager'] = true;
+                }
             }
             $isValidator = Approbateur::where('email', $connected_user->email)->exists();
             if ($isValidator) {
-                Session::put('approver', true);
+                $connected_user['approver'] = true;
             }
             $reqs = Demande::whereHas('traitement', function ($query) use ($connected_user) {
                 $query->where('demandeur_id', $connected_user->id)->where('status', 'en cours');
@@ -41,6 +45,11 @@ class Ongoing extends Component
                 $dernier_traitement = Traitement::where('demande_id', $demande->id)->get()->last();
                 if ($dernier_traitement->approbateur_id === $connected_user->id) {
                     $demande['status'] = $dernier_traitement->status;
+                    if($demande->user_id === $connected_user->id) {
+                        $demande['validator'] = true;
+                    } else {
+                        $demande['validator'] = false;
+                    }
                 }
                 $demande['level'] = $dernier_traitement->level;
             }
