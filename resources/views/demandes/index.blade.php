@@ -1,4 +1,8 @@
 <x-app-layout>
+    @php
+        $isManager = Session::get('authUser')->manager;
+        $isApprover = Session::get('authUser')->approver;
+    @endphp
     <x-slot name="header">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between">
             <h2 class="font-semibold text-3xl text-gray-800 mb-3 md:mb-0 dark:text-white leading-tight">
@@ -22,31 +26,28 @@
                             @endprofile
                         </button>
                     </li>
-                    @if (session()->get('manager'))
-                        <li class="me-2" role="presentation">
-                            <button
-                                class="inline-block ease-in transition-all duration-75 p-4 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                                id="collaborators-styled-tab" data-tabs-target="#styled-collaborators" type="button"
-                                role="tab" aria-controls="collaborators" aria-selected="false">Demandes des
-                                collaborateurs</button>
-                        </li>
-                    @endif
-                    @if (session()->get('approver'))
-                        <li class="me-2" role="presentation">
-                            <button
-                                class="inline-block ease-in transition-all duration-75 p-4 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                                id="validate-styled-tab" data-tabs-target="#styled-validate" type="button"
-                                role="tab" aria-controls="validate" aria-selected="false">Demandes à
-                                valider</button>
-                        </li>
-                    @endif
+                    <li class="me-2" role="presentation">
+                        <button
+                            class="inline-block ease-in transition-all duration-75 p-4 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                            id="collaborators-styled-tab" data-tabs-target="#styled-collaborators" type="button"
+                            role="tab" aria-controls="collaborators" aria-selected="false">Demandes des
+                            collaborateurs</button>
+                    </li>
+                    <li class="me-2" role="presentation">
+                        <button
+                            class="inline-block ease-in transition-all duration-75 p-4 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                            id="validate-styled-tab" data-tabs-target="#styled-validate" type="button" role="tab"
+                            aria-controls="validate" aria-selected="false">Demandes à
+                            valider</button>
+                    </li>
                     <li class="me-2" role="presentation">
                         <button
                             class="inline-block ease-in transition-all duration-75 p-4 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                             id="historics-styled-tab" data-tabs-target="#styled-historics" type="button" role="tab"
-                            aria-controls="historics" aria-selected="false">Historique</button>
+                            aria-controls="historics" aria-selected="false">Historique
+                        </button>
                     </li>
-                    
+
                     <li class="me-2" role="presentation">
                         <button
                             class="inline-block ease-in transition-all duration-75 p-4 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
@@ -59,17 +60,15 @@
     </x-slot>
 
     <div class="px-4 sm:px-6 lg:px-8">
-        <div>
-            <div
-                class="w-full p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
-                <div class="text-gray-900 dark:text-white">
-                    <div id="default-styled-tab-content">
-                        <x-ongoing-reqs :demandes="$demandes" />
-                        <x-collaborators />
-                        <x-validate />
-                        <x-historics />
-                        <x-statistics-reqs />
-                    </div>
+        <div
+            class="w-full p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+            <div class="text-gray-900 dark:text-white">
+                <div id="default-styled-tab-content">
+                    <x-reqs.ongoing />
+                    <x-collaborators />
+                    <x-validate />
+                    <x-historics />
+                    <x-statistics-reqs />
                 </div>
             </div>
         </div>
@@ -87,6 +86,18 @@
         const historicsTab = document.getElementById("styled-historics");
         const statisticsTab = document.getElementById("styled-statistics");
 
+        var isManager = `{{ $isManager }}`
+        var isApprover = `{{ $isApprover }}`
+
+        if (!isManager) {
+            collaboratorsButton.classList.add("hidden")
+            collaboratorsTab.classList.add("hidden")
+        }
+
+        if (!isApprover) {
+            validateButton.classList.add("hidden")
+            validateTab.classList.add("hidden")
+        }
         ongoingButton.addEventListener("click", function() {
             localStorage.setItem('viewTab', 'ongoing')
             toggleTab()
