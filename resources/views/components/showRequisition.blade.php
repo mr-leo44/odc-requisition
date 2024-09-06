@@ -76,6 +76,7 @@
 
         const details = req.demande_details
         document.querySelector('#details_table tbody').textContent = ""
+        document.querySelector('#deliver').addEventListener('click', updateDetails(req))
 
         // Générer tableau des details
         details.forEach(detail => {
@@ -157,7 +158,7 @@
                 document.querySelector("#validation #accept").classList.add('hidden')
                 document.querySelector("#validation #reject").classList.add('hidden')
                 document.querySelector("#reject-form").classList.remove('hidden')
-                
+
 
                 const rejectForm = document.createElement('form')
                 var rejectlabel = document.createElement('label')
@@ -224,6 +225,64 @@
                 })
 
             })
+        } 
+    }
+    function updateDetails(req) {
+        document.querySelector('#deliver-form tbody').textContent = ""
+        const details = req.demande_details
+        console.log(details);
+        
+        var deliverDetails = []
+        for (const key in details) {
+            if (details[key].qte_demandee > details[key].qte_livree) {
+
+                var deliverTr = document.createElement('tr')
+                deliverTr.classList.add("border-b", "hover:bg-gray-50", "dark:hover:bg-gray-800",
+                    "dark:border-gray-700")
+
+                var deliverDesignationTh = document.createElement('th')
+                deliverDesignationTh.classList.add("px-6", "py-4", "font-medium", "text-gray-900",
+                    "dark:text-white")
+                deliverDesignationTh.textContent = details[key].designation
+                deliverTr.appendChild(deliverDesignationTh)
+
+                var deliverQte_demandeeTd = document.createElement('td')
+                deliverQte_demandeeTd.classList.add("px-6", "py-4", "text-right")
+                deliverQte_demandeeTd.textContent = details[key].qte_demandee
+                deliverTr.appendChild(deliverQte_demandeeTd)
+
+                var qte_livreeTd = document.createElement('td')
+                qte_livreeTd.classList.add("px-6", "py-4", "text-right")
+                qte_livreeTd.textContent = details[key].qte_livree
+                deliverTr.appendChild(qte_livreeTd)
+
+                var deliverInputTd = document.createElement('td')
+                deliverInputTd.classList.add("px-6", "py-4")
+                var deliverDiv = document.createElement('div')
+                deliverDiv.classList.add("flex", "flex-col", "gap-1")
+                deliverDiv.innerHTML = ` 
+                 <div>
+                    <input type="hidden" name="details[${key}][id]"
+                        value="${details[key].id}" id="details[${key}][id]" />
+                    <input type="hidden" name="req"
+                        value="${req.id}" id="reqToUpdate" />
+                </div>
+                <x-text-input id="quantite_${key}"
+                    class="bg-gray-50 w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                    type="number" name="details[${key}][quantite]"
+                    max="${details[key].qte_demandee}"
+                    placeholder="Ex. 12" autocomplete="quantite"
+                    oninput="validateInput(${key}, ${details[key].qte_demandee}, ${details[key].qte_livree})" />
+
+
+                <div id="error_${key}" class="text-red-500 lowercase text-sm">
+                    <x-input-error :messages="$errors->get('quantite')" class="mt-2" />
+                </div>
+            `
+                deliverInputTd.appendChild(deliverDiv)
+                deliverTr.appendChild(deliverInputTd)
+                document.querySelector('#deliver-form tbody').appendChild(deliverTr)
+            }
         }
     }
 </script>

@@ -292,10 +292,10 @@ class DemandeController extends Controller
         $validatedData = $request->validate([
             'details' => 'required|array',
         ]);
-
+        
         foreach ($validatedData['details'] as $detail) {
             if ($detail['quantite'] !== null) {
-                $demandeDetail = DemandeDetail::find($detail['id']);
+                $demandeDetail = DemandeDetail::find((int)$detail['id']);
                 $new_quantity = $demandeDetail->qte_livree + $detail['quantite'];
                 if ($new_quantity > $demandeDetail->qte_demandee) {
                     return redirect()->back()->with('error', 'La quantité livrée ne peut pas être supérieure à la quantité demandée.');
@@ -313,7 +313,7 @@ class DemandeController extends Controller
                 }
             }
 
-            $req = Demande::find($demandeDetail->id);
+            $req = Demande::find((int)$request->req);
             $req_details = DemandeDetail::where('demande_id', $req->id)->get();
             $delivered = 0;
             foreach ($req_details as $req_detail) {
