@@ -63,7 +63,7 @@
                     <x-reqs.ongoing :ongoings="$ongoings" />
                     <x-reqs.collaborators />
                     <x-reqs.validate />
-                    <x-reqs.historics />
+                    <x-reqs.historics :historics="$historics" />
                     <x-reqs.statistics />
                 </div>
             </div>
