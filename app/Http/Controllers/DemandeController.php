@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Compte;
 use App\Enums\RoleEnum;
 use App\Models\Demande;
 use App\Mail\DemandeMail;
@@ -26,10 +27,92 @@ class DemandeController extends Controller
      */
     public function index()
     {
-        return view('demandes.index');
+        $connected_user = Session::get('authUser');
+        $user_collaborators = User::whereHas('compte', function (Builder $query) use ($connected_user) {
+            $query->where('manager', $connected_user->id)->where('user_id', '!=', $connected_user->id);
+        })->exists();
+
+        if ($user_collaborators) {
+            $connected_user['manager'] = true;
+        }
+        $isValidator = Approbateur::where('email', $connected_user->email)->exists();
+        if ($isValidator) {
+            $connected_user['approver'] = true;
+        }
+        $ongoings = $this->getOngoingReqs($connected_user);
+        return view('demandes.index', compact('ongoings', 'connected_user'));
     }
 
-    /**
+    private function getOngoingReqs($user)
+    {
+        if ($user->compte->role->value === 'user') {
+            $reqs = Demande::whereHas('traitement', function ($query) use ($user) {
+                $query->where('demandeur_id', $user->id)->where('status', 'en cours');
+            })
+                ->orderBy('created_at', 'desc')
+                ->paginate(12);
+            foreach ($reqs as $req) {
+                $last_flow = Traitement::where('demande_id', $req->id)->get()->last();
+                $req['status'] = $last_flow->status;
+                $req['level'] = $last_flow->level;
+                if ($last_flow->approbateur_id === $user->id) {
+                    if ($req->user_id === $user->id) {
+                        $req['validator'] = true;
+                    } else {
+                        $req['validator'] = false;
+                    }
+                }
+            }
+        }
+
+        if ($user->compte->role->value === 'livraison') {
+            $demandes = Demande::all();
+            $all_validated_keys = [];
+            foreach ($demandes as $key => $req) {
+                $last = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
+                if ($last && $last->status === 'validé') {
+                    $all_validated_keys[$key] = $req->id;
+                }
+            }
+
+            $validated_reqs = Demande::whereIn('id', $all_validated_keys)->get();
+            $on_going = [];
+            foreach ($validated_reqs as $key => $validated) {
+                $req_details = DemandeDetail::where('demande_id', $validated->id)->get();
+                $delivered = 0;
+                foreach ($req_details as $req_detail) {
+                    $req_count = $req_detail->qte_demandee;
+                    $count = 0;
+                    if (Livraison::where('demande_detail_id', $req_detail->id)->exists()) {
+                        $deliveries = Livraison::where('demande_detail_id', $req_detail->id)->get();
+                        foreach ($deliveries as $key => $delivery) {
+                            $count += $delivery->quantite;
+                        }
+                        if ($req_count === $count) {
+                            $delivered += 1;
+                        }
+                    }
+                }
+                if ($delivered < $req_details->count()) {
+                    $on_going[] = $validated;
+                }
+            }
+            $demandes_array = collect($on_going);
+            $reqs = Demande::whereIn('id', $demandes_array->pluck('id'))->orderBy('id', 'desc')->paginate(12);
+        }
+        foreach ($reqs as $ongoing) {
+            $details = $ongoing->demande_details;
+            $to_deliver = 0;
+            foreach ($details as $detail) {
+                $sub = $detail->qte_demandee - $detail->qte_livree;
+                $to_deliver += $sub;
+                $ongoing['to_deliver'] = $to_deliver;
+            }
+        }
+        return $reqs;
+    }
+
+        /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -212,7 +295,7 @@ class DemandeController extends Controller
     public function destroy(Demande $demande)
     {
         $demande->delete();
-        return redirect()->route('demandes.index')->with('success', 'Suppression éffectuée avec succès');
+        return redirect()->back()->with('success', 'Suppression éffectuée avec succès');
     }
 
     public function historique()
@@ -292,7 +375,7 @@ class DemandeController extends Controller
         $validatedData = $request->validate([
             'details' => 'required|array',
         ]);
-        
+
         foreach ($validatedData['details'] as $detail) {
             if ($detail['quantite'] !== null) {
                 $demandeDetail = DemandeDetail::find((int)$detail['id']);
@@ -329,9 +412,9 @@ class DemandeController extends Controller
                     $delivered += 1;
                 }
             }
-            if ($delivered === $req_details->count()) {
-                Mail::to($req->user->email, $req->user->name)->send(new DeliveriesMail($req));
-            }
+            // if ($delivered === $req_details->count()) {
+            //     Mail::to($req->user->email, $req->user->name)->send(new DeliveriesMail($req));
+            // }
         }
 
         return redirect()->route('demandes.index')->with('success', 'Livraison mise à jour avec succès');
