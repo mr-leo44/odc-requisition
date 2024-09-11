@@ -8,12 +8,13 @@ use Illuminate\Contracts\View\View;
 
 class Collaborators extends Component
 {
+    public $collaborators;
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct($collaborators)
     {
-        //
+        $this->collaborators = $collaborators;
     }
     /**
      * Get the view / contents that represent the component.
