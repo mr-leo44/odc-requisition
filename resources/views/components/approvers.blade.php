@@ -57,7 +57,7 @@
         <div class="rounded-t mb-0 px-4 py-3 border-0">
             <div class="flex flex-wrap items-center">
                 <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-                    <h3 class=" font-bold text-base dark:text-white">Approvers</h3>
+                    <h3 class=" font-bold text-base dark:text-white">Approbateurs</h3>
                 </div>
                 <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
                     <div class="flex justify-end my-2 space-x-1">
@@ -84,10 +84,10 @@
                     <thead class="dark:bg-gray-800 text-gray-500">
                         <tr class="text-black dark:text-white">
                             <th class="p-3 text-left"></th>
-                            <th class="p-3 text-left">Names</th>
-                            <th class="p-3 text-left">Functions</th>
+                            <th class="p-3 text-left">Noms</th>
+                            <th class="p-3 text-left">Fonctions</th>
                             <th class="p-3 text-left"></th>
-                            <th class="p-3 text-left">Action</th>
+                            <th class="p-3 text-left">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="sortable">

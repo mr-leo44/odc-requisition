@@ -16,6 +16,13 @@
                             id="user-styled-tab" data-tabs-target="#styled-user" type="button" role="tab"
                             aria-controls="user" aria-selected="false">Users</button>
                     </li>
+
+                    <li class="me-2" role="presentation">
+                        <button class="inline-block ease-in transition-all duration-75 p-4 rounded-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                            id="direction-styled-tab" data-tabs-target="#styled-direction" type="button" role="tab"
+                            aria-controls="direction" aria-selected="false">Directions</button>
+                    </li>
+
                     <li class="me-2" role="presentation">
                         <button class="inline-block ease-in transition-all duration-75 p-4 rounded-lg"
                             id="approver-styled-tab" data-tabs-target="#styled-approver" type="button"
@@ -42,6 +49,7 @@
                         <x-approvers :approbateurs="$approbateurs" id="styled-approver" class="hidden" />
                         <x-users :users="$users" :usersList="$usersList" :directions="$directions" :services="$services" id="styled-user" class="hidden" />
                         <x-delegations :usersList="$usersList" :delegations="$delegations" :users="$users" :directions="$directions" :services="$services"  />
+                        <x-directions :directions="$directions"/>
                     </div>
                 </div>
             </div>
@@ -50,12 +58,16 @@
 
     <script>
         const approverButton = document.getElementById("approver-styled-tab");
-        const userButton = document.getElementById("user-styled-tab");
         const approverTab = document.getElementById("styled-approver");
-        const userTab = document.getElementById("styled-user");
-        const delegationButton = document.getElementById("delegation-styled-tab");
         const delegationTab = document.getElementById('styled-delegation');
-   
+        const delegationButton = document.getElementById("delegation-styled-tab");
+        const userButton = document.getElementById("user-styled-tab");
+        const userTab = document.getElementById("styled-user");
+        
+        const directionButton = document.getElementById("direction-styled-tab");
+        const directionTab = document.getElementById("styled-direction");
+        
+        
         
         delegationButton.addEventListener("click",function(){
             localStorage.setItem('viewTab','delegation');
@@ -69,6 +81,11 @@
 
         userButton.addEventListener("click", function() {
             localStorage.setItem('viewTab', 'user');
+            toggleTab();
+        });
+        
+        directionButton.addEventListener("click", function() {
+            localStorage.setItem('viewTab', 'direction');
             toggleTab();
         });
 
@@ -85,10 +102,19 @@
                 approverButton.setAttribute('aria-selected', false);
                 userButton.setAttribute('aria-selected', false);
                 delegationButton.setAttribute('aria-selected',true);
+                userTab.classList.add('hidden');
                 approverTab.classList.remove('hidden');
+                approverTab.classList.add('hidden');
+                directionButton.setAttribute('aria-selected',false);
+                directionTab.classList.add('hidden');
+            }else if (viewTab == 'direction') {
+                approverButton.setAttribute('aria-selected', false);
+                userButton.setAttribute('aria-selected', false);
+                delegationButton.setAttribute('aria-selected',false);
                 userTab.classList.add('hidden');
                 approverTab.classList.add('hidden');
-
+                directionButton.setAttribute('aria-selected', true);
+                directionTab.classList.remove('hidden');
             } else {
                 approverButton.setAttribute('aria-selected', true);
                 userButton.setAttribute('aria-selected', false);
@@ -96,6 +122,8 @@
                 userTab.classList.add('hidden');
                 delegationButton.setAttribute('aria-selected',false);
                 delegationTab.classList.add('hidden');
+                directionButton.setAttribute('aria-selected',false);
+                directionTab.classList.add('hidden');
             }
         }
         toggleTab();
