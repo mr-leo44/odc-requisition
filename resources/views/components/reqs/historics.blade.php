@@ -136,6 +136,12 @@
                             </td>
                         </tr>
                     @endforeach
+                @else
+                    <tr class="dark:border-gray-700">
+                        <td colspan="8" class="px-6 py-4 text-lg text-center">
+                            {{ __('Pas de demande pour l\'instant!') }}
+                        </td>
+                    </tr>
                 @endif
             </tbody>
         </table>
