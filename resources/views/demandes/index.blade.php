@@ -62,7 +62,7 @@
                 <div id="default-styled-tab-content">
                     <x-reqs.ongoing :ongoings="$ongoings" />
                     <x-reqs.collaborators :collaborators="$collaborators" />
-                    <x-reqs.validate />
+                    <x-reqs.validate :validate="$validate" />
                     <x-reqs.historics :historics="$historics" />
                     <x-reqs.statistics />
                 </div>
