@@ -40,24 +40,24 @@ class DemandeController extends Controller
             $connected_user['approver'] = true;
         }
         $ongoings = $this->getOngoingReqs($connected_user);
+        $collaborators = $this->getCollaboratorsReqs($connected_user);
         $historics = $this->getReqsHistoric($connected_user);
 
-        return view('demandes.index', compact('connected_user', 'ongoings', 'historics'));
+        return view('demandes.index', compact('connected_user', 'ongoings', 'historics', 'collaborators'));
     }
 
     private function getOngoingReqs($user)
     {
         if ($user->compte->role->value === 'user') {
-            $reqs = Demande::whereHas('traitement', function ($query) use ($user) {
+            $reqs = Demande::with('demande_details')->whereHas('traitement', function ($query) use ($user) {
                 $query->where('demandeur_id', $user->id)->where('status', 'en cours');
             })
                 ->orderBy('created_at', 'desc')
                 ->paginate(12);
             foreach ($reqs as $req) {
                 $last_flow = Traitement::where('demande_id', $req->id)->get()->last();
-                $req['status'] = $last_flow->status;
                 $req['level'] = $last_flow->level;
-                if ($last_flow->approbateur_id === $user->id) {
+                if ($last_flow && $last_flow->approbateur_id === $user->id) {
                     if ($req->user_id === $user->id) {
                         $req['validator'] = true;
                     } else {
@@ -68,11 +68,11 @@ class DemandeController extends Controller
         }
 
         if ($user->compte->role->value === 'livraison') {
-            $demandes = Demande::all();
+            $demandes = Demande::with('demande_details')->latest()->paginate(12);
             $all_validated_keys = [];
             foreach ($demandes as $key => $req) {
                 $last = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
-                if ($last && $last->status === 'validé') {
+                if ($last && $last && $last->status === 'validé') {
                     $all_validated_keys[$key] = $req->id;
                 }
             }
@@ -102,18 +102,58 @@ class DemandeController extends Controller
             $demandes_array = collect($on_going);
             $reqs = Demande::whereIn('id', $demandes_array->pluck('id'))->orderBy('id', 'desc')->paginate(12);
         }
-        foreach ($reqs as $ongoing) {
-            $details = $ongoing->demande_details;
-            $to_deliver = 0;
-            foreach ($details as $detail) {
-                $sub = $detail->qte_demandee - $detail->qte_livree;
-                $to_deliver += $sub;
-                $ongoing['to_deliver'] = $to_deliver;
-            }
-        }
+        // dd($reqs);
         return $reqs;
     }
 
+    private function getCollaboratorsReqs($user)
+    {
+        $isManager = Compte::where('manager', $user->id)->exists();
+        if ($isManager) {
+            $userCollaborators = User::whereHas('compte', function (Builder $query) use ($user) {
+                $query->where('manager', $user->id)->where('user_id', '!=', $user->id);
+            })->get();
+            $collabs_req_keys = [];
+            foreach ($userCollaborators as $collaborator) {
+                $reqs_collabs = Demande::with('demande_details')->where('user_id', $collaborator->id)->latest()->get();
+                foreach ($reqs_collabs as $req) {
+                    $collabs_req_keys[] = $req->id;
+                }
+            }
+            $demandes = Demande::with('demande_details')->whereIn('id', $collabs_req_keys)->latest()->paginate(12);
+            foreach ($demandes as $demande) {
+                $last_flow = Traitement::where('demande_id', $demande->id)->get()->last();
+                $details = $demande->demande_details()->get();
+                $demande['level'] = $last_flow->level;
+                if ($last_flow->approbateur_id === $user->id) {
+                    $demande['validator'] = true;
+                } else {
+                    $demande['validator'] = false;
+                }
+
+                if ($last_flow->status === 'rejeté') {
+                    $demande['status'] = 'Rejeté';
+                } elseif ($last_flow->status === 'validé') {
+                    $count = 0;
+                    foreach ($details as $key => $detail) {
+                        if ($detail->qte_demandee === $detail->qte_livree) {
+                            $count += 1;
+                        }
+                    }
+                    if ($count === $details->count()) {
+                        $demande['status'] = 'Livré';
+                    } else {
+                        $demande['status'] = 'En cours de livraison';
+                    }
+                } else {
+                    $demande['status'] = 'En cours';
+                }
+            }
+        } else {
+            $demandes = [];
+        }
+        return $demandes;
+    }
     private function getReqsHistoric($user)
     {
         if ($user->compte->role->value === 'user') {

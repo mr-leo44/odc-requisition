@@ -88,7 +88,6 @@
 
         var isManager = `{{ $connected_user->manager }}`
         var isApprover = `{{ $connected_user->approver }}`
-        console.log(isManager);
 
         if (!isManager) {
             collaboratorsButton.classList.add("hidden")
