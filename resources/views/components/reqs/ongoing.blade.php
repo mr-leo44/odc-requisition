@@ -97,6 +97,7 @@
                             </button>
                             @if (session()->get('authUser')->id == $req->user_id && $req->level === 0)
                                 <a onclick="supprimer(event);" data-modal-target="delete-modal"
+                                     href="{{ route('demandes.destroy', $req->id) }}" id="gridDelete"
                                     data-modal-toggle="delete-modal"
                                     class="bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded">
                                     <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
@@ -115,8 +116,7 @@
         </div>
     @else
         <div class="grid grid-cols-1" id="ongoingCardGridView">
-            <div
-                class="block bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="block bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                 <div class="flex items-center justify-center py-10 text-lg">
                     @profile('livraison')
                         {{ __('Pas de demande de livraison en cours!') }}
@@ -190,7 +190,8 @@
                                     </svg>
                                 </button>
                                 @if (session()->get('authUser')->id == $req->user_id && $req->level === 0)
-                                    <a onclick="supprimer(event);" data-modal-target="delete-modal"
+                                    <a onclick="supprimer(event);" data-modal-target="delete-modal" id="tableDelete"
+                                        href="{{ route('demandes.destroy', $req->id) }}"
                                         data-modal-toggle="delete-modal"
                                         class="bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded">
                                         <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-            <h2 class="font-semibold text-2xl text-gray-800 mb-3 md:mb-0 dark:text-white leading-tight">
+            <h2 class="font-semibold text-xl text-gray-800 mb-3 md:mb-0 dark:text-white leading-tight">
                 {{ __('Demandes de Requisition') }}
             </h2>
             <div>
