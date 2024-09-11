@@ -1,11 +1,7 @@
 <x-app-layout>
-    @php
-        $isManager = Session::get('authUser')->manager;
-        $isApprover = Session::get('authUser')->approver;
-    @endphp
     <x-slot name="header">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-            <h2 class="font-semibold text-3xl text-gray-800 mb-3 md:mb-0 dark:text-white leading-tight">
+            <h2 class="font-semibold text-2xl text-gray-800 mb-3 md:mb-0 dark:text-white leading-tight">
                 {{ __('Demandes de Requisition') }}
             </h2>
             <div>
@@ -15,7 +11,7 @@
                     data-tabs-inactive-classes="text-gray-500 hover:text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:text-gray-300"
                     role="tablist">
                     <li class="me-2" role="presentation">
-                        <button class="inline-block ease-in transition-all duration-75 p-4 rounded-lg"
+                        <button type="button" class="inline-block ease-in transition-all duration-75 p-4 rounded-lg"
                             id="ongoing-styled-tab" data-tabs-target="#styled-ongoing" type="button" role="tab"
                             aria-controls="ongoing" aria-selected="false">
                             @profile('livraison')
@@ -41,7 +37,7 @@
                             valider</button>
                     </li>
                     <li class="me-2" role="presentation">
-                        <button
+                        <button type="button"
                             class="inline-block ease-in transition-all duration-75 p-4 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                             id="historics-styled-tab" data-tabs-target="#styled-historics" type="button" role="tab"
                             aria-controls="historics" aria-selected="false">Historique
@@ -64,15 +60,19 @@
             class="w-full p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
             <div class="text-gray-900 dark:text-white">
                 <div id="default-styled-tab-content">
-                    <x-reqs.ongoing />
-                    <x-collaborators />
-                    <x-validate />
-                    <x-historics />
-                    <x-statistics-reqs />
+                    <x-reqs.ongoing :ongoings="$ongoings" />
+                    <x-reqs.collaborators :collaborators="$collaborators" />
+                    <x-reqs.validate />
+                    <x-reqs.historics :historics="$historics" />
+                    <x-reqs.statistics />
                 </div>
             </div>
         </div>
     </div>
+
+    <x-createDemande />
+    <x-deleteDemande />
+    <x-showRequisition />
 
     <script>
         const ongoingButton = document.getElementById("ongoing-styled-tab");
@@ -86,8 +86,9 @@
         const historicsTab = document.getElementById("styled-historics");
         const statisticsTab = document.getElementById("styled-statistics");
 
-        var isManager = `{{ $isManager }}`
-        var isApprover = `{{ $isApprover }}`
+        var isManager = `{{ $connected_user->manager }}`
+        var isApprover = `{{ $connected_user->approver }}`
+        console.log(isManager);
 
         if (!isManager) {
             collaboratorsButton.classList.add("hidden")

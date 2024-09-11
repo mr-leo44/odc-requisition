@@ -1,7 +1,7 @@
 <div class="hidden p-2 rounded-lg" id="styled-ongoing" role="tabpanel" aria-labelledby="ongoing-tab">
     <div class="flex gap-3 justify-between items-center mb-6">
         <div class="flex justify-between items-center">
-            <button type="button" id="gridView"
+            <button type="button" id="ongoingGridView"
                 class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-gray-400 hover:bg-gray-500 rounded-lg [&.active]:bg-gray-900 active">
                 <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24">
@@ -9,7 +9,7 @@
                         d="M9.143 4H4.857A.857.857 0 0 0 4 4.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 10 9.143V4.857A.857.857 0 0 0 9.143 4Zm10 0h-4.286a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 20 9.143V4.857A.857.857 0 0 0 19.143 4Zm-10 10H4.857a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286a.857.857 0 0 0 .857-.857v-4.286A.857.857 0 0 0 9.143 14Zm10 0h-4.286a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286a.857.857 0 0 0 .857-.857v-4.286a.857.857 0 0 0-.857-.857Z" />
                 </svg>
             </button>
-            <button type="button" id="listView"
+            <button type="button" id="ongoingListView"
                 class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-gray-400 hover:bg-gray-500 rounded-lg [&.active]:bg-gray-900">
                 <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24">
@@ -19,7 +19,8 @@
             </button>
         </div>
         <div class="flex justify-between items-center gap-3">
-            <button type="button" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
+            <button type="button" @if (Session::get('authUser')->compte->role->value === 'livraison') class="hidden" @endif
+                data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
                 class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-orange-500 rounded-lg">
                 <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24">
@@ -55,9 +56,9 @@
             </div>
         </div>
     </div>
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 grid-cols-1 gap-3" id="cardGridView">
-        @if ($reqs->count() > 0)
-            @foreach ($reqs as $req)
+    @if ($ongoings->count() > 0)
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 grid-cols-1 gap-3" id="ongoingCardGridView">
+            @foreach ($ongoings as $req)
                 <div
                     class="block bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                     <div class="border-b dark:border-gray-600 p-4">
@@ -70,6 +71,7 @@
                         </div>
                         <p class="font-medium text-md text-gray-700 dark:text-white">{{ $req->user->name }}</p>
                         <p class="font-medium text-md text-gray-700 dark:text-white">{{ $req->service }}</p>
+                        <p class="font-medium text-md text-gray-700 dark:text-white">{{ $req->user->compte->city }}</p>
                     </div>
                     <div class="flex justify-between items-center p-4">
                         <div>
@@ -110,9 +112,23 @@
                     </div>
                 </div>
             @endforeach
-        @endif
-    </div>
-    <div class="hidden text-gray-900 overflow-x-auto dark:text-white" id="cardListView">
+        </div>
+    @else
+        <div class="grid grid-cols-1" id="ongoingCardGridView">
+            <div
+                class="block bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <div class="flex items-center justify-center py-10 text-lg">
+                    @profile('livraison')
+                        {{ __('Pas de demande de livraison en cours!') }}
+                    @endprofile
+                    @profile('user')
+                        {{ __('Pas de demande en cours!') }}
+                    @endprofile
+                </div>
+            </div>
+        </div>
+    @endif
+    <div class="hidden text-gray-900 overflow-x-auto dark:text-white" id="ongoingCardListView">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs uppercase bg-slate-100 dark:bg-transparent text-black dark:text-white">
                 <tr>
@@ -135,16 +151,13 @@
                         Date
                     </th>
                     <th scope="col" class="px-6 py-3 text-right">
-                        Pièces a livrer
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-right">
                         Action
                     </th>
                 </tr>
             </thead>
             <tbody class="bg-white dark:bg-gray-800">
-                @if ($reqs->count() > 0)
-                    @foreach ($reqs as $key => $req)
+                @if ($ongoings->count() > 0)
+                    @foreach ($ongoings as $key => $req)
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-900 dark:border-gray-700">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                 {{ $key + 1 }}
@@ -159,18 +172,10 @@
                                 {{ $req->service }}
                             </td>
                             <td class="px-6 py-4">
-                                Kinshasa
+                                {{ $req->user->compte->city }}
                             </td>
                             <td class="px-6 py-4">
                                 {{ $req->created_at->locale('fr')->diffForHumans() }}
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                {{ $req->to_deliver }}
-                                @if ($req->to_deliver > 1)
-                                    {{ __('Pièces') }}
-                                @else
-                                    {{ __('Pièce') }}
-                                @endif
                             </td>
                             <td class="px-6 py-4 text-right flex items-center justify-end gap-2">
                                 <button data-modal-target="show-modal" data-modal-toggle="show-modal" type="button"
@@ -200,45 +205,54 @@
                             </td>
                         </tr>
                     @endforeach
+                @else
+                    <tr class="dark:border-gray-700">
+                        <td colspan="7" class="px-6 py-4 text-lg text-center">
+                            @profile('livraison')
+                                {{ __('Pas de demande de livraison en cours!') }}
+                            @endprofile
+                            @profile('user')
+                                {{ __('Pas de demande en cours!') }}
+                            @endprofile
+                        </td>
+                    </tr>
                 @endif
             </tbody>
         </table>
     </div>
 </div>
 
-<x-createDemande />
 <x-deleteDemande />
-<x-showRequisition />
 
 <script>
-    const listView = document.getElementById("listView");
-    const gridView = document.getElementById("gridView");
-    const cardGridView = document.getElementById("cardGridView");
-    const cardListView = document.getElementById("cardListView");
-    listView.addEventListener("click", function() {
-        localStorage.setItem('viewMode', 'list')
-        toggleView()
+    const ongoingListView = document.getElementById("ongoingListView");
+    const ongoingGridView = document.getElementById("ongoingGridView");
+    const ongoingCardGridView = document.getElementById("ongoingCardGridView");
+    const ongoingCardListView = document.getElementById("ongoingCardListView");
+    ongoingListView.addEventListener("click", function() {
+        localStorage.setItem('ongoingViewMode', 'ongoingList')
+        toggleOngoingView()
     });
-    gridView.addEventListener("click", function() {
-        localStorage.setItem('viewMode', 'grid')
-        toggleView()
+    ongoingGridView.addEventListener("click", function() {
+        localStorage.setItem('ongoingViewMode', 'ongoingGrid')
+        toggleOngoingView()
     });
 
-    function toggleView() {
-        const viewMode = localStorage.getItem('viewMode')
-        if (viewMode === 'list') {
-            gridView.classList.remove("active");
-            cardGridView.classList.add("hidden");
-            listView.classList.add("active");
-            cardListView.classList.remove("hidden");
-            cardListView.classList.add("active");
+    function toggleOngoingView() {
+        const ongoingViewMode = localStorage.getItem('ongoingViewMode')
+        if (ongoingViewMode === 'ongoingList') {
+            ongoingGridView.classList.remove("active");
+            ongoingCardGridView.classList.add("hidden");
+            ongoingListView.classList.add("active");
+            ongoingCardListView.classList.remove("hidden");
+            ongoingCardListView.classList.add("active");
         } else {
-            listView.classList.remove("active");
-            cardListView.classList.add("hidden");
-            gridView.classList.add("active");
-            cardGridView.classList.remove("hidden");
-            cardGridView.classList.add("active");
+            ongoingListView.classList.remove("active");
+            ongoingCardListView.classList.add("hidden");
+            ongoingGridView.classList.add("active");
+            ongoingCardGridView.classList.remove("hidden");
+            ongoingCardGridView.classList.add("active");
         }
     }
-    toggleView()
+    toggleOngoingView()
 </script>

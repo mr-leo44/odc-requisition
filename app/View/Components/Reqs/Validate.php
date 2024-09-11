@@ -1,29 +1,26 @@
 <?php
 
-namespace App\View\Components\Reqs;
+namespace App\View\Components\Demandes;
 
 use Closure;
-use Illuminate\View\Component;
 use Illuminate\Contracts\View\View;
+use Illuminate\View\Component;
 
-class Ongoing extends Component
+class Validate extends Component
 {
-    public $ongoings;
-
     /**
      * Create a new component instance.
      */
-    public function __construct($ongoings)
+    public function __construct()
     {
-        $this->ongoings = $ongoings;
+        //
     }
-
 
     /**
      * Get the view / contents that represent the component.
      */
     public function render(): View|Closure|string
     {
-        return view('components.reqs.ongoing');
+        return view('components.reqs.validate');
     }
 }
