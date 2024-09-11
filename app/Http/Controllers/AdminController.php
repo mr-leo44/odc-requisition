@@ -8,6 +8,7 @@ use App\Models\Direction;
 use App\Models\Approbateur;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Delegation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
@@ -24,11 +25,12 @@ class AdminController extends Controller
         $response = Http::get("http://10.143.41.70:8000/promo2/odcapi/?method=getUsers");
         if ($response->successful()) {
             $usersList = $response->json()['users'];
-        }        // dd($usersList);
+        }        
+        $delegations = Delegation::all();
         $approbateurs = Approbateur::all();
         $directions = Direction::all();
         $services = Compte::select('service')->distinct()->get();
-        return view('users.index', compact('users', 'approbateurs','usersList', 'directions', 'services'));
+        return view('users.index', compact('users','delegations', 'approbateurs','usersList', 'directions', 'services'));
     }
 
     public function activateAccount(Request $request, User $user)

@@ -13,10 +13,12 @@ class Delegation extends Model
     ];
     protected $fillable = [
         'user_id',
+        'approbateur_id',
         'manager',
         'date_debut',
         'date_fin',
-        'motif'
+        'motif',
+        'status'
 ];
     public function user(){
         return $this->belongsTo(User::class);

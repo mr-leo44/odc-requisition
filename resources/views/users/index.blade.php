@@ -1,3 +1,4 @@
+
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between">
@@ -32,6 +33,7 @@
             </div>
         </div>
     </x-slot>
+    
     <div class="px-4 sm:px-6 lg:px-8">
         <div>
             <div class="w-full p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800">
@@ -39,7 +41,7 @@
                     <div id="default-styled-tab-content">
                         <x-approvers :approbateurs="$approbateurs" id="styled-approver" class="hidden" />
                         <x-users :users="$users" :usersList="$usersList" :directions="$directions" :services="$services" id="styled-user" class="hidden" />
-                        <x-delegations/>
+                        <x-delegations :usersList="$usersList" :delegations="$delegations" :users="$users" :directions="$directions" :services="$services"  />
                     </div>
                 </div>
             </div>
