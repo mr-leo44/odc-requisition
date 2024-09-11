@@ -3,35 +3,38 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <a @if (Session::get('authUser')->compte->role->value === 'user') href="{{ route('demandes.index') }}" 
-                    @elseif(Session::get('authUser')->compte->role->value === 'livraison') 
+                <a @if (Session::get('authUser')->compte->role->value === 'user') href="{{ route('demandes.index') }}"
+                    @elseif(Session::get('authUser')->compte->role->value === 'livraison')
                         href="{{ route('dashboard') }}"
                     @else
                         href="{{ route('users.index') }}" @endif
                     class="flex ms-2 md:me-24 items-center">
                     <img src="{{ asset('img/orange.png') }}" class="h-7 me-3" alt="FlowBite Logo" />
                     <span
-                        class="ms-2 self-center text-md font-semibold xl:text-2xl whitespace-nowrap dark:text-white">Requisition
+                        class="ms-2 self-center text-md font-semibold xl:text-xl whitespace-nowrap dark:text-white">Requisition
                         Orange</span>
                 </a>
             </div>
 
             <div class="flex justify-between items-center gap-3">
-                <h3 class="text-gray-800 dark:text-white font-semibold text-xs 2xl:text-lg">{{ Session::get('authUser')->name }}</h3>
+                <div class="flex flex-col text-gray-800 dark:text-white">
+                    <h3 class="font-semibold text-base">
+                        {{ Session::get('authUser')->name }}</h3>
+
+                    <span class="text-xs">{{ $profile }}</span>
+                </div>
                 <div>
                     <button type="button" data-dropdown-toggle="apps-dropdown"
                         class="p-2 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
                         <span class="sr-only">Menu</span>
                         <!-- Icon -->
                         <div class="flex md:justify-between items-center md:gap-1">
-                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"
+                            <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
                                 </path>
                             </svg>
-                            <span
-                                class="hidden md:block text-gray-700 dark:text-white text-xl font-semibold">Menu</span>
                         </div>
                     </button>
                     <div class="hidden overflow-hidden z-50 my-4 max-w-sm text-base list-none bg-white rounded divide-y divide-gray-100 shadow-lg dark:bg-gray-700 dark:divide-gray-600"
