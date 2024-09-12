@@ -32,7 +32,7 @@
                             </ul>
                         </div>
                     @endif
-                    <form class="w-full" action="{{ route('users.store') }}" method="POST">
+                    <form class="w-full" action="{{ route('admin.store') }}" method="POST">
                         @csrf
 
                         <div class="ui-widget" id="name">

@@ -30,7 +30,7 @@ class AdminController extends Controller
         $approbateurs = Approbateur::all();
         $directions = Direction::all();
         $services = Compte::select('service')->distinct()->get();
-        return view('users.index', compact('users','delegations', 'approbateurs','usersList', 'directions', 'services'));
+        return view('admin.index', compact('users','delegations', 'approbateurs','usersList', 'directions', 'services'));
     }
 
     public function activateAccount(Request $request, User $user)
@@ -110,7 +110,7 @@ class AdminController extends Controller
                 "role" => $request->role
             ]);
         }
-        return redirect()->route('users.index')->with('success', 'user créée avec succès');
+        return redirect()->route('admin.index')->with('success', 'user créée avec succès');
     }
 
     public function changeRole(Request $request, User $user)
