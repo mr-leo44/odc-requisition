@@ -39,11 +39,12 @@ class DemandeController extends Controller
         if ($isValidator) {
             $connected_user['approver'] = true;
         }
+
         $ongoings = $this->getOngoingReqs($connected_user);
         $collaborators = $this->getCollaboratorsReqs($connected_user);
+        $validate = $this->getReqsToValidate($connected_user);
         $historics = $this->getReqsHistoric($connected_user);
-
-        return view('demandes.index', compact('connected_user', 'ongoings', 'historics', 'collaborators'));
+        return view('demandes.index', compact('ongoings', 'connected_user', 'historics', 'collaborators', 'validate'));
     }
 
     private function getOngoingReqs($user)
@@ -68,11 +69,11 @@ class DemandeController extends Controller
         }
 
         if ($user->compte->role->value === 'livraison') {
-            $demandes = Demande::with('demande_details')->latest()->paginate(12);
+            $demandes = Demande::all();
             $all_validated_keys = [];
             foreach ($demandes as $key => $req) {
                 $last = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
-                if ($last && $last && $last->status === 'validé') {
+                if ($last && $last->status === 'validé') {
                     $all_validated_keys[$key] = $req->id;
                 }
             }
@@ -100,9 +101,8 @@ class DemandeController extends Controller
                 }
             }
             $demandes_array = collect($on_going);
-            $reqs = Demande::whereIn('id', $demandes_array->pluck('id'))->orderBy('id', 'desc')->paginate(12);
+            $reqs = Demande::with('demande_details')->whereIn('id', $demandes_array->pluck('id'))->orderBy('id', 'desc')->paginate(12);
         }
-        // dd($reqs);
         return $reqs;
     }
 
@@ -152,6 +152,29 @@ class DemandeController extends Controller
         } else {
             $demandes = [];
         }
+        return $demandes;
+    }
+
+    private function getReqsToValidate($user)
+    {
+        if ($user->approver) {
+            $demandes = Demande::with('demande_details')->whereHas('traitement', function (Builder $query) use ($user) {
+                $query->where('approbateur_id', $user->id)->where('status', 'en cours');
+            })->latest()->paginate(12);
+
+            foreach ($demandes as $demande) {
+                $last_flow = Traitement::where('demande_id', $demande->id)->where('approbateur_id', $user->id)->get()->last();
+                $demande['level'] = $last_flow->level;
+                if ($last_flow->approbateur_id === $user->id) {
+                    $demande['validator'] = true;
+                } else {
+                    $demande['validator'] = false;
+                }
+            }
+        } else {
+            $demandes = [];
+        }
+        // dd($demandes);
         return $demandes;
     }
     private function getReqsHistoric($user)
@@ -484,6 +507,8 @@ class DemandeController extends Controller
 
     public function updateLivraison(Request $request)
     {
+
+        // dd($request->all());
         $validatedData = $request->validate([
             'details' => 'required|array',
         ]);
@@ -524,11 +549,8 @@ class DemandeController extends Controller
                     $delivered += 1;
                 }
             }
-            // if ($delivered === $req_details->count()) {
-            //     Mail::to($req->user->email, $req->user->name)->send(new DeliveriesMail($req));
-            // }
         }
 
-        return redirect()->route('demandes.index')->with('success', 'Livraison mise à jour avec succès');
+        return redirect()->back()->with('success', 'Livraison mise à jour avec succès');
     }
 }
