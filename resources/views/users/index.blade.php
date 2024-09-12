@@ -14,7 +14,7 @@
                     <li class="me-2" role="presentation">
                         <button class="inline-block ease-in transition-all duration-75 p-4 rounded-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                             id="user-styled-tab" data-tabs-target="#styled-user" type="button" role="tab"
-                            aria-controls="user" aria-selected="false">Users</button>
+                            aria-controls="user" aria-selected="false">Utilisateurs</button>
                     </li>
 
                     <li class="me-2" role="presentation">

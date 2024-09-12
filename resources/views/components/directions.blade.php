@@ -66,7 +66,7 @@
                                 N° 
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Names
+                                Noms
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Actions

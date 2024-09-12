@@ -4,7 +4,7 @@
             <div class="rounded-t mb-0 px-4 py-3 border-0">
                 <div class="flex flex-wrap items-center">
                     <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-                        <h3 class=" font-bold text-base dark:text-white">Historics</h3>
+                        <h3 class=" font-bold text-base dark:text-white">Historiques</h3>
                     </div>
                 </div>
             </div>
@@ -24,7 +24,7 @@
                     <tr>
                         <th scope="col" class="px-6 py-3">N°</th>
                         <th scope="col" class="px-6 py-3">Services</th>
-                        <th scope="col" class="px-6 py-3">Users</th>
+                        <th scope="col" class="px-6 py-3">Utilisateurs</th>
                         <th scope="col" class="px-6 py-3">Status</th>
                         <th scope="col" class="px-6 py-3">Creation Date</th>
                         <th scope="col" class="px-6 py-3">Action</th>
