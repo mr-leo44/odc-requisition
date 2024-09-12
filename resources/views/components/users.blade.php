@@ -3,7 +3,7 @@
     <div class="flex flex-wrap items-center">
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
             <h3 class=" font-bold text-base dark:text-white">Users
-                <p> Total Users in System: {{ $users->count() }}</p>
+                <p> Total Utilisateurs dans le système: {{ $users->count() }}</p>
             </h3>
         </div>
         <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
@@ -74,24 +74,17 @@
                     </svg>
                 </button>
             </div>
-        @endif
+        @endif 
     </div >
-    <head>
-        <!-- DataTables CSS -->
-        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
-        <!-- DataTables JS -->
-        <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
-    </head>
-
         <div class="relative overflow-x-auto mt-10">
-            <table id="example" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <table id="myTable" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
                             N°
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Names
+                            Noms
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Emails
@@ -172,20 +165,8 @@
     @if ($users->count() > 0)
         <x-change-role :user="$user" />
     @endif
+    <link rel="stylesheet" href="https:://cdn.datatables.net/2.1.6/js/dataTables.min.js">
     <x-user-create :users="$usersList" :directions="$directions" :services="$services" />
     <x-activateUser : message="Voulez-vous activer cet utilisateur?" />
     <x-desactivateUser : message="Voulez-vous desactiver cet utilisateur?" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script>
-
-        if (document.getElementById("example")) {
-            const dataTable = new simpleDatatables.DataTable("#example", {
-                searchable: false,
-                perPageSelect: false,
-                sortable: true
-            });
-        }
-    </script>
 </div>

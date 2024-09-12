@@ -13,28 +13,22 @@
             </button>
         </div>
     </div>
-    <head>
-        <!-- DataTables CSS -->
-        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
-        <!-- DataTables JS -->
-        <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
-    </head>
-    <div class="bg-white  sm:rounded-lg">
+    <div class="sm:rounded-lg">
         <div class="overflow-x-auto">
             <table id="example"  class="w-full  dark:bg-white text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-300  dark:text-gray-400">
-                     <tr class="text-black dark:text-white">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
+                     <tr class="">
                         <th scope="col" class="px-6 py-3">
                             N° 
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            User
+                            Délégués
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Motif
+                            Motifs
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            délégant
+                            délégants
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Date début
