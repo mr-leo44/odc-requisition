@@ -134,8 +134,8 @@
                     </tbody>
                 </table>
                 <div class=" flex justify-end mx-14 py-3 space-x-2">
-                    <button id="saveBtn" type="submit" class=" px-2 py-1 bg-orange-500 text-white rounded" style="display: none;">Save</button>
-                    <button id="create" type="submit" class=" px-2 py-1 bg-orange-500 text-white rounded" style="display: none;">Create</button>
+                    <button id="saveBtn" type="submit" class=" px-2 py-1 bg-orange-500 text-white rounded" style="display: none;">Enregistrer</button>
+                    <button id="create" type="submit" class=" px-2 py-1 bg-orange-500 text-white rounded" style="display: none;">Créer</button>
                 </div>
             </form>
         </div>

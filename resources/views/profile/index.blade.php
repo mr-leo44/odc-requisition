@@ -19,7 +19,7 @@
                     <h4 class="flex border-b text-xl  dark:border-gray-600 text-gray-900 dark:text-white font-bold">Informations</h4>
                     <ul class="mt-2 text-gray-700 dark:text-white">
                         <li class="flex  dark:border-gray-600 py-2">
-                            <span class="font-bold w-24 text-[#ff7900]">Username  :</span>
+                            <span class="font-bold w-24 text-[#ff7900]">Nom  :</span>
                             <span class="text-gray-700 dark:text-white">{{ session()->get('user') }}</span>
                         </li>
                         <li class="flex  dark:border-gray-600 py-2">
