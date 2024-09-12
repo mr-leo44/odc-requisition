@@ -7,7 +7,7 @@
                     @elseif(Session::get('authUser')->compte->role->value === 'livraison')
                         href="{{ route('dashboard') }}"
                     @else
-                        href="{{ route('users.index') }}" @endif
+                        href="{{ route('admin.index') }}" @endif
                     class="flex ms-2 md:me-24 items-center">
                     <img src="{{ asset('img/orange.png') }}" class="h-7 me-3" alt="FlowBite Logo" />
                     <span
@@ -32,10 +32,6 @@
                     </button>
                     <div class="hidden overflow-hidden z-50 my-4 max-w-sm text-base list-none bg-white rounded divide-y divide-gray-100 shadow-lg dark:bg-gray-700 dark:divide-gray-600"
                         id="apps-dropdown">
-                        <div
-                            class="block py-2 px-4 text-base font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            Menu
-                        </div>
                         <div class="p-4">
                             @profile('livraison')
                                 <a href="{{ route('dashboard') }}" class="flex items-center p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group">

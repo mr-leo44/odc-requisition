@@ -3,7 +3,7 @@
     <x-slot name="header">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between">
             <h2 class="font-semibold text-3xl text-gray-800 mb-3 md:mb-0 dark:text-white leading-tight">
-                {{ __('All users') }}
+                {{ __('Interface d\'administration') }}
             </h2>
             <div>
                 <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab"
@@ -14,7 +14,7 @@
                     <li class="me-2" role="presentation">
                         <button class="inline-block ease-in transition-all duration-75 p-4 rounded-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                             id="user-styled-tab" data-tabs-target="#styled-user" type="button" role="tab"
-                            aria-controls="user" aria-selected="false">Users</button>
+                            aria-controls="user" aria-selected="false">Utilisateurs</button>
                     </li>
 
                     <li class="me-2" role="presentation">
@@ -34,7 +34,6 @@
                             id="delegation-styled-tab" data-tabs-target="#styled-delegation" type="button" role="tab"
                             aria-controls="delegation" aria-selected="false">Délegations</button>
                     </li>
-                    
                     
                 </ul>
             </div>
