@@ -25,8 +25,8 @@
                         <th scope="col" class="px-6 py-3">N°</th>
                         <th scope="col" class="px-6 py-3">Services</th>
                         <th scope="col" class="px-6 py-3">Utilisateurs</th>
-                        <th scope="col" class="px-6 py-3">Status</th>
-                        <th scope="col" class="px-6 py-3">Creation Date</th>
+                        <th scope="col" class="px-6 py-3">Statut</th>
+                        <th scope="col" class="px-6 py-3">Date de création</th>
                         <th scope="col" class="px-6 py-3">Action</th>
                     </tr>
                 </thead>
@@ -82,7 +82,7 @@
                             <td class="px-6 py-4">
                                 <a href="{{ route('demandes.show', $demande->id) }}" class="py-1 px-4">
                                     <i
-                                        class="material-icons-outlined text-black dark:text-white hover:text-orange-500">visibility</i>
+                                        class="material-icons-outlined text-black dark:text-white hover:text-orange-500">Visibilité</i>
                                 </a>
                             </td>
                         </tr>

@@ -1,5 +1,5 @@
 <x-app-layout>
-    
+
     <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded ">
         <div class="dark:bg-gray-800 rounded-t mb-0 px-4  border-0">
             <div class="rounded-t mb-0 px-4 py-3 border-0">
@@ -63,24 +63,24 @@
             @endif
     </div>
     <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
-    
+
     <head>
         <!-- DataTables CSS -->
         <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
         <!-- DataTables JS -->
         <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
     </head>
-    
+
     <div class="bg-white dark:bg-gray-900 p-4 shadow-md sm:rounded-lg">
         <div class="overflow-x-auto">
             <table id="example" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
                      <tr class="text-black dark:text-white">
                         <th scope="col" class="px-6 py-3">
-                            N° 
+                            N°
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Names
+                            Noms
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Actions
@@ -89,7 +89,7 @@
                 </thead>
                 <tbody class="bg-white dark:bg-gray-900">
                      @foreach ($directions as  $key => $direction)
-                                
+
                                     <tr  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <th scope="row"class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {{ $key+1 }}
@@ -100,14 +100,14 @@
                                         </td>
                                         <td class="px-6 py-3">
                                                 <a href="{{ route('directions.destroy', $direction->id) }}" class=" justify-items-start"
-                                                    onclick="supprimer(event);" 
+                                                    onclick="supprimer(event);"
                                                     data-modal-target="delete-modal"
                                                     data-modal-toggle="delete-modal"
                                                     >
                                                 <svg class="w-[32px] h-[32px] text-red-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
                                                 </svg>
-                                     </a>                          
+                                     </a>
                                 </td>
                                 </tr>
                         @endforeach

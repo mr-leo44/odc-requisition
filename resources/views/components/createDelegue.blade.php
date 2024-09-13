@@ -32,7 +32,7 @@
                             </ul>
                         </div>
                     @endif
-                    
+
                     <form class="w-full" action="{{ route('delegations.store') }}" method="POST">
                         @csrf
                         <div class="ui-widget" id="delegue">
@@ -48,14 +48,14 @@
                                 name="delegant" :value="old('delegant')" required />
                             <x-input-error :messages="$errors->get('delegant')" class="mt-2" />
                         </div>
-                        
+
                         <div class="mt-4 ui-widget" id="motif">
                             <x-input-label for="search_motif" :value="__('Motif')" />
                             <x-text-input id="search_motif" class="block mt-1 w-full" type="text"
                                 name="motif" :value="old('motif')" required />
                             <x-input-error :messages="$errors->get('motif')" class="mt-2" />
                         </div>
-                        
+
                         <div class="mt-4 ui-widget flex justify-between">
                             <div class="mt-4 ui-widget" id="date_debut">
                                 <x-input-label for="date_debut" :value="__('Date de début')" />
@@ -71,8 +71,8 @@
                         <div class="flex justify-end mt-3 mb-4">
                             <button type="submit"
                                 class="text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
-                                Submit
-                            </button>
+                                Soumettre
+                                    </button>
                         </div>
                     </form>
                 </div>
@@ -89,7 +89,7 @@
 <script>
     var users = @json($users);
     var usersData = users.map(user => user.name);
-    
+
     $(function() {
         // Autocomplétion pour le délégué
         $("#search_delegant").autocomplete({
@@ -98,7 +98,7 @@
     });
 
     $(document).ready(function() {
-        fetch('http://10.143.41.70:8000/promo2/odcapi/?method=getUsers') 
+        fetch('http://10.143.41.70:8000/promo2/odcapi/?method=getUsers')
             .then(response => response.json())
             .then(data => {
                 // var listData = data.users.map(user => user.name);

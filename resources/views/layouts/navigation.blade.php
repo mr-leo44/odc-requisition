@@ -44,7 +44,7 @@
                                             stroke-width="2"
                                             d="M13.5 3c-.169 0-.334.014-.5.025V11h7.975c.011-.166.025-.331.025-.5A7.5 7.5 0 0 0 13.5 3Z" />
                                     </svg>
-                                    <div class="text-sm text-gray-900 dark:text-white">Dashboard</div>
+                                    <div class="text-sm text-gray-900 dark:text-white">Tableau de bord</div>
                                 </a>
                             @endprofile
                             @profile('not-admin')

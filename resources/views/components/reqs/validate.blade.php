@@ -108,7 +108,7 @@
                         N°
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Numero Requisition
+                        Numéro Requisition
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Demandeur
