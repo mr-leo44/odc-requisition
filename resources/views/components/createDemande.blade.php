@@ -99,8 +99,8 @@
                             </div>
                         </div>
                         <div class="flex justify-end mb-1">
-                            <button type="submit" class="block text-white focus:ring-4 bg-orange-500 focus:outline-none font-bold rounded-lg text-sm px-10 py-2 text-center"> 
-                            Send
+                            <button type="submit" class="block text-white focus:ring-4 bg-orange-500 focus:outline-none font-bold rounded-lg text-sm px-10 py-2 text-center">
+                            Soumettre
                             </button>
                         </div>
                     </form>

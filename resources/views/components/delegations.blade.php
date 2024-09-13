@@ -19,7 +19,7 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
                      <tr class="">
                         <th scope="col" class="px-6 py-3">
-                            N° 
+                            N°
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Délégués
@@ -28,7 +28,7 @@
                             Motifs
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            délégants
+                            Délégants
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Date début
@@ -37,7 +37,7 @@
                             Date fin
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Status
+                            Statut
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Actions
@@ -46,7 +46,7 @@
                 </thead>
                 <tbody class="bg-white dark:bg-gray-900">
                      @foreach ($delegations as  $key => $delegation)
-                                
+
                                     <tr  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <th scope="row"class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {{ $key+1 }}
@@ -71,7 +71,7 @@
                                         </td>
                                         <td class="px-3 py-6">
                                             {{$delegation->date_fin}}
-                                        </td> 
+                                        </td>
                                         <td class="">
                                             @if ($delegation->status === 1)
                                             <span
@@ -81,7 +81,7 @@
                                                     <path
                                                         d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
                                                 </svg>
-                                                en cours
+                                                En cours
                                             </span>
                                                 @else
                                                 <span
@@ -91,31 +91,31 @@
                                                     <path
                                                         d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
                                                 </svg>
-                                                terminé
+                                                Terminé
                                             </span>
                                             @endif
-                                            
-                                        </td>   
+
+                                        </td>
                                         <td>
-                                            <a 
+                                            <a
                                                 onclick="supprimer(event)"
                                                 href="{{route('delegations.destroy', $delegation->id)}}"
-                                                data-modal-target="modal-del" 
+                                                data-modal-target="modal-del"
                                                 data-modal-toggle="modal-del"
                                                 data-id="{{$delegation->id}}"
                                                 class="flex justify-center items-center"
                                                 >
                                                 <svg class="w-[33px] h-[33px] text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
-                                                </svg> 
-                                            </a>                                        
+                                                </svg>
+                                            </a>
                                         </td>
                                 </tr>
                         @endforeach
                 </tbody>
             </table>
         </div>
-        
+
         </div>
 </div>
     <x-deleteDelegue :delegations="$delegations"/>

@@ -77,7 +77,7 @@
             </button>
         </div>
     @endif
-        
+
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs  uppercase bg-slate-300 dark:bg-gray-700 text-black dark:text-white">
@@ -127,7 +127,7 @@
                     @endforeach
                 </tr> --}}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-    
+
                     <td scope="col" class="px-6 py-3 text-center">
                         <span class="block font-semibold">Utilisateur</span>
                         <span class="font-normal">{{ $demande->user->name }}</span>
@@ -141,7 +141,7 @@
                     @foreach ($demande->approbateurs as $key => $approbateur)
                         <td scope="col" class="px-6 py-3 text-center">{{ $approbateur->name }}</th>
                     @endforeach
-    
+
                 </tr>
             </thead>
             <tbody>
@@ -166,17 +166,17 @@
                                         d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z"
                                         clip-rule="evenodd" />
                                 </svg>
-    
+
                             </td>
                         @else
                             <td scope="col" class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <span class="w-full mx-auto">{{ __(' ') }}</span>
-    
+
                             </td>
                         @endif
                     @endforeach
                 </tr>
-    
+
                 <tr>
                     @foreach ($traitements as $key => $traitement)
                         @if ($traitement->status === 'en cours')
@@ -189,7 +189,7 @@
                             </td>
                         @endif
                     @endforeach
-    
+
                 </tr>
             </tbody>
         </table>
@@ -213,7 +213,7 @@
                     @csrf
                     <button type="submit"
                         class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Générer
-                        pdf
+                       le pdf
                     </button>
                 </form>
             @endif
