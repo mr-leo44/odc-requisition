@@ -1,8 +1,8 @@
-<div class="hidden p-4 rounded-lg" id="styled-direction" role="tabpanel" aria-labelledby="direction-tab">  
+<div class="hidden p-4 rounded-lg" id="styled-direction" role="tabpanel" aria-labelledby="direction-tab">
     <div class="rounded-t mb-0 px-4 py-3 border-0">
         <div class="flex justify-end my-2 space-x-1">
             <button type="button" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
-                <svg class="w-[44px] h-[44px] text-orange-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <svg class="w-[44px] h-[44px] text-theme" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                     <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z" clip-rule="evenodd"/>
                 </svg>
             </button>
@@ -49,14 +49,14 @@
                         </button>
                     </div>
                 @endif
-        </div>   
+        </div>
     <div class="bg-white dark:bg-gray-900 shadow-md sm:rounded-lg">
             <div class="overflow-x-auto">
                 <table id="example" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
                          <tr class="text-black dark:text-white">
                             <th scope="col" class="px-6 py-3">
-                                N° 
+                                N°
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Noms
@@ -68,7 +68,7 @@
                     </thead>
                     <tbody class="bg-white dark:bg-gray-900">
                          @foreach ($directions as  $key => $direction)
-                                    
+
                                         <tr  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                             <th scope="row"class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                 {{ $key+1 }}
@@ -79,14 +79,14 @@
                                             </td>
                                             <td class="px-6 py-3">
                                                     <a href="{{ route('directions.destroy', $direction->id) }}" class=" justify-items-start"
-                                                        onclick="supprimer(event);" 
+                                                        onclick="supprimer(event);"
                                                         data-modal-target="delete-direction"
                                                         data-modal-toggle="delete-direction"
                                                         >
                                                     <svg class="w-[32px] h-[32px] text-red-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
                                                     </svg>
-                                         </a>                          
+                                         </a>
                                     </td>
                                     </tr>
                             @endforeach

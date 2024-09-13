@@ -53,7 +53,7 @@
                         </div>
                         <div class="flex justify-end mt-2 mb-2">
                             <button type="submit"
-                                class="text-white bg-orange-700 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-orange-400 dark:hover:bg-orange-500 dark:focus:ring-orange-500">
+                                class="text-white bg-theme focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-orange-400 dark:hover:bg-orange-500 dark:focus:ring-orange-500">
                                 Valider
                             </button>
                         </div>

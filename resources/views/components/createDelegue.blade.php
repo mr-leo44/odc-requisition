@@ -70,7 +70,7 @@
                         </div>
                         <div class="flex justify-end mt-3 mb-4">
                             <button type="submit"
-                                class="text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                                class="text-white bg-theme hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
                                 Soumettre
                                     </button>
                         </div>

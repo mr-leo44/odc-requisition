@@ -221,7 +221,7 @@
         @profile('livraison')
             <button id="reject" onclick="#" data-modal-target="default-modal" data-modal-toggle="default-modal"
                 type="button" @if ($demande->delivered) class="hidden" @endif
-                class="text-white bg-orange- opacity-95 hover:bg-orange-500 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2">
+                class="text-white bg-theme opacity-95 hover:bg-orange-500 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2">
                 Livraison
             </button>
         @endprofile

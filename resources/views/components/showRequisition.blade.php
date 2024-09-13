@@ -52,7 +52,7 @@
                         </div>
                         <a data-modal-target="default-modal" id="deliver" data-modal-toggle="default-modal"
                             data-modal-hide="show-modal"
-                            class="bg-orange-500 text-sm px-5 py-1.5 rounded ease-in-out transition-all duration-75 text-white">
+                            class="bg-theme text-sm px-5 py-1.5 rounded ease-in-out transition-all duration-75 text-white">
                             Livrer
                         </a>
                     </div>
@@ -167,7 +167,7 @@
                 deliverInputTd.classList.add("px-6", "py-4")
                 var deliverDiv = document.createElement('div')
                 deliverDiv.classList.add("flex", "flex-col", "gap-1")
-                deliverDiv.innerHTML = ` 
+                deliverDiv.innerHTML = `
                      <div>
                         <input type="hidden" name="details[${key}][id]"
                             value="${details[key].id}" id="details[${key}][id]"
