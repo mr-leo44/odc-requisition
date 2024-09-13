@@ -56,7 +56,7 @@
                                             placeholder="Nom " required autofocus
                                             autocomplete="name" />
                                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                                        <button type="submit" class="block text-white bg-orange-500 focus:ring-4 focus:outline-none font-bold rounded-lg text-sm px-10 text-center">
+                                        <button type="submit" class="block text-white bg-theme focus:ring-4 focus:outline-none font-bold rounded-lg text-sm px-10 text-center">
                                         Soumettre
                                         </button>
                                     </div>

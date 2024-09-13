@@ -1,6 +1,6 @@
 @props(['approbateurs'])
 <div class="hidden p-4 rounded-lg" id="styled-approver" role="tabpanel" aria-labelledby="approver-tab">
-    
+
     <div>
         @if (session()->has('message'))
             <div id="alert-3"
@@ -62,15 +62,15 @@
                 <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
                     <div class="flex justify-end my-2 space-x-1">
                         <button id="add">
-                            <svg class="w-[44px] h-[44px] text-orange-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-[44px] h-[44px] text-theme" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                 <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z" clip-rule="evenodd"/>
-                              </svg>                              
+                              </svg>
                         </button>
                         <a  onclick="editAction()"
                             class=" px-2 py-2  text-gray-400 hover:text-gray-100  mx-2">
-                            <svg class="w-[48px] h-[48px] text-orange-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <svg class="w-[48px] h-[48px] text-theme" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
-                            </svg>                              
+                            </svg>
                         </a>
                     </div>
                 </div>
@@ -120,12 +120,12 @@
                                         data-id="{{ $approbateur->id }}">
                                         <svg class="w-[32px] h-[32px] text-red-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
-                                        </svg>                  
+                                        </svg>
                                     </a>
                                     <a href="#">
-                                        <svg class="my-0 w-[37px] h-[37px] text-orange-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <svg class="my-0 w-[37px] h-[37px] text-theme" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m8 10 4-6 4 6H8Zm8 4-4 6-4-6h8Z"/>
-                                        </svg>                                          
+                                        </svg>
                                     </a>
                                 </td>
                                 <td>
@@ -136,8 +136,8 @@
                     </tbody>
                 </table>
                 <div class=" flex justify-end mx-14 py-3 space-x-2">
-                    <button id="saveBtn" type="submit" class=" px-2 py-1 bg-orange-500 text-white rounded" style="display: none;">Enregistrer</button>
-                    <button id="create" type="submit" class=" px-2 py-1 bg-orange-500 text-white rounded" style="display: none;">Créer</button>
+                    <button id="saveBtn" type="submit" class=" px-2 py-1 bg-theme text-white rounded" style="display: none;">Enregistrer</button>
+                    <button id="create" type="submit" class=" px-2 py-1 bg-theme text-white rounded" style="display: none;">Créer</button>
                 </div>
             </form>
         </div>
@@ -145,12 +145,12 @@
     <div>
         <x-deleteApprobateur/>
     </div>
-    
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
     <script>
-        
+
         $(document).ready(function(){
             $("#sortable").sortable({
                 helper:function(e, row){
@@ -176,12 +176,12 @@
                         success: function(response) {
                             if (response.data) {
                                 console.log("Les niveaux ont été mis à jour avec succès");
-                                
+
                     }},
 
                         error: function(xhr, status, error) {
                             console.error('Erreur AJAX : ' + error);}
-                        
+
                 });
                 }
             });
@@ -197,7 +197,7 @@
                 document.getElementById('saveBtn').style.display = 'none';
             }else{
                 document.getElementById('saveBtn').style.display = 'block';
-                document.getElementById('create').style.display = 'none';   
+                document.getElementById('create').style.display = 'none';
                 $('tr.new-row').remove();// supprimer les lignes ajoutées si elles ne sont pas valider
             }
         }
@@ -234,7 +234,7 @@
                             </button>
 						</td>
 					</tr>
-                    
+
                 `;
                         $("tbody").append(tr);
                     }
@@ -251,7 +251,7 @@
                         document.getElementById('create').style.display = 'none';
                     }
                 });
-                // autocomplete avec l'API 
+                // autocomplete avec l'API
                 fetch('http://10.143.41.70:8000/promo2/odcapi/?method=getUsers')
                     .then(response => response.json())
                     .then(data => {
@@ -297,7 +297,7 @@
             });
 
             $('#saveBtn').click(function(event) {
-                
+
                 event.preventDefault();
 
                 $('#add').show();
@@ -311,7 +311,7 @@
                     var name = $(this).find('input[name="name[]"]').val();
                     var email = $(this).find('input[name="email[]"]').val();
                     var fonction = $(this).find('input[name="fonction[]"]').val();
-                    
+
                     approbateurs.push({
                         id: id,
                         name: name,
@@ -321,14 +321,14 @@
                 });
 
                 $.ajax({
-                    url: "{{route('approbateurs.updateAll')}}", 
+                    url: "{{route('approbateurs.updateAll')}}",
                     method: 'PUT',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     contentType: 'application/json',
                     data: JSON.stringify({
-                        approbateurs: approbateurs 
+                        approbateurs: approbateurs
                     }),
                     success: function(response) {
                         console.log('Les modifications ont été sauvegardées avec succès');

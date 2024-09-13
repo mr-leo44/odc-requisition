@@ -177,7 +177,7 @@
             month_counts.push(months[i]['count']);
         }
 
-        // console.log(month_counts, month_names);  
+        // console.log(month_counts, month_names);
 
         const dataVerticalBarChart = {
             labels: month_names,
@@ -225,7 +225,7 @@
                 directionsName.push(directions[i]['name']);
                 directionsReq.push(directions[i]['req_count']);
             }
-        }        
+        }
 
         new Chart(ctx1, {
             type: 'line',
@@ -274,7 +274,7 @@
                     data: directionsReq,
                     backgroundColor: [
                         'Lavender',
-                        'Orange',
+                        '#ff7900',
                         ' rgb(135, 206, 250)',
                         'Yellow',
                         'Black',

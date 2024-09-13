@@ -9,7 +9,7 @@
         <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
             <div class="flex justify-end my-2 space-x-1">
                 <button data-modal-target="modal" data-modal-toggle="modal" type="button">
-                    <svg class="w-[44px] h-[44px] text-orange-500" aria-hidden="true"
+                    <svg class="w-[44px] h-[44px] text-theme" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                         viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
@@ -74,7 +74,7 @@
                     </svg>
                 </button>
             </div>
-        @endif 
+        @endif
     </div >
         <div class="relative overflow-x-auto mt-10">
             <table id="myTable" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">

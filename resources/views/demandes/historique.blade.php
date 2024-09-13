@@ -65,7 +65,7 @@
                                     </span>
                                 @else
                                     <span
-                                        class="opacity-95 border-orange-500 border text-orange-400 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded">
+                                        class="opacity-95 border-orange-500 border text-theme text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded">
                                         <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                             <path
@@ -82,7 +82,7 @@
                             <td class="px-6 py-4">
                                 <a href="{{ route('demandes.show', $demande->id) }}" class="py-1 px-4">
                                     <i
-                                        class="material-icons-outlined text-black dark:text-white hover:text-orange-500">Visibilité</i>
+                                        class="material-icons-outlined text-black dark:text-white hover:text-theme">Visibilité</i>
                                 </a>
                             </td>
                         </tr>

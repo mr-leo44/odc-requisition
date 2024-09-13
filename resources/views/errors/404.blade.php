@@ -8,7 +8,7 @@
         </h2>
 
         <button
-            class="mt-7 inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 font-medium bg-orange-400 text-white hover:bg-opacity-90"
+            class="mt-7 inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 font-medium bg-theme text-white hover:bg-opacity-90"
             onclick="history.back()">
             <svg class="fill-current" width="16" height="14" viewBox="0 0 16 14" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
