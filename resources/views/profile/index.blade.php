@@ -1,52 +1,53 @@
 <x-app-layout>
-    <div class="h-full bg-white dark:bg-gray-800 p-8">
+    <div class="h-full bg-white dark:bg-sombre p-8">
         <x-slot name="header">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            <h2 class="font-semibold text-xl text-sombre dark:text-gray-200 leading-tight">
                 {{ __("Profil d'utilisateur") }}
             </h2>
         </x-slot>
 
         <div class="bg-white dark:bg-gray-100 rounded-lg shadow-xl pb-8" style="background-image: url('img/bg.gif')">
 
-            <div class="w-full h-[250px] bg-gray-800 rounded-t-lg dark:rounded-t-none" style="background-image: url('img/bg.gif');">
-            </div>
+            {{--<div class="w-full h-[250px] bg-gray-800 rounded-t-lg dark:rounded-t-none" style="background-image: url('img/bg.gif');">
+            </div>--}}
             <div class="flex flex-col items-center -mt-20 dark:rounded-t-lg">
                 <img src="{{ asset('img/profil.png') }}" class="w-40 border-4 border-white rounded-full" alt="profile">
                 <div class="flex items-center space-x-2 mt-2">
-                    <p class="text-7xl text-white dark:text-white bg-gray-800 rounded-full p-2 " >{{ $user->name }}</p>
+                    <p class="text-7xl text-white dark:text-white bg-sombre rounded-full p-2 " >{{ $user->name }}</p>
                 </div>
             </div>
         </div>
 
         <div class="my-4 flex flex-col 2xl:flex-row space-y-3 2xl:space-y-0 2xl:space-x-4">
             <div class="w-full flex flex-col gap-3 2xl:w-1/3">
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 transform transition-transform duration-300 hover:scale-105">
                     <h4 class="flex border-b text-xl  dark:border-gray-600 text-gray-900 dark:text-white font-bold">Informations</h4>
-                    <ul class="mt-2 text-gray-700 dark:text-white">
+                    <ul class="mt-2 text-sombre dark:text-white">
                         <li class="flex  dark:border-gray-600 py-2">
-                            <span class="font-bold w-24 text-[#ff7900]">Nom  :</span>
-                            <span class="text-gray-700 dark:text-white">{{ session()->get('user') }}</span>
+                            <span class="font-bold w-24 text-sombre dark:text-gray-100">Nom  :</span>
+                            <span class="text-sombre dark:text-white">{{ session()->get('user') }}</span>
                         </li>
                         <li class="flex  dark:border-gray-600 py-2">
-                            <span class="font-bold w-24 text-[#ff7900]">Direction :</span>
-                            <span class="text-gray-700 dark:text-white">{{ $user->compte->direction->name }}</span>
+                            <span class="font-bold w-24 text-sombre dark:text-gray-100">Direction :</span>
+                            <span class="text-sombre dark:text-white">{{ $user->compte->direction->name }}</span>
                         </li>
                         <li class="flex  dark:border-gray-600 py-2">
-                            <span class="font-bold w-24 text-[#ff7900]">Service :</span>
-                            <span class="text-gray-700 dark:text-white">{{ $user->compte->service }}</span>
+                            <span class="font-bold w-24 text-sombre dark:text-gray-100">Service :</span>
+                            <span class="text-sombre dark:text-gray-100">{{ $user->compte->service }}</span>
                         </li>
                         <li class="flex  dark:border-gray-600 py-2">
-                            <span class="font-bold w-24 text-[#ff7900]">Ville :</span>
+                            <span class="font-bold w-24 text-sombre dark:text-gray-100">Ville :</span>
                             <span class="text-gray-700 dark:text-white">{{ $user->compte->city }}</span>
                         </li>
 
                         <li class="flex  dark:border-gray-600 py-2">
-                            <span class="font-bold w-24 text-[#ff7900]">Manager :</span>
-                            <span class="text-gray-700 dark:text-white">
+                            <span class="font-bold w-24 text-sombre dark:text-gray-100">Manager :</span>
+                            <span class="text-sombre dark:text-white">
                                 @if ($user->manager)
                                     @if ($user->manager === $user->name)
                                         {{ __('Moi') }}
                                     @else
+
                                         {{ $user->manager }}
                                     @endif
                                 @else
@@ -62,7 +63,7 @@
                     </div>
                 </div>
                 @if ($user->isManager)
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 transform transition-transform duration-300 hover:scale-105">
                         <h4 class="text-xl text-gray-900 dark:text-white font-bold">Collaborateurs</h4>
                         @if ($collaborateurs->count() > 0)
                             <ul>
@@ -83,8 +84,8 @@
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
                         <div
-                            class="px-6 py-6 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-xl">
-                            <div class="flex items-center justify-between">
+                            class="px-6 py-6 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-xl transform transition-transform duration-300 hover:scale-105">
+                            <div class="flex items-center justify-between ">
                                 <span class="font-bold text-md text-gray-700 dark:text-white">Total des
                                     Requisitions</span>
                             </div>
@@ -107,7 +108,7 @@
                             </div>
                         </div>
                         <div
-                            class="px-6 py-6 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-xl">
+                            class="px-6 py-6 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-xl transform transition-transform duration-300 hover:scale-105">
                             <div class="flex items-center justify-between">
                                 <span class="font-bold text-md text-gray-700 dark:text-white">Requisitions du
                                     mois</span>
@@ -158,7 +159,7 @@
                             </div>
                         </div>
                         <div
-                            class="px-6 py-6 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-xl">
+                            class="px-6 py-6 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-xl transform transition-transform duration-300 hover:scale-105">
                             <div class="flex items-center justify-between">
                                 <span class="font-bold text-md text-green-600 dark:text-green-400">Requisitions
                                     validées</span>
