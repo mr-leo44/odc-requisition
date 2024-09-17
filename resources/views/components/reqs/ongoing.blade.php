@@ -21,7 +21,7 @@
         <div class="flex justify-between items-center gap-3">
             <button type="button" @if (Session::get('authUser')->compte->role->value === 'livraison') class="hidden" @endif
                 data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
-                class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-orange-500 rounded-lg">
+                class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-theme rounded-lg">
                 <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -44,7 +44,7 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full ps-10 p-2.5 dark:focus:text-gray-700"
                             placeholder="Rechercher..." required />
                     </div>
-                    <button type="submit" class="p-3.5 ms-2 text-sm font-medium text-white bg-orange-500 rounded-lg">
+                    <button type="submit" class="p-3.5 ms-2 text-sm font-medium text-white bg-theme rounded-lg">
                         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -85,7 +85,7 @@
                         </div>
                         <div class="flex justify-end items-center gap-2">
                             <button data-modal-target="show-modal" data-modal-toggle="show-modal" type="button"
-                                class="bg-orange-500 px-3 py-2 rounded" onclick="showModal({{ $req }})">
+                                class="bg-theme px-3 py-2 rounded" onclick="showModal({{ $req }})">
                                 <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                     viewBox="0 0 24 24">
@@ -179,7 +179,7 @@
                             </td>
                             <td class="px-6 py-4 text-right flex items-center justify-end gap-2">
                                 <button data-modal-target="show-modal" data-modal-toggle="show-modal" type="button"
-                                    class="bg-orange-500 px-3 py-2 rounded" onclick="showModal({{ $req }})">
+                                    class="bg-theme px-3 py-2 rounded" onclick="showModal({{ $req }})">
                                     <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         fill="none" viewBox="0 0 24 24">

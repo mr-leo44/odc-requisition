@@ -2,12 +2,12 @@
     <div class="flex flex-col lg:flex-row h-screen bg-white dark:bg-[#121827] ">
         <!-- Image desktop -->
         <div class="hidden lg:block lg:w-7/5 dark:bg-100">
-            <img src="{{ asset('img/registered.gif') }}" class="object-cover w-full h-full" alt="">
+            <img src="{{ asset('img/regist.png') }}" class="object-cover w-full h-full" alt="">
         </div>
 
         <!-- l'image sur mobile -->
         <div class="block order-first lg:hidden w-full h-1/4 mb-8  bg-white">
-            <img class="object-cover w-full h-full" src="{{ asset('img/registered.gif') }}" alt="">
+            <img class="object-cover w-full h-full" src="{{ asset('img/regist.png') }}" alt="">
             <div class="flex flex-col items-center -mt-20">
                 <img src="{{ asset('img/orange.png') }}" class="w-40 border-1" alt="profile">
             </div>
@@ -44,8 +44,7 @@
                 </div>
                 <div class="mt-8 text-center">
 
-                    <p clas
-                    s="mt-4 text-base text-gray-700 dark:text-gray-400 ">Veuillez compléter votre profil</p>
+                    <p class="mt-4 text-base text-gray-700 dark:text-gray-400 text-left ">Veuillez compléter votre profil</p>
                 </div>
                 <form action="{{ route('register') }}" method="POST">
                     @csrf
@@ -86,7 +85,7 @@
 
 
                     <div class="text-center mt-4">
-                        <x-primary-button class="w-full flex justify-center items-center bg-[#ff7900] dark:bg-black">
+                        <x-primary-button class="w-full px-4 py-3 flex justify-center items-center bg-[#ff7900] dark:bg-black">
                             Valider
                         </x-primary-button>
                     </div>

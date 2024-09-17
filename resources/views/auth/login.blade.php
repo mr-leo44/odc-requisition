@@ -69,7 +69,7 @@
                                 placeholder="Enter your password">
                         </div>
                         <div class="mt-6">
-                            <x-primary-button class="w-full px-4 py-3 flex justify-center items-center">
+                            <x-primary-button class="w-full px-4 py-3 flex justify-center items-center bg-[#ff7900] dark:bg-black">
                                 Se connecter
                             </x-primary-button>
                         </div>
