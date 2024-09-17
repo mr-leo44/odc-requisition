@@ -15,7 +15,7 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full ps-10 p-2.5 dark:focus:text-gray-700"
                         placeholder="Rechercher..." required />
                 </div>
-                <button type="submit" class="p-3.5 ms-2 text-sm font-medium text-white bg-orange-500 rounded-lg">
+                <button type="submit" class="p-3.5 ms-2 text-sm font-medium text-white bg-theme rounded-lg">
                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -92,7 +92,7 @@
                                     </span>
                                 @elseif($req->status === 'En attente de livraison')
                                     <span
-                                        class="opacity-95 border-orange-500 border text-orange-400 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded">
+                                        class="opacity-95 border-theme border text-theme text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded">
                                         <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                             <path
@@ -117,7 +117,7 @@
                             </td>
                             <td class="px-6 py-4 text-right flex items-center justify-end gap-2">
                                 <button data-modal-target="show-modal" data-modal-toggle="show-modal" type="button"
-                                    class="bg-orange-500 px-3 py-2 rounded" onclick="showModal({{ $req }})">
+                                    class="bg-theme px-3 py-2 rounded" onclick="showModal({{ $req }})">
                                     <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         fill="none" viewBox="0 0 24 24">
