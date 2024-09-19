@@ -51,7 +51,7 @@ class ProfileController extends Controller
             // dd($months);
         }
 
-        if($collaborateurs->count() > 0) {
+        if ($collaborateurs->count() > 0) {
             $user['isManager'] = true;
             foreach ($collaborateurs as $key => $collaborateur) {
                 $reqs_count = Demande::where('user_id', $collaborateur->id)->count();
@@ -66,10 +66,11 @@ class ProfileController extends Controller
         $this_month_req = Demande::where('user_id', $user->id)->whereMonth('created_at', Carbon::now()->month)->count();
         $user_reqs = Demande::where('user_id', $user->id)->get();
         $count = 0;
-        foreach ($user_reqs as $key => $req) {
+
+        foreach ($user_reqs as $req) {
             $last_traitement = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
-            if ($last_traitement->status === 'validé') {
-                $count = $count + 1;
+            if ($last_traitement && $last_traitement->status === 'validé') {
+                $count++;
             }
         }
 
@@ -85,7 +86,7 @@ class ProfileController extends Controller
             'direction' => 'required|string|max:255',
             'service' => 'required|string|max:255',
             'manager' => 'required|string|max:255',
-            'city'=> 'required|string|max:255',
+            'city' => 'required|string|max:255',
         ]);
 
         $compte = $user->compte;
