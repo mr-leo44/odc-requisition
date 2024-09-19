@@ -92,6 +92,7 @@
         const details = req.demande_details
 
         document.querySelector('#details_table tbody').textContent = ""
+        document.querySelector('#deliver').addEventListener('click', updateDetails(req.demande_details))
 
         // Générer tableau des details
         details.forEach(detail => {
@@ -133,6 +134,7 @@
             document.getElementById('validation').classList.add('hidden')
             var text = "Etes-vous vraiment sûr de faire cette livraison?"
             document.querySelector('#deliver').addEventListener('click', updateDetails(req.demande_details, text))
+
         }
     }
 
