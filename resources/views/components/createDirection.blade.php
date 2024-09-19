@@ -42,7 +42,7 @@
                                         <div class="col-span-2">
                                             <x-input-label
                                                 class="flex-start font-bold block mb-2 text-sm text-gray-900 dark:text-white"
-                                                for="name" :value="__('Please enter your Direction')" />
+                                                for="name" :value="__('Veuillez entrer votre direction')" />
                                         </div>
                                     </div>
                                 </div>
