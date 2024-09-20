@@ -47,7 +47,8 @@ class DemandeController extends Controller
         $delegations = $this->getDelegationsReqs($connected_user);
         $validate = $this->getReqsToValidate($connected_user);
         $historics = $this->getReqsHistoric($connected_user);
-        return view('demandes.index', compact('ongoings', 'connected_user', 'historics', 'collaborators', 'delegations', 'validate'));
+        $statistics = $this->getStatistics($connected_user);
+        return view('demandes.index', compact('ongoings', 'connected_user', 'historics', 'collaborators', 'delegations', 'validate', 'statistics'));
     }
 
     private function isManager($user)
@@ -82,7 +83,6 @@ class DemandeController extends Controller
             return false;
         }
     }
-
 
     private function getOngoingReqs($user)
     {
@@ -278,6 +278,13 @@ class DemandeController extends Controller
         // dd($demandes);
         return $demandes;
     }
+
+    private function getStatistics($user)
+    {
+        $statistics = 'Onglet des Statistiques';
+        return $statistics;
+    }
+
     private function getReqsHistoric($user)
     {
         if ($user->compte->role->value === 'user') {
