@@ -11,7 +11,7 @@
                     class="flex ms-2 md:me-24 items-center">
                     <img src="{{ asset('img/orange.png') }}" class="h-7 me-3" alt="FlowBite Logo" />
                     <span
-                        class="ms-2 self-center text-md font-semibold xl:text-xl whitespace-nowrap dark:text-white">Requisition
+                        class="ms-2 self-center text-md font-semibold xl:text-2xl whitespace-nowrap dark:text-white">Requisition
                         Orange</span>
                 </a>
             </div>
@@ -19,7 +19,6 @@
                 <div class="flex flex-col text-gray-800 dark:text-white">
                     <h3 class="font-semibold text-base">
                         {{ Session::get('authUser')->name }}</h3>
-                    <span class="text-xs">{{ $profile }}</span>
                 </div>
                 <div>
                     <button type="button" data-dropdown-toggle="apps-dropdown"
@@ -33,20 +32,6 @@
                     <div class="hidden overflow-hidden z-50 my-4 max-w-sm text-base list-none bg-white rounded divide-y divide-gray-100 shadow-lg dark:bg-gray-700 dark:divide-gray-600"
                         id="apps-dropdown">
                         <div class="p-4">
-                            @profile('livraison')
-                                <a href="{{ route('dashboard') }}" class="flex items-center p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group">
-                                    <svg aria-hidden="true"
-                                        class="mr-3 w-7 h-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
-                                        fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="M10 6.025A7.5 7.5 0 1 0 17.975 14H10V6.025Z" />
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M13.5 3c-.169 0-.334.014-.5.025V11h7.975c.011-.166.025-.331.025-.5A7.5 7.5 0 0 0 13.5 3Z" />
-                                    </svg>
-                                    <div class="text-sm text-gray-900 dark:text-white">Tableau de bord</div>
-                                </a>
-                            @endprofile
                             @profile('not-admin')
                                 <a href="{{ route('demandes.index') }}" class="flex items-center p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group">
                                     <svg aria-hidden="true"
