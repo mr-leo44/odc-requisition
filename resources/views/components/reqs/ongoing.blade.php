@@ -73,19 +73,10 @@
                         <p class="font-medium text-md text-gray-700 dark:text-white">{{ $req->service }}</p>
                         <p class="font-medium text-md text-gray-700 dark:text-white">{{ $req->user->compte->city }}</p>
                     </div>
-                    <div class="flex justify-between items-center p-4">
-                        <div>
-                            <p class="text-gray-700 dark:text-gray-400 text-sm">{{ $req->to_deliver }}
-                                @if ($req->to_deliver > 1)
-                                    {{ __('Pièces') }}
-                                @else
-                                    {{ __('Pièce') }}
-                                @endif à livrer
-                            </p>
-                        </div>
+                    <div class="flex justify-end items-center ml-auto p-4">
                         <div class="flex justify-end items-center gap-2">
                             <button data-modal-target="show-modal" data-modal-toggle="show-modal" type="button"
-                                class="bg-theme px-3 py-2 rounded" onclick="showModal({{ $req }})">
+                                class="bg-orange-500 px-3 py-2 rounded" onclick="showModal({{ $req }})">
                                 <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                     viewBox="0 0 24 24">
