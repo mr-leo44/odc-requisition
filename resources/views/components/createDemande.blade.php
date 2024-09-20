@@ -158,7 +158,6 @@
                     const qte_demandee = $(this).find('input[name*="[qte_demandee]"]').val();
                     if (!designation || !qte_demandee) {
                         isValid = false;
-                        alert('Veuillez remplir tous les champs.');
                         return false; // Arrête la boucle each
                     }
                 });
