@@ -106,8 +106,7 @@ class DemandeController extends Controller
         return $reqs;
     }
 
-    private function getCollaboratorsReqs($user)
-    {
+    private function getCollaboratorsReqs($user) {
         $isManager = Compte::where('manager', $user->id)->exists();
         if ($isManager) {
             $userCollaborators = User::whereHas('compte', function (Builder $query) use ($user) {
@@ -123,30 +122,31 @@ class DemandeController extends Controller
             $demandes = Demande::with('demande_details')->whereIn('id', $collabs_req_keys)->latest()->paginate(12);
             foreach ($demandes as $demande) {
                 $last_flow = Traitement::where('demande_id', $demande->id)->get()->last();
-                $details = $demande->demande_details()->get();
-                $demande['level'] = $last_flow->level;
-                if ($last_flow->approbateur_id === $user->id) {
-                    $demande['validator'] = true;
-                } else {
-                    $demande['validator'] = false;
-                }
-
-                if ($last_flow->status === 'rejeté') {
-                    $demande['status'] = 'Rejeté';
-                } elseif ($last_flow->status === 'validé') {
-                    $count = 0;
-                    foreach ($details as $key => $detail) {
-                        if ($detail->qte_demandee === $detail->qte_livree) {
-                            $count += 1;
-                        }
-                    }
-                    if ($count === $details->count()) {
-                        $demande['status'] = 'Livré';
+                if ($last_flow) {
+                    $demande['level'] = $last_flow->level;
+                    if ($last_flow->approbateur_id === $user->id) {
+                        $demande['validator'] = true;
                     } else {
-                        $demande['status'] = 'En cours de livraison';
+                        $demande['validator'] = false;
                     }
-                } else {
-                    $demande['status'] = 'En cours';
+                    if ($last_flow->status === 'rejeté') {
+                        $demande['status'] = 'Rejeté';
+                    } elseif ($last_flow->status === 'validé') {
+                        $count = 0;
+                        $details = $demande->demande_details()->get();
+                        foreach ($details as $key => $detail) {
+                            if ($detail->qte_demandee === $detail->qte_livree) {
+                                $count += 1;
+                            }
+                        }
+                        if ($count === $details->count()) {
+                            $demande['status'] = 'Livré';
+                        } else {
+                            $demande['status'] = 'En cours de livraison';
+                        }
+                    } else {
+                        $demande['status'] = 'En cours';
+                    }
                 }
             }
         } else {
@@ -154,7 +154,7 @@ class DemandeController extends Controller
         }
         return $demandes;
     }
-
+    
     private function getReqsToValidate($user)
     {
         if ($user->approver) {
