@@ -42,7 +42,10 @@ class DemandeController extends Controller
         if ($this->isDelegated($connected_user)) {
             $connected_user['delegated'] = true;
         }
-
+        
+        if($connected_user->compte->role->value === 'livraison') {
+            $connected_user['deliver'] = true;
+        }
         $ongoings = $this->getOngoingReqs($connected_user);
         $collaborators = $this->getCollaboratorsReqs($connected_user);
         $delegations = $this->getDelegationsReqs($connected_user);

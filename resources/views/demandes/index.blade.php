@@ -98,6 +98,7 @@
         var isManager = `{{ $connected_user->manager }}`
         var isDelegated =  `{{ $connected_user->delegated }}`
         var isApprover = `{{ $connected_user->approver }}`
+        var isDeliver = `{{ $connected_user->deliver }}`
 
         if (!isManager) {
             collaboratorsButton.classList.add("hidden")
@@ -112,6 +113,11 @@
         if (!isApprover) {
             validateButton.classList.add("hidden")
             validateTab.classList.add("hidden")
+        }
+
+        if (!isDeliver) {
+            statisticsButton.classList.add("hidden")
+            statisticsTab.classList.add("hidden")
         }
         ongoingButton.addEventListener("click", function() {
             localStorage.setItem('viewTab', 'ongoing')
