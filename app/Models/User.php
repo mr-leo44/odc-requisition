@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Compte;
 use App\Models\Demande;
+use App\Models\Delegation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -58,5 +59,10 @@ class User extends Authenticatable
     public function demandes(): HasMany
     {
         return $this->hasMany(Demande::class);
+    }
+
+    public function delegations(): HasMany
+    {
+        return $this->hasMany(Delegation::class);
     }
 }
