@@ -2,7 +2,7 @@
 <div class="hidden p-4 rounded-lg" id="styled-user" role="tabpanel" aria-labelledby="user-tab">
     <div class="flex flex-wrap items-center">
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-            <h3 class=" font-bold text-base dark:text-white">Users
+            <h3 class=" font-bold text-base dark:text-white">
                 <p> Total Utilisateurs dans le système: {{ $users->count() }}</p>
             </h3>
         </div>

@@ -15,7 +15,7 @@
     </div>
     <div class="sm:rounded-lg">
         <div class="overflow-x-auto">
-            <table id="example"  class="w-full  dark:bg-white text-sm text-left text-gray-500 dark:text-gray-400">
+            <table  class="w-full  dark:bg-white text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
                      <tr class="">
                         <th scope="col" class="px-6 py-3">
@@ -122,15 +122,3 @@
     <x-createDelegue :users="$users" :usersList="$usersList"/>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script>
-
-        if (document.getElementById("example")) {
-            const dataTable = new simpleDatatables.DataTable("#example", {
-                searchable: false,
-                perPageSelect: false,
-                sortable: true
-            });
-        }
-</script>

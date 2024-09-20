@@ -76,6 +76,10 @@ class ApprobateurController extends Controller
         }
         return false;
     }
+    public function show()
+    {
+        //
+    }
     public function edit($id)
     {
         $approbateurs = Approbateur::findOrFail($id);
