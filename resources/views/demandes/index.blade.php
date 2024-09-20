@@ -71,7 +71,7 @@
                     <x-reqs.delegations :delegations="$delegations" />
                     <x-reqs.validate :validate="$validate" />
                     <x-reqs.historics :historics="$historics" />
-                    <x-reqs.statistics />
+                    <x-reqs.statistics :statistics="$statistics" />
                 </div>
             </div>
         </div>
