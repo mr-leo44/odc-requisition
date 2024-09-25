@@ -57,11 +57,9 @@ class AuthenticatedSessionController extends Controller
                     } else {
                         Session::put('authUser', $user);
                         Session::put('user', $responseFinal['user']['username']);
-                        if ($user->compte->role->value === 'livraison') {
-                            return redirect()->route('dashboard');
-                        } elseif ($user->compte->role->value === 'admin') {
+                        if ($user->compte->role->value === 'admin') {
                             return redirect()->route('admin.index');
-                        } elseif ($user->compte->role->value === 'user') {
+                        } elseif ($user->compte->role->value !== 'admin') {
                             return redirect()->route('demandes.index');
                         } else {
                             Session::put('admin', null);

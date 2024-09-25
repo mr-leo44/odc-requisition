@@ -44,7 +44,8 @@
                 </div>
                 <div class="mt-8 text-center">
 
-                    <p class="mt-4 text-base text-gray-700 dark:text-gray-400 text-left ">Veuillez compléter votre profil</p>
+                    <p class="mt-4 text-base text-gray-700 dark:text-gray-400 text-left ">Veuillez compléter votre
+                        profil</p>
                 </div>
                 <form action="{{ route('register') }}" method="POST">
                     @csrf
@@ -85,7 +86,8 @@
 
 
                     <div class="text-center mt-4">
-                        <x-primary-button class="w-full px-4 py-3 flex justify-center items-center bg-[#ff7900] dark:bg-black">
+                        <x-primary-button
+                            class="w-full px-4 py-3 flex justify-center items-center bg-[#ff7900] dark:bg-black">
                             Valider
                         </x-primary-button>
                     </div>
@@ -99,26 +101,6 @@
 
 
     <script type="text/javascript">
-        $(function getDarkMode() {
-                return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            }
-            // Applique le style en fonction du mode du navigateur
-            function applyDarkMode() {
-                const registerUser = document.getElementById('registerUser');
-                if (getDarkMode()) {
-                    registerUser.classList.remove('light');
-                    registerUser.classList.add('dark');
-                } else {
-                    registerUser.classList.remove('dark');
-                    registerUser.classList.add('light');
-                }
-            }
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',
-        applyDarkMode); applyDarkMode();
-
-        );
-
-
         $(function() {
             var users = @json($users);
             var usersData = []
@@ -152,8 +134,6 @@
                 source: servicesData
             });
 
-
-
             var cities = @json($city);
             var citiesData = []
 
@@ -164,7 +144,6 @@
             $("#search_city").autocomplete({
                 source: citiesData
             });
-
 
             // Logique pour afficher les erreurs sous les champs respectifs
             @if ($errors->has('direction'))
