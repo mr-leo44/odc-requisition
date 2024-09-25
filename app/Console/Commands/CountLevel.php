@@ -35,7 +35,7 @@ class CountLevel extends Command
             $demandes = Demande::all();
             foreach($demandes as $demande){
                 $last = Traitement::where('demande_id',$demande->id)->orderBy('created_at','desc')->first();
-                if($last->status == 'en cours'){
+                if($last->status == 'en_cours'){
                     $level = $last->level;
                     if(Approbateur::where('level',$level)->where('deleted_at',null)->exists()){
                         $approbateurs = Approbateur::where('level',$level)->where('deleted_at',null)->first();

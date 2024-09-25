@@ -90,7 +90,7 @@ class DemandeController extends Controller
     {
         if ($user->compte->role->value === 'user') {
             $reqs = Demande::with('demande_details')->whereHas('traitement', function ($query) use ($user) {
-                $query->where('demandeur_id', $user->id)->where('status', 'en cours');
+                $query->where('demandeur_id', $user->id)->where('status', 'en_cours');
             })
                 ->paginate(12);
             foreach ($reqs as $req) {
@@ -111,7 +111,7 @@ class DemandeController extends Controller
             $all_validated_keys = [];
             foreach ($demandes as $key => $req) {
                 $last = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
-                if ($last && $last->status === 'validé') {
+                if ($last && $last->status === 'valide') {
                     $all_validated_keys[$key] = $req->id;
                 }
             }
@@ -168,9 +168,9 @@ class DemandeController extends Controller
                     } else {
                         $demande['validator'] = false;
                     }
-                    if ($last_flow->status === 'rejeté') {
+                    if ($last_flow->status === 'rejete') {
                         $demande['status'] = 'Rejeté';
-                    } elseif ($last_flow->status === 'validé') {
+                    } elseif ($last_flow->status === 'valide') {
                         $count = 0;
                         $details = $demande->demande_details()->get();
                         foreach ($details as $key => $detail) {
@@ -201,7 +201,7 @@ class DemandeController extends Controller
             $manager = User::find($delegation->manager);
             if ($this->isManager($manager) || $this->isApprover($manager)) {
                 $demandes = Demande::with('demande_details')->whereHas('traitement', function (Builder $query) use ($manager) {
-                    $query->where('approbateur_id', $manager->id)->where('status', 'en cours');
+                    $query->where('approbateur_id', $manager->id)->where('status', 'en_cours');
                 })->latest()->paginate(12);
 
                 foreach ($demandes as $demande) {
@@ -221,7 +221,7 @@ class DemandeController extends Controller
                 $all_validated_keys = [];
                 foreach ($reqs as $key => $req) {
                     $last = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
-                    if ($last && $last->status === 'validé') {
+                    if ($last && $last->status === 'valide') {
                         $all_validated_keys[$key] = $req->id;
                     }
                 }
@@ -261,7 +261,7 @@ class DemandeController extends Controller
     {
         if ($user->approver) {
             $demandes = Demande::with('demande_details')->whereHas('traitement', function (Builder $query) use ($user) {
-                $query->where('approbateur_id', $user->id)->where('status', 'en cours');
+                $query->where('approbateur_id', $user->id)->where('status', 'en_cours');
             })->latest()->paginate(12);
 
             foreach ($demandes as $demande) {
@@ -287,7 +287,7 @@ class DemandeController extends Controller
         $all_validated_keys = [];
         foreach ($demandes as $key => $demande) {
             $last = Traitement::where('demande_id', $demande->id)->orderBy('id', 'DESC')->first();
-            if ($last && $last->status === 'validé') {
+            if ($last && $last->status === 'valide') {
                 $all_validated_keys[$key] = $demande->id;
             }
         }
@@ -370,7 +370,7 @@ class DemandeController extends Controller
                         foreach ($user_reqs as $key => $user_req) {
                             $last_tr = Traitement::where('demande_id', $user_req->id)->orderBy('id', 'desc')->first();
                             if ($last_tr !== null) {
-                                if ($last_tr->status === 'validé') {
+                                if ($last_tr->status === 'valide') {
                                     $user_req_validated[$key] = $user_req;
                                 }
                             }
@@ -396,7 +396,7 @@ class DemandeController extends Controller
             $demandes = Demande::with('demande_details')->whereHas('traitement', function (Builder $query) use ($user) {
                 $query->where('approbateur_id', $user->id)
                     ->orWhere('demandeur_id', $user->id)
-                    ->where('status', '!=', 'en cours');
+                    ->where('status', '!=', 'en_cours');
             })
                 ->orderBy('created_at', 'desc')
                 ->paginate(9);
@@ -406,7 +406,7 @@ class DemandeController extends Controller
             $all_validated_keys = [];
             foreach ($reqs as $key => $req) {
                 $last = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
-                if ($last && $last->status === 'validé') {
+                if ($last && $last->status === 'valide') {
                     $all_validated_keys[$key] = $req->id;
                 }
             }
@@ -438,7 +438,7 @@ class DemandeController extends Controller
 
         foreach ($demandes as $key => $req) {
             $last_flow = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
-            if ($last_flow->status === 'validé') {
+            if ($last_flow->status === 'valide') {
                 $details = $req->demande_details()->get();
                 $count = 0;
                 foreach ($details as $key => $detail) {
@@ -451,7 +451,7 @@ class DemandeController extends Controller
                 } else {
                     $req['status'] = 'En attente de livraison';
                 }
-            } elseif ($last_flow->status === 'rejeté') {
+            } elseif ($last_flow->status === 'rejete') {
                 $req['status'] = 'Rejeté';
             } else {
                 $req['status'] = 'En cours';
@@ -494,7 +494,7 @@ class DemandeController extends Controller
                 'demande_id' => $demande->id,
                 'approbateur_id' => $demande->user->id,
                 'demandeur_id' => $demande->user->id,
-                'status' => 'validé',
+                'status' => 'valide',
             ]);
 
             if ($traitement1) {
@@ -549,7 +549,7 @@ class DemandeController extends Controller
             $users_approbateurs = [];
             $validated_levels = [];
             foreach ($traitements as $traitement) {
-                if (in_array($traitement->status, ['validé', 'rejeté'])) {
+                if (in_array($traitement->status, ['valide', 'rejete'])) {
                     $validated_levels[] = $traitement->level;
                 }
             }
@@ -581,7 +581,7 @@ class DemandeController extends Controller
             $demande['approbateurs'] = $final_approbateurs;
             return view('demandes.show', compact('demande', 'traitements', 'en_cours', 'date_validate'));
         } elseif ($connected_user->compte->role->value === RoleEnum::LIVRAISON->value) {
-            if ($en_cours->status === 'validé') {
+            if ($en_cours->status === 'valide') {
 
 
                 $details = $demande->demande_details()->get();
@@ -653,7 +653,7 @@ class DemandeController extends Controller
             $demandes = Demande::whereHas('traitement', function (Builder $query) use ($connected_user) {
                 $query->where('approbateur_id', $connected_user->id)
                     ->orWhere('demandeur_id', $connected_user->id)
-                    ->where('status', '!=', 'en cours');
+                    ->where('status', '!=', 'en_cours');
             })
                 ->orderBy('created_at', 'desc')
                 ->paginate(15);
@@ -663,7 +663,7 @@ class DemandeController extends Controller
             $all_validated_keys = [];
             foreach ($reqs as $key => $req) {
                 $last = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
-                if ($last->status === 'validé') {
+                if ($last->status === 'valide') {
                     $all_validated_keys[$key] = $req->id;
                 }
             }
@@ -696,9 +696,9 @@ class DemandeController extends Controller
         $requests = $demandes;
         foreach ($requests as $key => $req) {
             $last_flow = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
-            if ($last_flow->status === 'rejeté') {
+            if ($last_flow->status === 'rejete') {
                 $req['status'] = 'Rejected';
-            } elseif ($last_flow->status === 'validé') {
+            } elseif ($last_flow->status === 'valide') {
                 $details = $req->demande_details()->get();
                 $count = 0;
                 foreach ($details as $key => $detail) {
