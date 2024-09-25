@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('mails', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('demande_id')->constrained()->onDelete('cascade');
-            $table->foreignId('approbateur_id')->constrained()->onDelete('cascade');
             $table->boolean('is_approved')->default(false);
+            $table->foreignId('traitement_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

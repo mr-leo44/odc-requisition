@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('delegations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('manager')->constrained('comptes');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->integer('delegant');
             $table->dateTime('date_debut');
             $table->dateTime('date_fin');
             $table->string('motif');
+            $table->boolean('status')->default(true);
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
     /**

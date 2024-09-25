@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('traitements', function (Blueprint $table) {
             $table->id();
-            $table->integer('level')->default(0);
-            $table->string('status');
-            $table->string('observation');
             $table->foreignId('demande_id')->constrained()->onDelete('cascade');
-            $table->foreignId('approbateur_id')->constrained()->onDelete('cascade');
+            $table->integer('demandeur_id');
+            $table->integer('approbateur_id');
+            $table->integer('level')->default(0);
+            $table->string('status')->default('en_cours');
+            $table->string('observation')->nullable();
             $table->timestamps();
         });
     }

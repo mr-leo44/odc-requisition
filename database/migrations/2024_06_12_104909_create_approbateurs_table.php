@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('approbateurs', function (Blueprint $table) {
             $table->id();
-            $table->integer('level')->unique();
+            $table->integer('level');
             $table->string('name');
-            $table->string('fonction');
+            $table->string('email');
+            $table->string('fonction');                       
+            $table->timestamp('deleted_at')->nullable(); 
             $table->timestamps();
         });
     }
