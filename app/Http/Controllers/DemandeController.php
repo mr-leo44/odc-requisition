@@ -47,6 +47,7 @@ class DemandeController extends Controller
         if ($connected_user->compte->role->value === 'livraison') {
             $connected_user['deliver'] = true;
         }
+
         $ongoings = $this->getOngoingReqs($connected_user);
         $collaborators = $this->getCollaboratorsReqs($connected_user);
         $delegations = $this->getDelegationsReqs($connected_user);
@@ -78,11 +79,7 @@ class DemandeController extends Controller
 
     private function isDelegated($user)
     {
-        $isDelegated = User::whereHas('delegations', function (Builder $query) use ($user) {
-            $query->where('user_id', $user->id)->where('date_debut', '<=', Carbon::today())->where('date_fin', '>=', Carbon::today());
-        })->exists();
-
-        if ($isDelegated) {
+        if (Delegation::where('user_id', $user->id)->where('date_debut', '<=', Carbon::today())->where('date_fin', '>=', Carbon::today())->exists()) {
             return true;
         } else {
             return false;
@@ -95,10 +92,9 @@ class DemandeController extends Controller
             $reqs = Demande::with('demande_details')->whereHas('traitement', function ($query) use ($user) {
                 $query->where('demandeur_id', $user->id)->where('status', 'en cours');
             })
-                ->orderBy('created_at', 'desc')
                 ->paginate(12);
             foreach ($reqs as $req) {
-                $last_flow = Traitement::where('demande_id', $req->id)->get()->last();
+                $last_flow = Traitement::where('demande_id', $req->id)->orderBy('id', 'desc')->first();
                 $req['level'] = $last_flow->level;
                 if ($last_flow && $last_flow->approbateur_id === $user->id) {
                     if ($req->user_id === $user->id) {
@@ -164,7 +160,7 @@ class DemandeController extends Controller
             }
             $demandes = Demande::with('demande_details')->whereIn('id', $collabs_req_keys)->latest()->paginate(9);
             foreach ($demandes as $demande) {
-                $last_flow = Traitement::where('demande_id', $demande->id)->get()->last();
+                $last_flow = Traitement::where('demande_id', $demande->id)->orderBy('id', 'desc')->first();
                 if ($last_flow) {
                     $demande['level'] = $last_flow->level;
                     if ($last_flow->approbateur_id === $user->id) {

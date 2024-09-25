@@ -22,7 +22,7 @@
                 <span class="sr-only">Close modal</span>
             </button>
             <div class="p-4 md:p-5">
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Effectuer une livraison</h3>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Effectuer une livraison</h3>
 
                 <form action="{{ route('demandes.updateLivraison') }}" method="post" id="updateForm">
                     @csrf
@@ -47,15 +47,19 @@
                         <tbody class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         </tbody>
                     </table>
-                    <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                        <button id="submitBtn" type="submit"
-                            class="text-white bg-blue-700 ml-auto hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Mettre à jour</button>
+                    <div class="flex items-center p-4 md:p-5 rounded-b">
+                        <button id="submitBtn" type="button" onclick="sendDeliveriesDetails(event)"
+                            data-modal-target="deliveries-modal" data-modal-toggle="deliveries-modal"
+                            data-modal-hide="default-modal"
+                            class="text-white bg-blue-700 ml-auto hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Mettre
+                            à jour</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<x-validateDeliveries />
 
 <script>
     function validateInput(key, max, delivered) {
@@ -80,4 +84,6 @@
             }
         });
     }
+
+    
 </script>
