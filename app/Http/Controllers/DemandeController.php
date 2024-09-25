@@ -282,54 +282,6 @@ class DemandeController extends Controller
 
     private function getStatistics($user)
     {
-        /*
-        //$statistics = 'Onglet des Statistiques biscuits';
-        $statistics = [];
-
-        // Nombre total de demandes
-        $statistics['total_requests'] = Demande::count();
-
-        // Nombre de demandes par direction
-        $statistics['requests_by_direction'] = Demande::select('service', DB::raw('count(*) as total'))
-            ->groupBy('service')
-            ->get();
-
-        // Nombre de demandes livrées
-        $statistics['delivered_requests'] = Demande::whereHas('traitement', function ($query) {
-            $query->where('status', 'livré');
-        })->count();
-
-        //Nombre des demandes du mois passé
-        $statistics['last_monthly_requests'] = Demande::whereMonth('created_at', Carbon::now()->subMonth()->month)->count();
-
-        //Nombre des demandes du mois actuel
-
-        $statistics ['this_month_requests'] = Demande::whereMonth('created_at', Carbon::now()->month)->count();
-
-        /*$statistics['direction_requests'] = Demande::selectRaw('service, COUNT(*) as count')
-        ->groupBy('service')
-        ->orderBy('count', 'desc')
-        ->count();
-
-
-        // Nombre de demandes validées
-        $statistics['validated_requests'] = Demande::whereHas('traitement', function ($query) {
-            $query->where('status', 'validé');
-        })->count();
-
-        // Nombre de demandes rejetées
-        $statistics['rejected_requests'] = Demande::whereHas('traitement', function ($query) {
-            $query->where('status', 'rejeté');
-        })->count();
-
-        // Nombre de demandes par mois pour l'année en cours
-
-
-
-
-
-        return $statistics;
-        */
         $demandes = Demande::all();
         $stats = [];
         $all_validated_keys = [];
@@ -340,6 +292,7 @@ class DemandeController extends Controller
             }
         }
         $validated_reqs = Demande::whereIn('id', $all_validated_keys)->get();
+        $reqs_delivered = [];
         $stats['all_reqs'] = $validated_reqs->count();
         foreach ($validated_reqs as $key => $validated) {
             $req_details = DemandeDetail::where('demande_id', $validated->id)->get();
