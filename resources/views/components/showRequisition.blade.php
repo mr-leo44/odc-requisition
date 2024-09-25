@@ -66,7 +66,7 @@
 <x-rejectRequest />
 
 @php
-    $role = Session::get('authUser')->compte->role->value;
+    $deliver = Session::get('authUser')->deliver;
 @endphp
 
 <x-show-livraison />
@@ -84,9 +84,13 @@
         const city = document.getElementById('city')
         service.textContent = `Ville : ${req.user.compte.city}`
         service.classList.add("dark:text-white")
-        const userRole = `{{ $role }}`
-        if (userRole === 'user') {
+        const deliver = `{{ $deliver }}`
+        if (!deliver) {
             document.querySelector('#deliver').classList.add("hidden")
+        }
+
+        if (!req.validator) {
+            document.querySelector('#validation').classList.add("hidden")
         }
 
         const details = req.demande_details
@@ -130,11 +134,8 @@
             })
         }
 
-        if (userRole === 'livraison') {
+        if (deliver) {
             document.getElementById('validation').classList.add('hidden')
-            var text = "Etes-vous vraiment sûr de faire cette livraison?"
-            document.querySelector('#deliver').addEventListener('click', updateDetails(req.demande_details, text))
-
         }
     }
 
