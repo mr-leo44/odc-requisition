@@ -46,7 +46,7 @@
                 <div class="text-gray-900 dark:text-white">
                     <div id="default-styled-tab-content">
                         <x-approvers :approbateurs="$approbateurs" id="styled-approver" class="hidden" />
-                        <x-users :users="$users" :usersList="$usersList" :directions="$directions" :services="$services" id="styled-user" class="hidden" />
+                        <x-users :users="$users" :usersList="$usersList" :directions="$directions" :services="$services" :cities="$cities" id="styled-user" class="hidden" />
                         <x-delegations :usersList="$usersList" :delegations="$delegations" :users="$users" :directions="$directions" :services="$services"  />
                         <x-directions :directions="$directions"/>
                     </div>
