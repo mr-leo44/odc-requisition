@@ -23,9 +23,9 @@ class TraitementController extends Controller
     public function validate(Request $request, Demande $demande)
     {
         $en_cours = Traitement::where('demande_id', $demande->id)
-            ->where('status', 'en cours')
+            ->where('status', 'en_cours')
             ->first();
-        if ($request->status === 'validé') {
+        if ($request->status === 'valide') {
             if ($en_cours->level === Approbateur::count()) { // Si c'est la fin du flow
                 $success = $en_cours->update([
                     'status' => $request->status
@@ -69,7 +69,7 @@ class TraitementController extends Controller
                 }
                 return redirect()->back()->with('success', 'Validation reussie');
             }
-        } elseif ($request->status === 'rejeté') {
+        } elseif ($request->status === 'rejete') {
             $cloture_traitement = $en_cours->update([
                 'status' => $request->status,
                 'observation' => $request->observation

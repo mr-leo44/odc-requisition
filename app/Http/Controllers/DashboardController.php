@@ -23,7 +23,7 @@ class DashboardController extends Controller
         $all_validated_keys = [];
         foreach ($demandes as $key => $demande) {
             $last = Traitement::where('demande_id', $demande->id)->orderBy('id', 'DESC')->first();
-            if ($last->status === 'validé') {
+            if ($last->status === 'valide') {
                 $all_validated_keys[$key] = $demande->id;
             }
         }
@@ -88,7 +88,7 @@ class DashboardController extends Controller
                         foreach ($user_reqs as $key => $user_req) {
                             $last_tr = Traitement::where('demande_id', $user_req->id)->orderBy('id', 'desc')->first();
                             if ($last_tr !== null) {
-                                if ($last_tr->status === 'validé') {
+                                if ($last_tr->status === 'valide') {
                                     $user_req_validated[$key] = $user_req;
                                 }
                             }

@@ -69,7 +69,7 @@ class ProfileController extends Controller
 
         foreach ($user_reqs as $req) {
             $last_traitement = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
-            if ($last_traitement && $last_traitement->status === 'validé') {
+            if ($last_traitement && $last_traitement->status === 'valide') {
                 $count++;
             }
         }

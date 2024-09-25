@@ -50,7 +50,7 @@
                 data: {
                     _token: $('meta[name="csrf-token"]').attr('content'),
                     demande: req,
-                    status: 'rejeté',
+                    status: 'rejete',
                     observation: observationValue
                 },
                 success: function(response) {

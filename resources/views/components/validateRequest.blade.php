@@ -47,7 +47,7 @@
                 data: {
                     _token: $('meta[name="csrf-token"]').attr('content'),
                     demande: req,
-                    status: 'validé'
+                    status: 'valide'
                 },
                 success: function(response) {
                     const smallModal = new Modal(document.getElementById('validate-modal'))
