@@ -86,6 +86,21 @@ class DemandeController extends Controller
         }
     }
 
+    private function getValidationFlows ($req)
+    {
+        $flows = Traitement::where('demande_id', $req->id)->get();
+        $flows_datas = [];
+        foreach($flows as $flow) {
+            $validator = User::find($flow->approbateur_id);
+            $flows_datas[] = [
+                'validator' => $validator->name,
+                'status' => $flow->status,
+                'date' => $flow->updated_at->format('d-m-Y')
+            ];            
+        }
+        return $flows_datas;
+    }
+
     private function getOngoingReqs($user)
     {
         if ($user->compte->role->value === 'user') {
@@ -103,6 +118,7 @@ class DemandeController extends Controller
                         $req['validator'] = false;
                     }
                 }
+                $req['flows'] = $this->getValidationFlows($req);
             }
         }
 
@@ -160,6 +176,7 @@ class DemandeController extends Controller
             }
             $demandes = Demande::with('demande_details')->whereIn('id', $collabs_req_keys)->latest()->paginate(9);
             foreach ($demandes as $demande) {
+                $demande['flows'] = $this->getValidationFlows($demande);
                 $last_flow = Traitement::where('demande_id', $demande->id)->orderBy('id', 'desc')->first();
                 if ($last_flow) {
                     $demande['level'] = $last_flow->level;
@@ -198,13 +215,14 @@ class DemandeController extends Controller
     {
         $delegation = Delegation::where('user_id', $user->id)->where('date_debut', '<=', Carbon::today())->where('date_fin', '>=', Carbon::today())->first();
         if ($delegation) {
-            $manager = User::find($delegation->manager);
+            $manager = User::find($delegation->delegant);
             if ($this->isManager($manager) || $this->isApprover($manager)) {
                 $demandes = Demande::with('demande_details')->whereHas('traitement', function (Builder $query) use ($manager) {
                     $query->where('approbateur_id', $manager->id)->where('status', 'en_cours');
                 })->latest()->paginate(12);
 
                 foreach ($demandes as $demande) {
+                    $demande['flows'] = $this->getValidationFlows($demande);
                     $last_flow = Traitement::where('demande_id', $demande->id)->where('approbateur_id', $manager->id)->get()->last();
                     $demande['level'] = $last_flow->level;
                     if ($last_flow->approbateur_id === $manager->id) {
@@ -265,6 +283,7 @@ class DemandeController extends Controller
             })->latest()->paginate(12);
 
             foreach ($demandes as $demande) {
+                $demande['flows'] = $this->getValidationFlows($demande);
                 $last_flow = Traitement::where('demande_id', $demande->id)->where('approbateur_id', $user->id)->get()->last();
                 $demande['level'] = $last_flow->level;
                 if ($last_flow->approbateur_id === $user->id) {
@@ -276,7 +295,6 @@ class DemandeController extends Controller
         } else {
             $demandes = [];
         }
-        // dd($demandes);
         return $demandes;
     }
 
@@ -395,7 +413,6 @@ class DemandeController extends Controller
         if ($user->compte->role->value === 'user') {
             $demandes = Demande::with('demande_details')->whereHas('traitement', function (Builder $query) use ($user) {
                 $query->where('approbateur_id', $user->id)
-                    ->orWhere('demandeur_id', $user->id)
                     ->where('status', '!=', 'en_cours');
             })
                 ->orderBy('created_at', 'desc')
@@ -437,7 +454,12 @@ class DemandeController extends Controller
         }
 
         foreach ($demandes as $key => $req) {
+            $req['flows'] = $this->getValidationFlows($req);
             $last_flow = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
+            
+            if ($last_flow->status !== 'en_cours' && $last_flow->demandeur_id === $user->id) {
+                $req['validated'] = true;
+            }
             if ($last_flow->status === 'valide') {
                 $details = $req->demande_details()->get();
                 $count = 0;
