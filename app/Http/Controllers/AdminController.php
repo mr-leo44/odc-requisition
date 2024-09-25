@@ -28,9 +28,12 @@ class AdminController extends Controller
         }        
         $delegations = Delegation::all();
         $approbateurs = Approbateur::all();
+        $cities = Compte::select('city')->distinct()->get();
         $directions = Direction::all();
         $services = Compte::select('service')->distinct()->get();
-        return view('admin.index', compact('users','delegations', 'approbateurs','usersList', 'directions', 'services'));
+        
+        
+        return view('admin.index', compact('users','delegations', 'approbateurs','usersList', 'directions', 'services','cities'));
     }
 
     public function activateAccount(Request $request, User $user)
@@ -67,6 +70,7 @@ class AdminController extends Controller
             'direction' => ['required', 'string'],
             'manager' => ['required', 'string'],
             'service' => ['required', 'string'],
+            'city' => ['required', 'string'],
         ]);
 
         $user_array = explode(' ', $request->name);
@@ -100,6 +104,7 @@ class AdminController extends Controller
             'email' => $userData['email'],
             'password' => Hash::make('password'),
         ]);
+
         if ($userInserted) {
             $user = User::find($userData['id']);
             Compte::create([
@@ -107,6 +112,7 @@ class AdminController extends Controller
                 "user_id" => $user->id,
                 "service" => $request->service,
                 "direction_id" => $direction->id,
+                'city' => $request->city,
                 "role" => $request->role
             ]);
         }

@@ -1,4 +1,4 @@
-@props(['users', 'user', 'directions', 'services'])
+@props(['users', 'user', 'directions', 'services', 'cities'])
 <div id="modal" tabindex="-1" aria-hidden="true"
     class="hidden mx-auto overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center max-w-7xl md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
@@ -52,6 +52,13 @@
                             <x-text-input id="search_service" class="block mt-1 w-full" type="text" name="service"
                                 :value="old('service')" required />
                             <x-input-error :messages="$errors->get('service')" class="mt-2" />
+
+                        </div>
+                        <div class="mt-4 ui-widget" id="city">
+                            <x-input-label for="search_city" :value="__('Ville')" />
+                            <x-text-input id="search_city" class="block mt-1 w-full" type="text" name="city"
+                                :value="old('city')" required />
+                            <x-input-error :messages="$errors->get('city')" class="mt-2" />
 
                         </div>
                         <div class="mt-4 ui-widget">
@@ -120,6 +127,16 @@
 
         $("#search_service").autocomplete({
             source: servicesData
+        });
+        var cities = @json($cities);
+        var citiesData = []
+
+        for (var i = 0; i < cities.length; i++) {
+            citiesData.push(cities[i]['city']);
+        }
+
+        $("#search_city").autocomplete({
+            source: citiesData
         });
     })
 </script>
