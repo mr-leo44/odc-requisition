@@ -53,6 +53,15 @@
                                 Rejeter
                             </button>
                         </div>
+                        <div id="generatePdf">
+                            <form action="" method="post">
+                                @csrf
+                                <button type="submit" id="generateButton" data-modal-hide="show-modal"
+                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Générer
+                                    pdf
+                                </button>
+                            </form>
+                        </div>
                         <a data-modal-target="default-modal" id="deliver" data-modal-toggle="default-modal"
                             data-modal-hide="show-modal"
                             class="bg-theme text-sm px-5 py-1.5 rounded ease-in-out transition-all duration-75 text-white">
@@ -96,12 +105,19 @@
             document.querySelector('#validation').classList.add("hidden")
         }
 
-        
+        if (!req.validated) {
+            document.querySelector('#generatePdf').classList.add("hidden")
+        }
+
         const details = req.demande_details
         const flows = req.flows
         document.querySelector('#details_table tbody').textContent = ""
         document.querySelector('#deliver').addEventListener('click', updateDetails(req.demande_details))
-        
+        document.querySelector('#generateButton').addEventListener('click', (event) => {
+            event.preventDefault()
+            generatePdf(req)
+        })
+
         // Générer tableau des details
         details.forEach(detail => {
             var tr = document.createElement('tr')
@@ -255,5 +271,14 @@
                 document.querySelector('#deliver-form tbody').appendChild(deliverTr)
             }
         }
+    }
+
+       //génération de pdf
+       function generatePdf(req) {
+        event.preventDefault()
+        const form = event.target.closest('form')
+        const lien = `${req.id}/generatepdf`
+        form.setAttribute('action', lien)
+        form.submit()
     }
 </script>
