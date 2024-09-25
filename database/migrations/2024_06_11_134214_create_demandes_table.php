@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('demandes', function (Blueprint $table) {
             $table->id();
             $table->string('numero');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('service');
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Enums\RoleEnum;
 
 return new class extends Migration
 {
@@ -13,10 +14,13 @@ return new class extends Migration
     {
         Schema::create('comptes', function (Blueprint $table) {
             $table->id();
-            $table->string('manager')->default('1');
-            $table->json('collaborateurs')->nullable(true);
+            $table->integer('manager');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('service_id')->constrained()->onDelete('cascade');
+            $table->string('service');
+            $table->string('city');
+            $table->string('role')->default(RoleEnum::USER->value);
+            $table->boolean('is_activated')->default(true);
+            $table->foreignId('direction_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
