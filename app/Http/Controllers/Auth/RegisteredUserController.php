@@ -133,13 +133,12 @@ class RegisteredUserController extends Controller
         }
         if ($user) {
             Session::put('authUser', $user);
-            if ($user->compte->role->value === 'livraison') {
-                return redirect()->route('dashboard');
-            } elseif ($user->compte->role->value === 'admin') {
+            if ($user->compte->role->value === 'admin') {
                 return redirect()->route('admin.index');
-            } elseif ($user->compte->role->value === 'user') {
+            } else {
                 return redirect()->route('demandes.index');
             }
+            
         } else {
             return back();
         }
