@@ -2,8 +2,8 @@
 <div class="hidden p-4 rounded-lg" id="styled-approver" role="tabpanel" aria-labelledby="approver-tab">
 
     <div>
-        @if (session()->has('message'))
-            <div id="approvers-success-message"
+        @if (session()->has('success'))
+            <div id="delegue-succes"
                 class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
                 role="alert">
                 <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -13,11 +13,11 @@
                 </svg>
                 <span class="sr-only">Info</span>
                 <div class="ms-3 text-sm font-medium">
-                    {{ session('message') }}
+                    {{ session('success') }}
                 </div>
                 <button type="button"
                     class="ms-auto -mx-2.5 -my-2.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
-                    data-dismiss-target="#approvers-success-message" aria-label="Close">
+                    data-dismiss-target="#delegue-succes" aria-label="Close">
                     <span class="sr-only">Close</span>
                     <svg class=" w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 14 14">
@@ -115,9 +115,11 @@
                                         disabled>
                                 </td>
                                 <td class="flex space-x-4 my-2 ">
-                                    <a href="#" onclick="supprimer(event);" data-modal-target="delete-modal"
-                                        data-modal-toggle="delete-modal"
+                                    <a
                                         href="{{ route('approbateurs.destroy', $approbateur->id) }}"
+                                        onclick="approver(event);" 
+                                        data-modal-target="delete-modal-approver"
+                                        data-modal-toggle="delete-modal-approver"
                                         data-id="{{ $approbateur->id }}">
                                         <svg class="w-[32px] h-[32px] text-red-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
@@ -333,8 +335,6 @@
                     }),
                     success: function(response) {
                         console.log('Les modifications ont été sauvegardées avec succès');
-                          // $('#message').html('<p  class="items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400">Les modifications ont été sauvegardées avec succès.</p>');
-
                     },
                     error: function(xhr) {
                         console.log('Une erreur s\'est produite lors de la sauvegarde des modifications', xhr);

@@ -25,21 +25,10 @@
     </div>
     </div>
     <script>    
-         function supprimer(event) {
-             event.preventDefault();
-             const approbateurId = event.currentTarget.getAttribute('data-id');
-        const form = document.querySelector("#delete-modal-approve form");
-            form.setAttribute('action', `/approbateurs/${approbateurId}`);
-        document.getElementById('delete-modal-approve').classList.remove('hidden');
-        document.getElementById('delete-modal-approve').classList.add('flex');
+         function approver(event) {
+            event.preventDefault();
+            const approbateurId = event.currentTarget.getAttribute('href');
+            const form = document.querySelector("#delete-modal-approver form");
+            form.setAttribute('action',approbateurId);
         }
-        document.addEventListener('DOMContentLoaded', function() {
-            const closeButtons = document.querySelectorAll('[data-modal-hide]');
-            closeButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                document.getElementById('delete-modal-approve').classList.add('hidden');
-                document.getElementById('delete-modal-approve').classList.remove('flex');
-                });
-            });
-        });
     </script>

@@ -13,8 +13,7 @@ class Delegation extends Model
     ];
     protected $fillable = [
         'user_id',
-        'approbateur_id',
-        'manager',
+        'delegant',
         'date_debut',
         'date_fin',
         'motif',

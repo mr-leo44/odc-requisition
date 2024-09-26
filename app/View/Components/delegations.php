@@ -22,14 +22,14 @@ class delegations extends Component
         $this->delegations = Delegation::all();
         
         foreach ($this->delegations as $delegation) {
-            $manager = User::find($delegation->manager);
+            $manager = User::find($delegation->delegant);
             if ($manager && !is_null($manager->name)) {
                 $delegation['manager_name'] = $manager->name; 
             }
         }
         
         foreach($this->delegations as $delegation) {
-            $approbateur = Approbateur::find($delegation->approbateur_id);
+            $approbateur = Approbateur::find($delegation->delegant);
             if ($approbateur && !is_null($approbateur->name)) {
                 $delegation['approbateur_name'] = $approbateur->name;
             }
