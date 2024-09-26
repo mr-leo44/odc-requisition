@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ asset('img/orange.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ asset('css/loader.css') }}">
+
 
     <title>{{ $title ?? 'Orange Requisition' }}</title>
 
@@ -23,6 +25,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <body class="font-sans antialiased">
+
+
+    <div class="loader" id="loader" >
+    <img src="{{ asset('img/rings.svg') }}" class="w-40 border-1" alt="profile">
+    </div>
+
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900 pb-8">
         <div
             class="fixed z-30 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 py-3 px-6">
@@ -45,6 +53,9 @@
         </div>
 
     </div>
+
+    <script src="{{ asset('js/loader.js') }}" ></script>
+
 </body>
 
 </html>
