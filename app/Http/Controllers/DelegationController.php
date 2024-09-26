@@ -48,27 +48,12 @@ class DelegationController extends Controller
         $dateCourante = \Carbon\Carbon::now();
     
         if ($dateDebut->lt($dateCourante)) {
-            return back()->with(['error' => 'La date de début ne peut pas être inférieure à la date actuelle.']);
+            return redirect()->back()->with('error', 'La date de début ne peut pas être inférieure à la date actuelle.');
         }
-        if($dateDebut->eq($dateCourante)){
-            return back()->with(['error'=> 'La date de debut doit être différente de la date actuelle']);
-        }
-    
         if ($dateDebut->gte($dateFin)) {
-            return back()->with(['error' => 'La date de début doit être inférieure à la date de fin.']);
+            return redirect()->back()->with('error','La date de début doit être inférieure à la date de fin.');
         }
-    
         $user_id = User::where('name', $name)->value('id');
-        
-        if (is_null($user_id)) {
-            return back()->with(['error' => 'Utilisateur non trouvé.']);
-        }
-        
-        $delegant_approver = Approbateur::where('name', $delegant)->value('name');
-        $delegant_manager = User::where('name', $delegant)->value('id');
-        $manager_id = Compte::where('manager', '=', $delegant_manager)->value('manager');
-        $approver_id = Approbateur::where('name', '=', $delegant_approver)->value('id');
-
         $data = [
             'user_id' => $user_id,
             'motif' => $motif,
@@ -77,29 +62,26 @@ class DelegationController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ];
-        
+        if (is_null($user_id)) {
+            return redirect()->back()->with('error', 'Utilisateur non trouvé.');
+        }
+        $delegant_id = User::where('name', $delegant)->value('id');
+        $manager_id = Compte::where('manager', '=', $delegant_id)->value('manager');
+        $approver_id = Approbateur::where('name','=',$name)->value('id');
+        $livreur_id = Compte::where('role','!=','user')->value('id');
         if ($this->checkIdInAPI($name) !== false) {
-            if (is_null($delegant_approver) && is_null($delegant_manager)) {
-                return back()->with(['error' => 'Aucun approbateur ou manager trouvé.']);
+            if( is_null($manager_id) && is_null($approver_id) && is_null($livreur_id)) {
+                return redirect()->back()->with('error','Aucun utilisateur trouvé');
+            }elseif( Delegation::where('user_id', $user_id)->where('status','=',1)->exists() || Delegation::where('delegant', $delegant_id)->where('status','=',1)->exists()) {
+                return redirect()->back()->with('error', 'Délégation en cours');
+            }else {
+                $data['delegant'] = $delegant_id;
+                Delegation::create($data);
             }
-            
-            if (Delegation::where('user_id', $user_id)->exists() || 
-                Delegation::where('approbateur_id', '=', $approver_id)->exists() || 
-                Delegation::where('manager', '=', $manager_id)->exists()) {
-                return back()->with(['error' => 'Délégation en cours']);
-            }
-            
-            if (!is_null($delegant_approver)) {
-                $data['approbateur_id'] = $approver_id;
-            } 
-            if (!is_null($manager_id)) {
-                $data['manager'] = $manager_id;
-            }
-            Delegation::create($data);
-            return back()->with(['succes' => 'Délégation effectuée avec succès !']);
+            return redirect()->back()->with('message', 'Délégation effectuée avec succès !');
         }
         
-        return back()->with(['error' => 'Erreur lors de la vérification de l\'ID.']);
+        return redirect()->back()->with('error','Erreur lors de la vérification de l\'ID.');
     }
 
     /**
@@ -133,8 +115,7 @@ class DelegationController extends Controller
     {
         $delegation = Delegation::findOrFail($id);
         $delegation->delete();
-        
-        return back()->with(['success' => 'Délégué supprimé avec succès.']);
+        return redirect()->back()->with('message', "Délégué supprimé avec succès.");
     }
     private function checkIdInAPI($name)
     {
