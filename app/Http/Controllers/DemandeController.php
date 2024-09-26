@@ -604,8 +604,6 @@ class DemandeController extends Controller
             return view('demandes.show', compact('demande', 'traitements', 'en_cours', 'date_validate'));
         } elseif ($connected_user->compte->role->value === RoleEnum::LIVRAISON->value) {
             if ($en_cours->status === 'valide') {
-
-
                 $details = $demande->demande_details()->get();
                 $count = 0;
                 foreach ($details as $key => $detail) {
@@ -634,10 +632,10 @@ class DemandeController extends Controller
                 }
                 return view('demandes.show', compact('demande', 'traitements', 'en_cours', 'date_validate'));
             } else {
-                return response()->view('errors.error', ['status_code' => 403], 403);
+                return response()->view('errors.403', [], 403);
             }
         } else {
-            return response()->view('errors.error', ['status_code' => 403], 403);
+            return response()->view('errors.403', [], 403);
         }
     }
 
