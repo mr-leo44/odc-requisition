@@ -76,7 +76,7 @@
                     <div class="flex justify-end items-center ml-auto p-4">
                         <div class="flex justify-end items-center gap-2">
                             <button data-modal-target="show-modal" data-modal-toggle="show-modal" type="button"
-                                class="bg-orange-500 px-3 py-2 rounded" onclick="showModal({{ $req }})">
+                                class="bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded" onclick="showModal({{ $req }})">
                                 <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                     viewBox="0 0 24 24">
@@ -90,7 +90,7 @@
                                 <a onclick="supprimer(event);" data-modal-target="delete-modal"
                                      href="{{ route('demandes.destroy', $req->id) }}" id="gridDelete"
                                     data-modal-toggle="delete-modal"
-                                    class="bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded">
+                                    class="bg-red-600 hover:bg-red-800 px-3 py-2 rounded">
                                     <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         fill="none" viewBox="0 0 24 24">
