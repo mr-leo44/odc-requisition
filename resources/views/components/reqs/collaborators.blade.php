@@ -43,9 +43,6 @@
                         Ville
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Statut
-                    </th>
-                    <th scope="col" class="px-6 py-3">
                         Date
                     </th>
                     <th scope="col" class="px-6 py-3 text-right">
@@ -68,59 +65,16 @@
                             </td>
                             <td class="px-6 py-4">
                                 {{ $req->user->compte->city }}
-                            </td>
-                            <td class="px-6 py-4">
-                                @if ($req->status === 'Livré')
-                                    <span
-                                        class="opacity-95 border-green-400 border text-green-500 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded">
-                                        <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
-                                        </svg>
-                                        {{ $req->status }}
-                                    </span>
-                                @elseif($req->status === 'Rejeté')
-                                    <span
-                                        class="opacity-95 border-red-400 border text-red-500 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded">
-                                        <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
-                                        </svg>
-                                        {{ $req->status }}
-                                    </span>
-                                @elseif($req->status === 'En attente de livraison')
-                                    <span
-                                        class="opacity-95 border-theme border text-theme text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded">
-                                        <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
-                                        </svg>
-                                        {{ $req->status }}
-                                    </span>
-                                @else
-                                    <span
-                                        class="opacity-95 border-amber-500 border text-amber-400 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded">
-                                        <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
-                                        </svg>
-                                        {{ $req->status }}
-                                    </span>
-                                @endif
-                            </td>
                             <td class="px-6 py-4">
                                 {{ $req->created_at->locale('fr')->diffForHumans() }}
                             </td>
                             <td class="px-6 py-4 text-right flex items-center justify-end gap-2">
                                 <button data-modal-target="show-modal" data-modal-toggle="show-modal" type="button"
-                                    class="bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded" onclick="showModal({{ $req }})">
+                                    class="bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded"
+                                    onclick="showModal({{ $req }})">
                                     <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        fill="none" viewBox="0 0 24 24">
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                        viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-width="2"
                                             d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
                                         <path stroke="currentColor" stroke-width="2"
@@ -130,7 +84,7 @@
                             </td>
                         </tr>
                     @endforeach
-                    @else
+                @else
                     <tr class="dark:border-gray-700">
                         <td colspan="7" class="px-6 py-4 text-lg text-center">
                             {{ __('Pas de demande pour l\'instant!') }}
