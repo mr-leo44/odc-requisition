@@ -117,7 +117,7 @@
                                 <td class="flex space-x-4 my-2 ">
                                     <a
                                         href="{{ route('approbateurs.destroy', $approbateur->id) }}"
-                                        onclick="approver(event);" 
+                                        onclick="approver(event);"
                                         data-modal-target="delete-modal-approver"
                                         data-modal-toggle="delete-modal-approver"
                                         data-id="{{ $approbateur->id }}">
@@ -281,7 +281,7 @@
                                         return key.toLowerCase().indexOf(term) !== -1 || data[
                                             key].toLowerCase().indexOf(term) !== -1;
                                     })
-                                    .slice(0, 10) //limiter à 10
+                                    .slice(0, 5) //limiter à 10
                                 ;
                                 response(filteredItems);
                             },

@@ -60,8 +60,8 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 grid-cols-1 gap-3" id="ongoingCardGridView">
             @foreach ($ongoings as $req)
                 <div
-                    class="block bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                    <div class="border-b dark:border-gray-600 p-4">
+                    class="block bg-white border border-gray-200 rounded-lg shadow-xl p-8 transform transition-transform duration-300 hover:scale-105 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                    <div class="border-b dark:border-gray-600 p-4  ">
                         <div class="flex items-center justify-between">
                             <h5
                                 class="mb-2 text-md md:text-xl xl:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">

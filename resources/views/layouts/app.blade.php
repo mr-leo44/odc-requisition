@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/loader.css') }}">
 
 
-    <title>{{ $title ?? 'Orange Requisition' }}</title>
+    <title>{{ $title ?? 'Requisition App' }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">

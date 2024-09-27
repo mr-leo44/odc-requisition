@@ -12,7 +12,7 @@
                     <img src="{{ asset('img/orange.png') }}" class="h-7 me-3" alt="FlowBite Logo" />
                     <span
                         class="ms-2 self-center text-md font-semibold xl:text-2xl whitespace-nowrap dark:text-white">Requisition
-                        Orange</span>
+                        App</span>
                 </a>
             </div>
             <div class="flex justify-between items-center gap-3">
