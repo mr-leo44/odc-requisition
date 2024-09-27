@@ -72,14 +72,14 @@
                                             class="bg-gray-50 w-[80%] border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
                                             type="text" name="demandes[0][designation]" :value="old('designation')"
                                             placeholder="Ex. Rame papier duplicataire" required autofocus
-                                            autocomplete="designation" />
+                                            autocomplete="off" />
                                         <x-input-error :messages="$errors->get('designation')" class="mt-2" />
 
                                         <x-text-input id="qte_demandee"
                                             class="bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-[23.8%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
                                             type="number" min="1" step="1"
                                             name="demandes[0][qte_demandee]" :value="old('qte_demandee')" required autofocus
-                                            autocomplete="qte_demandee" placeholder="Ex. 10" />
+                                            autocomplete="off" placeholder="Ex. 10" />
                                         <x-input-error :messages="$errors->get('qte_demandee')" class="mt-2" />
                                     </div>
                                 </div>
@@ -120,9 +120,9 @@
             <div class="grid gap-4 md:grid-cols-6 input-group">
                 <div class="col-span-5 ">
                     <div class="flex justify-between gap-3">
-                        <x-text-input id="designation" class="bg-gray-50 w-[80%] border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" type="text" name="demandes[${i}][designation]" placeholder="Ex. Rame papier duplicataire" required autofocus autocomplete="designation" />
+                        <x-text-input id="designation" class="bg-gray-50 w-[80%] border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" type="text" name="demandes[${i}][designation]" placeholder="Ex. Rame papier duplicataire" required autofocus autocomplete="off" />
                         <x-input-error :messages="$errors->get('designation')" class="mt-2" />
-                        <x-text-input id="qte_demandee" class="bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-[23.8%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" type="number" min="1" step="1" name="demandes[${i}][qte_demandee]" required autofocus autocomplete="qte_demandee" placeholder="Ex. 10"/>
+                        <x-text-input id="qte_demandee" class="bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-[23.8%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" type="number" min="1" step="1" name="demandes[${i}][qte_demandee]" required autofocus autocomplete="off" placeholder="Ex. 10"/>
                         <x-input-error :messages="$errors->get('qte_demandee')" class="mt-2" />
                     </div>
                 </div>
