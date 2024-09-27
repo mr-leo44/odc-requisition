@@ -407,49 +407,27 @@ class DemandeController extends Controller
                     $all_validated_keys[$key] = $req->id;
                 }
             }
-            $validated_reqs = Demande::whereIn('id', $all_validated_keys)->get();
-            $reqs_delivered = [];
-            foreach ($validated_reqs as $key => $validated) {
-                $req_details = DemandeDetail::where('demande_id', $validated->id)->get();
-                $delivered = 0;
-                foreach ($req_details as $req_detail) {
-                    $req_count = $req_detail->qte_demandee;
-                    $deliveries = Livraison::where('demande_detail_id', $req_detail->id)->get();
-                    $count = 0;
-                    if ($deliveries->count() > 0) {
-                        foreach ($deliveries as $key => $delivery) {
-                            $count += $delivery->quantite;
-                        }
-                    }
-                    if ($req_count === $count) {
-                        $delivered += 1;
-                    }
-                }
-                if ($delivered === $req_details->count()) {
-                    $reqs_delivered[] = $validated;
-                }
-            }
-            $demandes_array = collect($reqs_delivered);
-            $demandes = Demande::with('demande_details')->whereIn('id', $demandes_array->pluck('id'))->orderBy('created_at', 'desc')->paginate(9);
+            $demandes = Demande::whereIn('id', $all_validated_keys)->latest()->paginate(9);
         }
 
         foreach ($demandes as $key => $req) {
             $req['flows'] = $this->getValidationFlows($req);
             $last_flow = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
-
-            if ($last_flow->status !== 'en_cours' && $last_flow->demandeur_id === $user->id) {
-                $req['validated'] = true;
-            }
             if ($last_flow->status === 'valide') {
                 $details = $req->demande_details()->get();
                 $count = 0;
+                $partial = 0;
                 foreach ($details as $key => $detail) {
                     if ($detail->qte_demandee === $detail->qte_livree) {
                         $count += 1;
+                    } elseif ($detail->qte_livree > 0) {
+                        $partial += 1;
                     }
                 }
                 if ($count === $details->count()) {
-                    $req['status'] = 'Livré';
+                    $req['status'] = 'Livrée';
+                } elseif ($partial > 0) {
+                    $req['status'] = 'Partiellement livrée';
                 } else {
                     $req['status'] = 'En attente de livraison';
                 }
