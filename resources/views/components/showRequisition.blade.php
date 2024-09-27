@@ -25,13 +25,13 @@
                         <thead class="text-xs  uppercase bg-slate-100 dark:bg-transparent text-black dark:text-white">
                             <tr>
                                 <th scope="col" class="px-6 py-3 text-left">
-                                    Designation
+                                    Désignation
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Quantité demandee
+                                    Quantité demandée
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Quantite livree
+                                    Quantité livrée
                                 </th>
                             </tr>
                         </thead>
