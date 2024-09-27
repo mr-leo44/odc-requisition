@@ -20,11 +20,11 @@
                     <p id="city" class="font-medium"></p>
                 </div>
                 <div class="my-4 rounded dark:bg-gray-700 dark:border-gray-600 p-4">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                    <table class="w-full text-sm text-right rtl:text-right text-gray-500 dark:text-gray-400"
                         id="details_table">
                         <thead class="text-xs  uppercase bg-slate-100 dark:bg-transparent text-black dark:text-white">
                             <tr>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-6 py-3 text-left">
                                     Designation
                                 </th>
                                 <th scope="col" class="px-6 py-3">
@@ -38,7 +38,7 @@
                         <tbody class="bg-white dark:bg-gray-900"></tbody>
                     </table>
 
-                    <div class="mt-5" id="flows"></div>
+                    <div class="mt-8" id="flows"></div>
 
                     <div class="mt-6 flex justify-end items-center">
                         <div id="validation" class="flex justify-between items-center gap-2">
@@ -64,7 +64,7 @@
                         </div>
                         <a data-modal-target="default-modal" id="deliver" data-modal-toggle="default-modal"
                             data-modal-hide="show-modal"
-                            class="bg-theme text-sm px-5 py-1.5 rounded ease-in-out transition-all duration-75 text-white">
+                            class="bg-gray-600 hover:bg-gray-800 text-sm px-5 py-1.5 rounded ease-in-out transition-all duration-75 text-white">
                             Livrer
                         </a>
                     </div>
@@ -124,7 +124,7 @@
             tr.classList.add("border-b", "hover:bg-gray-50", "dark:hover:bg-gray-800", "dark:border-gray-700")
 
             var designationTh = document.createElement('th')
-            designationTh.classList.add("px-6", "py-4", "font-medium", "text-gray-900", "dark:text-white")
+            designationTh.classList.add("px-6", "py-4", "font-medium", "text-gray-900", "dark:text-white", "text-left")
             designationTh.textContent = detail.designation
             tr.appendChild(designationTh)
 
