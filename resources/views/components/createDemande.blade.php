@@ -5,7 +5,7 @@
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t  bg-slate-300 dark:border-gray-600">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-lg  bg-gray-400  dark:border-gray-600">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-black">
                     Créer une demande
                 </h3>
@@ -54,7 +54,7 @@
                                 </div>
                                 <div class="flex justify-end mb-4">
                                     <button type="button"
-                                        class="add-input  text-white bg-slate-300 dark:bg-slate-300 hover:bg-theme focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-md p-2.5 text-center inline-flex items-center me-2">
+                                        class="add-input  text-white bg-gray-400 dark:bg-slate-300 hover:bg-theme focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-md p-2.5 text-center inline-flex items-center me-2">
                                         <svg class="w-5 h-5 text-gray-900 dark:text-black hover:text-white dark:hover:text-white" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             fill="none" viewBox="0 0 24 24">
@@ -85,7 +85,7 @@
                                 </div>
                                 <div class="flex justify-end mb-2">
                                     <button type="button"
-                                        class="delete-input text-white bg-slate-700 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-md p-2.5 text-center inline-flex items-center me-2">
+                                        class="delete-input text-white bg-slate-700 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-md p-2.5 text-center dark:bg-slate-600 dark:hover:bg-slate-900 inline-flex items-center me-2">
                                         <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             fill="none" viewBox="0 0 24 24">
@@ -101,7 +101,7 @@
                         </div>
                         <div class="flex justify-end mb-1">
                             <button type="submit"
-                                class="block text-black focus:ring-4 bg-slate-300 dark:bg-slate-300 hover:bg-theme hover:text-white focus:outline-none font-bold rounded-lg text-sm px-10 py-2 text-center">
+                                class="block text-black focus:ring-4 bg-gray-400 dark:bg-slate-300 hover:bg-theme hover:text-white focus:outline-none font-bold rounded-lg text-sm px-10 py-2 text-center">
                                 Soumettre
                             </button>
                         </div>
@@ -127,7 +127,7 @@
                     </div>
                 </div>
                 <div class="flex justify-end mb-4">
-                    <button type="button" class="delete-input text-white bg-slate-700 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-md p-2.5 text-center inline-flex items-center me-2 dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800">
+                    <button type="button" class="delete-input text-white bg-slate-700 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-md p-2.5 text-center inline-flex items-center me-2 dark:bg-slate-600 dark:hover:bg-slate-900 dark:focus:ring-slate-800">
                         <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14" />
                         </svg>
