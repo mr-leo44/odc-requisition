@@ -46,7 +46,7 @@
                     <div class="flex justify-end items-center ml-auto p-4">
                         <div class="flex justify-end items-center gap-2">
                             <button data-modal-target="show-modal" data-modal-toggle="show-modal" type="button"
-                                class="bg-theme px-3 py-2 rounded" onclick="showModal({{ $req }})">
+                                class="bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded" onclick="showModal({{ $req }})">
                                 <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                     viewBox="0 0 24 24">
@@ -56,20 +56,6 @@
                                         d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                 </svg>
                             </button>
-                            @if (session()->get('authUser')->id == $req->user_id && $req->level === 0)
-                                <a onclick="supprimer(event);" data-modal-target="delete-modal"
-                                    href="{{ route('demandes.destroy', $req->id) }}" id="gridDelete"
-                                    data-modal-toggle="delete-modal"
-                                    class="bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded">
-                                    <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                                    </svg>
-                                </a>
-                            @endif
                         </div>
                     </div>
                 </div>
@@ -140,30 +126,16 @@
                             </td>
                             <td class="px-6 py-4 text-right flex items-center justify-end gap-2">
                                 <button data-modal-target="show-modal" data-modal-toggle="show-modal" type="button"
-                                    class="bg-theme px-3 py-2 rounded" onclick="showModal({{ $req }})">
-                                    <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-width="2"
-                                            d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
-                                        <path stroke="currentColor" stroke-width="2"
-                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                    </svg>
-                                </button>
-                                @if (session()->get('authUser')->id == $req->user_id && $req->level === 0)
-                                    <a onclick="supprimer(event);" data-modal-target="delete-modal" id="tableDelete"
-                                        href="{{ route('demandes.destroy', $req->id) }}"
-                                        data-modal-toggle="delete-modal"
-                                        class="bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded">
-                                        <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round"
-                                                stroke-linejoin="round" stroke-width="2"
-                                                d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                                        </svg>
-                                    </a>
-                                @endif
+                                class="bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded" onclick="showModal({{ $req }})">
+                                <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                    viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-width="2"
+                                        d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                                    <path stroke="currentColor" stroke-width="2"
+                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                </svg>
+                            </button>
                             </td>
                         </tr>
                     @endforeach
