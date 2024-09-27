@@ -392,7 +392,7 @@ class DemandeController extends Controller
     {
         if ($user->compte->role->value === 'user') {
             $demandes = Demande::with('demande_details')->whereHas('traitement', function (Builder $query) use ($user) {
-                $query->where('approbateur_id', $user->id)
+                $query->where('demandeur_id', $user->id)
                     ->where('status', '!=', 'en_cours');
             })
                 ->orderBy('created_at', 'desc')
