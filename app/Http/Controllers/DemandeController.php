@@ -88,15 +88,34 @@ class DemandeController extends Controller
 
     private function getValidationFlows($req)
     {
-        $flows = Traitement::where('demande_id', $req->id)->get();
+        $approvers = Approbateur::orderBy('level')->get();
         $flows_datas = [];
-        foreach ($flows as $flow) {
-            $validator = User::find($flow->approbateur_id);
+        $firsts_flows = Traitement::where('demande_id', $req->id)->where('level', 0)->get();
+        foreach ($firsts_flows as $first_flow) {
+            $validator = User::find($first_flow->approbateur_id);
             $flows_datas[] = [
                 'validator' => $validator->name,
-                'status' => $flow->status,
-                'date' => $flow->updated_at->format('d-m-Y')
+                'status' => $first_flow->status,
+                'date' => $first_flow->updated_at->format('d-m-Y')
             ];
+        }
+        foreach ($approvers as $key => $approver) {
+            $flow = Traitement::where('demande_id', $req->id)->where('level', $key + 1)->first();
+            if ($flow) {
+                $validator = User::find($flow->approbateur_id);
+                $flows_datas[] = [
+                    'validator' => $validator->name,
+                    'status' => $first_flow->status,
+                    'date' => $first_flow->updated_at->format('d-m-Y')
+                ];
+            } else {
+                $validator = User::where('email', $approver->email)->first();
+                $flows_datas[] = [
+                    'validator' => $validator->name,
+                    'status' => '',
+                    'date' => ''
+                ];
+            }
         }
         return $flows_datas;
     }
@@ -407,13 +426,14 @@ class DemandeController extends Controller
                     $all_validated_keys[$key] = $req->id;
                 }
             }
-            $demandes = Demande::whereIn('id', $all_validated_keys)->latest()->paginate(9);
+            $demandes = Demande::with('demande_details')->whereIn('id', $all_validated_keys)->latest()->paginate(9);
         }
 
         foreach ($demandes as $key => $req) {
             $req['flows'] = $this->getValidationFlows($req);
             $last_flow = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
             if ($last_flow->status === 'valide') {
+                $req['validated'] = true;
                 $details = $req->demande_details()->get();
                 $count = 0;
                 $partial = 0;
@@ -425,18 +445,22 @@ class DemandeController extends Controller
                     }
                 }
                 if ($count === $details->count()) {
+                    $req['delivered'] = true;
                     $req['status'] = 'Livrée';
                 } elseif ($partial > 0) {
                     $req['status'] = 'Partiellement livrée';
                 } else {
+                    $req['validated'] = true;
                     $req['status'] = 'En attente de livraison';
                 }
             } elseif ($last_flow->status === 'rejete') {
+                $req['validated'] = true;
                 $req['status'] = 'Rejeté';
             } else {
                 $req['status'] = 'En cours';
             }
         }
+        // dd($demandes);
         return $demandes;
     }
 

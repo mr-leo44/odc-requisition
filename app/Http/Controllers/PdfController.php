@@ -38,16 +38,16 @@ class PdfController extends Controller
             $traitement['approbateur'] = $approbateur->name;
         }
         // dd($traitements, $demande->demande_details);
-        // return view('generatepdf.index', compact('demande', 'traitements'));
+        return view('generatepdf.index', compact('demande', 'traitements'));
 
-        $html = view('generatepdf.index', compact('demande', 'traitements'))->render();
-        $options = new Options();
-        $options->set('isHtml5ParserEnabled', true);
-        $options->set('isRemoteEnabled', true);
-        $dompdf = new Dompdf($options);
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        return $dompdf->stream("$demande->numero.pdf");
+        // $html = view('generatepdf.index', compact('demande', 'traitements'))->render();
+        // $options = new Options();
+        // $options->set('isHtml5ParserEnabled', true);
+        // $options->set('isRemoteEnabled', true);
+        // $dompdf = new Dompdf($options);
+        // $dompdf->loadHtml($html);
+        // $dompdf->setPaper('A4', 'portrait');
+        // $dompdf->render();
+        // return $dompdf->stream("$demande->numero.pdf");
     }
 }
