@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ asset('img/orange.png') }}" type="image/x-icon">
 
-    <title>{{ $title ?? 'Orange Requisition' }}</title>
+    <title>{{ $title ?? 'Requisition App' }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">

@@ -45,14 +45,14 @@
                         <div class="mt-4 ui-widget" id="delegant">
                             <x-input-label for="search_delegant" :value="__('Nom du délégant')" />
                             <x-text-input id="search_delegant" class="block mt-1 w-full" type="text"
-                                name="delegant" :value="old('delegant')" required />
+                                name="delegant" :value="old('delegant')" placeholder="Rechercher un délégant" required />
                             <x-input-error :messages="$errors->get('delegant')" class="mt-2" />
                         </div>
 
                         <div class="mt-4 ui-widget" id="motif">
                             <x-input-label for="search_motif" :value="__('Motif')" />
                             <x-text-input id="search_motif" class="block mt-1 w-full" type="text"
-                                name="motif" :value="old('motif')" required />
+                                name="motif" :value="old('motif')" placeholder="Saisir le motif de la délégation" required />
                             <x-input-error :messages="$errors->get('motif')" class="mt-2" />
                         </div>
 

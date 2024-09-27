@@ -51,11 +51,11 @@
                 </div>
         @endif
     </div>
-    
+
     <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
         <div class="flex justify-end my-2 space-x-1">
             <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" onclick="a(event)" type="button">
-                <svg class="w-[44px] h-[44px] text-orange-500" aria-hidden="true"
+                <svg class="w-[44px] h-[44px] text-[#ff7900]" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                     viewBox="0 0 24 24">
                     <path fill-rule="evenodd"
@@ -161,8 +161,8 @@
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
                                                 </svg>
                                             </a>
-                                          
-                                               
+
+
                                         </td>
                                 </tr>
                         @endforeach

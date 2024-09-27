@@ -49,7 +49,7 @@
                 </div>
 
 
-                <p class="mt-4 text-base text-gray-700 dark:text-gray-400 text-left">Connectez-vous à votre compte</p>
+                <p class="mt-4 text-base text-gray-700 dark:text-gray-400 text-left">Se connecter</p>
                 <form method="POST" action="{{ route('login') }}" class="dark:text-gray-100">
                     @csrf
                     <div class="mt-6">
@@ -59,14 +59,14 @@
                             <label for="username" class="font-medium">Nom d'utilisateur:</label>
 
                             <input type="text" name="username" id="username"
-                                class="border-gray-500 mt-1 bg-white block w-full px-4 py-3 text-base text-slate-700 placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg dark:bg-theme focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
-                                placeholder="Enter your username">
+                                class="border-gray-500 mt-1 bg-white block w-full px-4 py-3 text-base text-gray-900 placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg dark:bg-theme focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
+                                placeholder="Saisir le nom d'utilisateur">
                         </div>
                         <div class="mt-6">
                             <label for="password" class="font-">Mot de passe :</label>
                             <input type="password" name="password" id="password"
-                                class="border-gray-500 mt-1 bg-white block w-full px-4 py-3 text-base text-slate-700 placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg dark:bg-theme focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
-                                placeholder="Enter your password">
+                                class="border-gray-500 mt-1 bg-white block w-full px-4 py-3 text-base text-gray-900 placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg dark:bg-theme focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
+                                placeholder="Saisir le mot de passe">
                         </div>
                         <div class="mt-6">
                             <x-primary-button class="w-full px-4 py-3 flex justify-center items-center bg-[#ff7900] dark:bg-black">
