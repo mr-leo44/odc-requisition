@@ -18,7 +18,7 @@ class CountLevel extends Command
      *
      * @var string
      */
-    protected $signature = 'app:count-level';
+    protected $signature = 'req:count-level';
 
     /**
      * The console command description.
@@ -49,6 +49,5 @@ class CountLevel extends Command
                     }
                 }
             }
-        echo "Cron job terminé avec succès";
         }
 }
