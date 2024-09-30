@@ -170,7 +170,7 @@
                             </td>
                             <td class="px-6 py-4 text-right flex items-center justify-end gap-2">
                                 <button data-modal-target="show-modal" data-modal-toggle="show-modal" type="button"
-                                    class="bg-theme px-3 py-2 rounded" onclick="showModal({{ $req }})">
+                                    class="bg-gray-400 hover:bg-gray-600 px-3 py-2 rounded" onclick="showModal({{ $req }})">
                                     <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         fill="none" viewBox="0 0 24 24">
