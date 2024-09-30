@@ -59,13 +59,13 @@
                             <label for="username" class="font-medium">Nom d'utilisateur:</label>
 
                             <input type="text" name="username" id="username"
-                                class="border-gray-500 mt-1 bg-white block w-full px-4 py-3 text-base text-gray-900 placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg dark:bg-theme focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
+                                class="border-gray-500 mt-1 bg-white block w-full px-4 py-3 text-base text-gray-900 placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg dark:bg-theme focus:outline-none focus:border-transparent focus:ring-2 focus:ring-theme focus:ring-offset-2 focus:ring-offset-gray-300"
                                 placeholder="Saisir le nom d'utilisateur" autocomplete="off">
                         </div>
                         <div class="mt-6">
                             <label for="password" class="font-">Mot de passe :</label>
                             <input type="password" name="password" id="password"
-                                class="border-gray-500 mt-1 bg-white block w-full px-4 py-3 text-base text-gray-900 placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg dark:bg-theme focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
+                                class="border-gray-500 mt-1 bg-white block w-full px-4 py-3 text-base text-gray-900 placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg dark:bg-theme focus:outline-none focus:border-transparent focus:ring-2 focus:ring-theme focus:ring-offset-2 focus:ring-offset-gray-300"
                                 placeholder="Saisir le mot de passe"autocomplete="off">
                         </div>
                         <div class="mt-6">

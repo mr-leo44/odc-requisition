@@ -44,7 +44,7 @@
                 </div>
                 <div class="mt-8 text-center">
 
-                    <p class="mt-4 text-base text-gray-700 dark:text-gray-400 text-left ">Veuillez compléter votre
+                    <p class="mt-4 text-base text-gray-700 dark:text-gray-400 text-left ">Compléter le
                         profil</p>
                 </div>
                 <form action="{{ route('register') }}" method="POST">
@@ -53,7 +53,7 @@
 
                         <label for="search_direction" class="font-bold dark:text-white">Direction </label>
                         <input type="text" name="direction" id="search_direction"
-                            class="border-gray-300 bg-transparent block w-full px-5 py-3 text-base text-black font-extrabold dark:text-white  placeholder-black transition duration-500 ease-in-out transform rounded-lg bg-[#ff7900] dark:bg-[#ff7900] focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
+                            class="border-gray-300 bg-transparent block w-full px-5 py-3 text-base text-black font-extrabold dark:text-white  placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg bg-[#ff7900] dark:bg-[#ff7900] focus:outline-none focus:ring-theme focus:border-transparent focus:ring-2 dark:focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
 
                         @if (session('error'))
                             <x-input-error :messages="session('error')" class="mt-2" />
@@ -63,7 +63,7 @@
                     <div class="mt-4 ui-widget" id="service">
                         <label for="search_service" class="font-bold dark:text-white">Service </label>
                         <input type="text" name="service" id="search_service"
-                            class="border-gray-300 bg-transparent block w-full px-5 py-3 text-base text-black font-extrabold dark:text-white placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg bg-[#ff7900] dark:bg-[#ff7900] focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
+                            class="border-gray-300 bg-transparent block w-full px-5 py-3 text-base text-black font-extrabold dark:text-white placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg bg-[#ff7900] dark:bg-[#ff7900] focus:outline-none focus:ring-theme focus:border-transparent focus:ring-2 dark:focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
 
                         <x-input-error :messages="$errors->get('service')" class="mt-2" />
 
@@ -71,7 +71,7 @@
                     <div class="mt-4 ui-widget" id="manager">
                         <label for="search_manager" class="font-bold dark:text-white">Manager </label>
                         <input type="text" name="manager" id="search_manager"
-                            class="border-gray-300 bg-transparent block w-full px-5 py-3 text-base text-black font-extrabold dark:text-white placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg bg-gray-50 dark:bg-[#ff7900] focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
+                            class="border-gray-300 bg-transparent block w-full px-5 py-3 text-base text-black font-extrabold dark:text-white placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg bg-gray-50 dark:bg-[#ff7900] focus:outline-none focus:ring-theme focus:border-transparent focus:ring-2 dark:focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
 
                         <x-input-error :messages="$errors->get('manager')" class="mt-2" />
                     </div>
@@ -79,7 +79,7 @@
                     <div class="mt-4 ui-widget" id="city">
                         <label for="search_city" class="font-bold dark:text-white">Ville </label>
                         <input type="text" name="city" id="search_city"
-                            class="border-gray-300 bg-transparent block w-full px-5 py-3 text-base text-black font-extrabold dark:text-white placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg bg-gray-50 dark:bg-[#ff7900] focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
+                            class="border-gray-300 bg-transparent block w-full px-5 py-3 text-base text-black font-extrabold dark:text-white placeholder-gray-300 transition duration-500 ease-in-out transform rounded-lg bg-gray-50 dark:bg-[#ff7900] focus:outline-none focus:ring-theme focus:border-transparent focus:ring-2 dark:focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300">
 
                         <x-input-error :messages="$errors->get('city')" class="mt-2" />
                     </div>
