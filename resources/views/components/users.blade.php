@@ -69,13 +69,16 @@
                     <svg class=" w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                     </svg>
                 </button>
             </div>
-        @endif
-    </div>
-    <div class="relative overflow-x-auto mt-10">
+            @endif
+        </div>
+        <head>
+            <script src="https://cdn.datatables.net/2.1.7/js/dataTables.min.js"></script>
+        </head>
+    <div class="relative overflow-x-auto mt-3   ">
         <table id="myTable" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-gray-400">
                 <tr>
@@ -167,4 +170,50 @@
 <x-user-create :users="$usersList" :directions="$directions" :services="$services" :cities="$cities" />
 <x-activateUser : message="Voulez-vous activer cet utilisateur?" />
 <x-desactivateUser : message="Voulez-vous desactiver cet utilisateur?" />
+<style>
+    div.dt-container .dt-search{
+        display: flex;
+        justify-content: flex-end;
+        margin: 24px;
+    }
+    div.dt-container .dt-search input {
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    padding: 5px;
+    background-color: transparent;
+    color: inherit;
+    margin-left: 3px;
+    }
+
+    div.dt-container .dt-input {
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    padding: 5px;
+    background-color: transparent;
+    color: inherit;
+    
+    }
+
+    div.dt-container select.dt-input {
+    padding: 4px;
+    }
+    div.dt-container .dt-info{
+        display: none;
+    }
+
+</style>
+
 </div>
+<script>
+    new DataTable("#myTable", {
+        paging: false,
+        sortable: false
+        
+    });
+    
+    const div = document.querySelector('.dt-search');
+    const label = document.querySelector('label[for="dt-search-0"]')
+    const Search = document.querySelector('.dt-input')
+    Search.placeholder ="Recherche";
+    label.style.display = 'none';
+</script>

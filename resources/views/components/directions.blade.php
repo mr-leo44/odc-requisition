@@ -50,6 +50,9 @@
                 </div>
         @endif
     </div>
+        <head>
+            <script src="https://cdn.datatables.net/2.1.7/js/dataTables.min.js"></script>
+        </head>
     <div class="rounded-t my-4 px-4 py-3 border-0">
         <div class="flex justify-end my-2 space-x-1">
             <button type="button" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
@@ -112,3 +115,17 @@
     <x-createDirection :directions="$directions" />
     <x-deleteDirection :message="__('Voulez-vous  vraiment supprimer cette Direction ?')" />
 </div>
+<script>
+        new DataTable("#example", {
+        paging: false,
+        sortable: false
+        
+    });
+    const div1 = document.querySelector('.dt-search');
+    const label1 = document.querySelector('label[for="dt-search-0"]')
+    const Search1 = document.querySelector('.dt-input')
+    Search1.placeholder ="Recherche";
+    console.log(label1);
+    
+    label1.style.display = 'none';
+</script>
