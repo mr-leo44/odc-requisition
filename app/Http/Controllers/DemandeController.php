@@ -88,32 +88,45 @@ class DemandeController extends Controller
 
     private function getValidationFlows($req)
     {
-        $approvers = Approbateur::orderBy('level')->get();
+        $last_flow = Traitement::where('demande_id', $req->id)->orderBy('id', 'desc')->first();
         $flows_datas = [];
-        $firsts_flows = Traitement::where('demande_id', $req->id)->where('level', 0)->get();
-        foreach ($firsts_flows as $first_flow) {
-            $validator = User::find($first_flow->approbateur_id);
-            $flows_datas[] = [
-                'validator' => $validator->name,
-                'status' => $first_flow->status,
-                'date' => $first_flow->updated_at->format('d-m-Y')
-            ];
-        }
-        foreach ($approvers as $key => $approver) {
-            $flow = Traitement::where('demande_id', $req->id)->where('level', $key + 1)->first();
-            if ($flow) {
-                $validator = User::find($flow->approbateur_id);
+        if($last_flow->status === 'en_cours') {
+            $approvers = Approbateur::orderBy('level')->get();
+            $firsts_flows = Traitement::where('demande_id', $req->id)->where('level', 0)->get();
+            foreach ($firsts_flows as $first_flow) {
+                $validator = User::find($first_flow->approbateur_id);
                 $flows_datas[] = [
                     'validator' => $validator->name,
                     'status' => $first_flow->status,
                     'date' => $first_flow->updated_at->format('d-m-Y')
                 ];
-            } else {
-                $validator = User::where('email', $approver->email)->first();
+            }
+            foreach ($approvers as $key => $approver) {
+                $flow = Traitement::where('demande_id', $req->id)->where('level', $key + 1)->first();
+                if ($flow) {
+                    $validator = User::find($flow->approbateur_id);
+                    $flows_datas[] = [
+                        'validator' => $validator->name,
+                        'status' => $flow->status,
+                        'date' => $flow->updated_at->format('d-m-Y')
+                    ];
+                } else {
+                    $validator = User::where('email', $approver->email)->first();
+                    $flows_datas[] = [
+                        'validator' => $validator->name,
+                        'status' => '',
+                        'date' => ''
+                    ];
+                }
+            }
+        } else {
+            $flows = Traitement::where('demande_id', $req->id)->get();
+            foreach($flows as $flow) {
+                $validator = User::find($flow->approbateur_id);
                 $flows_datas[] = [
                     'validator' => $validator->name,
-                    'status' => '',
-                    'date' => ''
+                    'status' => $flow->status,
+                    'date' => $flow->updated_at->format('d-m-Y')
                 ];
             }
         }
