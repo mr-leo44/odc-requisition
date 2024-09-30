@@ -32,22 +32,39 @@ class PdfController extends Controller
 
     public function generate(Request $request, Demande $demande)
     {
-        $traitements = Traitement::where('demande_id', $demande->id)->get();
-        foreach ($traitements as $key => $traitement) {
-            $approbateur = User::find($traitement->approbateur_id);
-            $traitement['approbateur'] = $approbateur->name;
+        $last_flow = Traitement::where('demande_id', $demande->id)->orderBy('id', 'desc')->first();
+        $flows_datas = [];
+        $service= [];
+        if($last_flow->status !== 'en_cours') {
+            $flows = Traitement::where('demande_id', $demande->id)->get();
+            foreach($flows as $flow) {
+                $user_validator = User::find($flow->approbateur_id);
+                $validator = Approbateur::where('email',$user_validator->email)->first();
+                if($validator === null){
+                    $services[] = [
+                        'validator' => $user_validator->name,
+                        'status' => $flow->status,
+                    ];
+                } else {
+                    $flows_datas[] = [
+                        'validator' => $validator->name,
+                        'function' => $validator->fonction,
+                        'status' => $flow->status,
+                    ];
+                }
+            }
         }
-        // dd($traitements, $demande->demande_details);
-        return view('generatepdf.index', compact('demande', 'traitements'));
+        $demande['services'] = $services;
+        $demande['flows'] = $flows_datas;
 
-        // $html = view('generatepdf.index', compact('demande', 'traitements'))->render();
-        // $options = new Options();
-        // $options->set('isHtml5ParserEnabled', true);
-        // $options->set('isRemoteEnabled', true);
-        // $dompdf = new Dompdf($options);
-        // $dompdf->loadHtml($html);
-        // $dompdf->setPaper('A4', 'portrait');
-        // $dompdf->render();
-        // return $dompdf->stream("$demande->numero.pdf");
+        $html = view('generatepdf.index', compact('demande'))->render();
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        return $dompdf->stream("$demande->numero.pdf");
     }
 }
