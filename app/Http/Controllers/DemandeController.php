@@ -482,7 +482,7 @@ class DemandeController extends Controller
      */
     public function create()
     {
-        return view('demandes.create');
+        //
     }
 
     /**
@@ -543,95 +543,7 @@ class DemandeController extends Controller
      */
     public function show(Demande $demande)
     {
-        $en_cours = Traitement::where('demande_id', $demande->id)
-            ->orderBy('id', 'DESC')
-            ->first();
-        $manager = User::find($demande->user->compte->manager);
-        $manager_validator = Traitement::where('demande_id', $demande->id)->where('level', 0)->orderBy('id', 'desc')->first();
-        // dd($demande, $manager, $manager_validator);
-        if ($manager_validator->approbateur_id === $manager->id) {
-            $demande['manager'] = $manager;
-        } else {
-            $demande['manager'] = User::find($manager_validator->approbateur_id);
-        }
-        $connected_user = Session::get('authUser');
-        if ($connected_user->id === $en_cours->demandeur_id || $connected_user->id === $en_cours->approbateur_id) {
-            $approbateurs = Approbateur::orderBy('level', 'ASC')->get()->keyBy('email');
-            // dd($approbateurs);
-            $traitements = Traitement::where('demande_id', $demande->id)
-                ->orderBy('level', 'ASC')
-                ->get();
-            $users = User::all();
-
-            $users_approbateurs = [];
-            $validated_levels = [];
-            foreach ($traitements as $traitement) {
-                if (in_array($traitement->status, ['valide', 'rejete'])) {
-                    $validated_levels[] = $traitement->level;
-                }
-            }
-            // les autres approbateurs
-            foreach ($users as $user) {
-                if (isset($approbateurs[$user->email])) {
-                    $approbateur = $approbateurs[$user->email];
-                    $a_valide = in_array($approbateur->level, $validated_levels);
-                    // Ajouter seulement si les niveaux inférieurs sont validés
-                    if (empty($validated_levels) || max($validated_levels) >= ($approbateur->level - 1)) {
-                        $users_approbateurs[] = [
-                            'user' => $user,
-                            'level' => $approbateur->level,
-                            'validated' => $a_valide,
-                        ];
-                    }
-                }
-            }
-            // Trier les approbateurs
-            $users_approbateurs = collect($users_approbateurs)->sortBy(function ($item) {
-                return $item['validated'] ? -1 : $item['level'];
-            });
-            // informations finales pour la vue
-            $final_approbateurs = $users_approbateurs->pluck('user');
-            $date_validate = [];
-            foreach ($traitements as $traitement) {
-                $date_validate[] = $traitement->updated_at->format('d-m-Y H:i:s');
-            }
-            $demande['approbateurs'] = $final_approbateurs;
-            return view('demandes.show', compact('demande', 'traitements', 'en_cours', 'date_validate'));
-        } elseif ($connected_user->compte->role->value === RoleEnum::LIVRAISON->value) {
-            if ($en_cours->status === 'valide') {
-                $details = $demande->demande_details()->get();
-                $count = 0;
-                foreach ($details as $key => $detail) {
-                    if ($detail->qte_demandee === $detail->qte_livree) {
-                        $count += 1;
-                    }
-                }
-                if ($count === $details->count()) {
-                    $demande['delivered'] = true;
-                }
-                $traitements = Traitement::where('demande_id', $demande->id)
-                    ->orderBy('level', 'ASC')
-                    ->get();
-                $approvers = [];
-                foreach ($traitements as $traitement) {
-                    if ($traitement->level !== 0) {
-                        $user = User::find($traitement->approbateur_id);
-                        $approvers[] = $user;
-                    }
-                }
-                $demande['approbateurs'] = collect($approvers);
-
-                $date_validate = [];
-                foreach ($traitements as $traitement) {
-                    $date_validate[] = $traitement->updated_at->format('d-m-Y H:i:s');
-                }
-                return view('demandes.show', compact('demande', 'traitements', 'en_cours', 'date_validate'));
-            } else {
-                return response()->view('errors.403', [], 403);
-            }
-        } else {
-            return response()->view('errors.403', [], 403);
-        }
+        //
     }
 
     /**
@@ -640,8 +552,6 @@ class DemandeController extends Controller
     public function edit(Demande $demande)
     {
         //
-
-        return view('demandes.index', compact('demandes'));
     }
 
     /**
@@ -659,78 +569,6 @@ class DemandeController extends Controller
     {
         $demande->delete();
         return redirect()->back()->with('success', 'Suppression éffectuée avec succès');
-    }
-
-    public function historique()
-    {
-        $connected_user = Session::get('authUser');
-        if ($connected_user->compte->role->value === 'user') {
-            $demandes = Demande::whereHas('traitement', function (Builder $query) use ($connected_user) {
-                $query->where('approbateur_id', $connected_user->id)
-                    ->orWhere('demandeur_id', $connected_user->id)
-                    ->where('status', '!=', 'en_cours');
-            })
-                ->orderBy('created_at', 'desc')
-                ->paginate(15);
-        }
-        if ($connected_user->compte->role->value === 'livraison') {
-            $reqs = Demande::all();
-            $all_validated_keys = [];
-            foreach ($reqs as $key => $req) {
-                $last = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
-                if ($last->status === 'valide') {
-                    $all_validated_keys[$key] = $req->id;
-                }
-            }
-            $validated_reqs = Demande::whereIn('id', $all_validated_keys)->get();
-            $reqs_delivered = [];
-            foreach ($validated_reqs as $key => $validated) {
-                $req_details = DemandeDetail::where('demande_id', $validated->id)->get();
-                $delivered = 0;
-                foreach ($req_details as $req_detail) {
-                    $req_count = $req_detail->qte_demandee;
-                    $deliveries = Livraison::where('demande_detail_id', $req_detail->id)->get();
-                    $count = 0;
-                    if ($deliveries->count() > 0) {
-                        foreach ($deliveries as $key => $delivery) {
-                            $count += $delivery->quantite;
-                        }
-                    }
-                    if ($req_count === $count) {
-                        $delivered += 1;
-                    }
-                }
-                if ($delivered === $req_details->count()) {
-                    $reqs_delivered[] = $validated;
-                }
-            }
-            $demandes_array = collect($reqs_delivered);
-            $demandes = Demande::whereIn('id', $demandes_array->pluck('id'))->orderBy('created_at', 'desc')->paginate(10);
-        }
-
-        $requests = $demandes;
-        foreach ($requests as $key => $req) {
-            $last_flow = Traitement::where('demande_id', $req->id)->orderBy('id', 'DESC')->first();
-            if ($last_flow->status === 'rejete') {
-                $req['status'] = 'Rejected';
-            } elseif ($last_flow->status === 'valide') {
-                $details = $req->demande_details()->get();
-                $count = 0;
-                foreach ($details as $key => $detail) {
-                    if ($detail->qte_demandee === $detail->qte_livree) {
-                        $count += 1;
-                    }
-                }
-                if ($count === $details->count()) {
-                    $req['status'] = 'Delivered';
-                } else {
-                    $req['status'] = 'In progress';
-                }
-            } else {
-                $req['status'] = 'In progress';
-            }
-        }
-        return view('demandes.historique', compact('demandes'));
     }
 
     public function updateLivraison(Request $request)
