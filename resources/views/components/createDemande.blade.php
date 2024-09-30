@@ -5,8 +5,8 @@
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-lg  bg-gray-900  dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-white dark:text-black">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-lg  bg-gray-900 dark:bg-gray-800  dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-white dark:text-white">
                     Créer une demande
                 </h3>
                 <button type="button"
@@ -101,7 +101,7 @@
                         </div>
                         <div class="flex justify-end mb-1">
                             <button type="submit"
-                                class="block text-white focus:ring-4 bg-gray-400 hover:bg-gray-900 dark:bg-slate-300  hover:text-white focus:outline-none font-bold rounded-lg text-sm px-10 py-2 text-center">
+                                class="block text-white dark:text-black focus:ring-4 bg-gray-400 hover:bg-gray-900 dark:bg-slate-300  hover:text-white focus:outline-none font-bold rounded-lg text-sm px-10 py-2 text-center">
                                 Soumettre
                             </button>
                         </div>
