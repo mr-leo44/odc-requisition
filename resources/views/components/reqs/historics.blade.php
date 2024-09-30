@@ -80,7 +80,7 @@
                             <td class="px-6 py-4">
                                 @if ($req->status === 'Livrée')
                                     <span
-                                        class="opacity-95 border-green-500 border text-green-400 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded">
+                                        class="opacity-95 border-green-500 bg-green-500 border text-white text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded">
                                         <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                             <path
@@ -110,7 +110,7 @@
                                     </span>
                                 @elseif($req->status === 'Partiellement livrée')
                                     <span
-                                        class="opacity-95 border-emerald-300 border text-emerald-200 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded">
+                                        class="opacity-95 border-green-500 border text-green-500 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded">
                                         <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                             <path
