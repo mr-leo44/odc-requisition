@@ -97,7 +97,7 @@
         service.textContent = `Ville : ${req.user.compte.city}`
         service.classList.add("dark:text-white")
         const deliver = `{{ $deliver }}`
-        if (!deliver) {
+        if (!deliver || req.delivered)  {
             document.querySelector('#deliver').classList.add("hidden")
         }
 
@@ -105,7 +105,7 @@
             document.querySelector('#validation').classList.add("hidden")
         }
 
-        if (!req.validated) {
+        if (!req.validated || deliver) {
             document.querySelector('#generatePdf').classList.add("hidden")
         }
 
