@@ -78,7 +78,6 @@
     </div>
 
     <x-createDemande />
-    <x-deleteDemande />
     <x-showRequisition />
 
     <script>
