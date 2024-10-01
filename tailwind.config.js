@@ -13,7 +13,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Helvetica', 'Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Helvetica neue', 'Helvetica', 'Figtree', ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 'theme' : '#ff7900',
