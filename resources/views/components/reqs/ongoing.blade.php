@@ -1,5 +1,5 @@
 <div class="hidden p-2 rounded-lg" id="styled-ongoing" role="tabpanel" aria-labelledby="ongoing-tab">
-    <div class="flex gap-3 justify-between items-center mb-6">
+    <div class="flex gap-3 justify-between items-center mb-1">
         <div class="flex justify-between items-center">
             <button type="button" id="ongoingGridView"
                 class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-gray-400 hover:bg-gray-500 rounded-lg [&.active]:bg-gray-900 active">
@@ -28,32 +28,6 @@
                         d="M5 12h14m-7 7V5" />
                 </svg>
             </button>
-            <div>
-                <form class="flex items-center max-w-sm mx-auto">
-                    <label for="simple-search" class="sr-only">Search</label>
-                    <div class="relative w-full">
-                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M3 5v10M3 5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm12 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0V6a3 3 0 0 0-3-3H9m1.5-2-2 2 2 2" />
-                            </svg>
-                        </div>
-                        <input type="text" id="simple-search"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-theme focus:border-theme block w-full ps-10 p-2.5 dark:focus:text-gray-700"
-                            placeholder="Rechercher..." required />
-                    </div>
-                    <button type="submit" class="p-3.5 ms-2 text-sm font-medium text-white bg-gray-400 hover:bg-gray-600 rounded-lg">
-                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                        </svg>
-                        <span class="sr-only">Search</span>
-                    </button>
-                </form>
-            </div>
         </div>
     </div>
     @if ($ongoings->count() > 0)
@@ -119,8 +93,13 @@
             </div>
         </div>
     @endif
+
+        <head>
+            <script src="https://cdn.datatables.net/2.1.7/js/dataTables.min.js"></script>
+        </head>
+
     <div class="hidden text-gray-900 overflow-x-auto dark:text-white" id="ongoingCardListView">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <table id="ongoingData" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs uppercase bg-slate-100 dark:bg-transparent text-black dark:text-white">
                 <tr>
                     <th scope="col" class="px-6 py-3">
@@ -147,7 +126,6 @@
                 </tr>
             </thead>
             <tbody class="bg-white dark:bg-gray-800">
-                @if ($ongoings->count() > 0)
                     @foreach ($ongoings as $key => $req)
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-900 dark:border-gray-700">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">
@@ -197,24 +175,19 @@
                             </td>
                         </tr>
                     @endforeach
-                @else
-                    <tr class="dark:border-gray-700">
-                        <td colspan="7" class="px-6 py-4 text-lg text-center">
-                            @profile('livraison')
-                                {{ __('Pas de demande de livraison en cours!') }}
-                            @endprofile
-                            @profile('user')
-                                {{ __('Pas de demande en cours!') }}
-                            @endprofile
-                        </td>
-                    </tr>
-                @endif
             </tbody>
         </table>
     </div>
 </div>
 
 <x-deleteDemande />
+<script>
+    new Datatable('#ongoingData',{
+        paging: false,
+        sortable: false
+    })
+    
+</script>
 
 <script>
     const ongoingListView = document.getElementById("ongoingListView");

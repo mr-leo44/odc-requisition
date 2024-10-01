@@ -51,9 +51,9 @@
         @endif
     </div>
         <head>
-            <script src="https://cdn.datatables.net/2.1.7/js/dataTables.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
         </head>
-    <div class="rounded-t my-4 px-4 py-3 border-0">
+    <div class="rounded-t border-0">
         <div class="flex justify-end my-2 space-x-1">
             <button type="button" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
                 <svg class="w-[44px] h-[44px] text-theme" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -122,10 +122,8 @@
         
     });
     const div1 = document.querySelector('.dt-search');
-    const label1 = document.querySelector('label[for="dt-search-0"]')
-    const Search1 = document.querySelector('.dt-input')
+    const label1 = document.querySelector('label[for="dt-search-1"]')
+    const Search1 = document.getElementById('dt-search-1')
     Search1.placeholder ="Recherche";
-    console.log(label1);
-    
     label1.style.display = 'none';
 </script>
