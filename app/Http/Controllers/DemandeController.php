@@ -231,7 +231,7 @@ class DemandeController extends Controller
             if ($this->isManager($manager) || $this->isApprover($manager)) {
                 $demandes = Demande::with('demande_details')->whereHas('traitement', function (Builder $query) use ($manager) {
                     $query->where('approbateur_id', $manager->id)->where('status', 'en_cours');
-                })->latest()->paginate(12);
+                })->latest()->get();
 
                 foreach ($demandes as $demande) {
                     $demande['flows'] = $this->getValidationFlows($demande);
@@ -279,7 +279,7 @@ class DemandeController extends Controller
                     }
                 }
                 $demandes_array = collect($on_going);
-                $demandes = Demande::with('demande_details')->whereIn('id', $demandes_array->pluck('id'))->orderBy('id', 'desc')->paginate(12);
+                $demandes = Demande::with('demande_details')->whereIn('id', $demandes_array->pluck('id'))->orderBy('id', 'desc')->get();
             }
         } else {
             $demandes = [];
@@ -292,7 +292,7 @@ class DemandeController extends Controller
         if ($user->approver) {
             $demandes = Demande::with('demande_details')->whereHas('traitement', function (Builder $query) use ($user) {
                 $query->where('approbateur_id', $user->id)->where('status', 'en_cours');
-            })->latest()->paginate(12);
+            })->latest()->get();
 
             foreach ($demandes as $demande) {
                 $demande['flows'] = $this->getValidationFlows($demande);
@@ -427,8 +427,7 @@ class DemandeController extends Controller
                 $query->where('demandeur_id', $user->id)
                     ->where('status', '!=', 'en_cours');
             })
-                ->orderBy('created_at', 'desc')
-                ->paginate(9);
+                ->orderBy('created_at', 'desc')->get();
         }
         if ($user->compte->role->value === 'livraison') {
             $reqs = Demande::all();
@@ -439,7 +438,7 @@ class DemandeController extends Controller
                     $all_validated_keys[$key] = $req->id;
                 }
             }
-            $demandes = Demande::with('demande_details')->whereIn('id', $all_validated_keys)->latest()->paginate(9);
+            $demandes = Demande::with('demande_details')->whereIn('id', $all_validated_keys)->latest()->get();
         }
 
         foreach ($demandes as $key => $req) {
