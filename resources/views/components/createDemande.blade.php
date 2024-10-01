@@ -1,11 +1,12 @@
 <!-- Main modal -->
 <div id="authentication-modal" tabindex="-1" aria-hidden="true"
-    class="hidden mx-auto overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center max-w-7xl md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    class="hidden mx-auto overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center max-w-3xl md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-5xl max-h-full ">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-lg  bg-gray-900 dark:bg-gray-800  dark:border-gray-600">
+            <div
+                class="flex items-center justify-between p-4 md:p-5 border-b rounded-lg  bg-gray-900 dark:bg-gray-800  dark:border-gray-600">
                 <h3 class="text-xl font-semibold text-white dark:text-white">
                     Créer une demande
                 </h3>
@@ -22,7 +23,7 @@
             </div>
             <!-- Modal body -->
             <div class="p-4 md:p-5">
-                <div class="max-h-auto mx-auto max-w-5xl">
+                <div class="max-h-auto mx-auto max-w-3xl">
 
                     @if ($errors->any())
                         <div class="bg-red-500 text-white px-3 py-2 rounded-lg mb-4">
@@ -55,9 +56,9 @@
                                 <div class="flex justify-end mb-4">
                                     <button type="button"
                                         class="add-input  text-white bg-gray-400 hover:bg-gray-900 dark:bg-slate-300  focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-md p-2.5 text-center inline-flex items-center me-2">
-                                        <svg class="w-5 h-5 text-white dark:text-black hover:text-white dark:hover:text-white" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            fill="none" viewBox="0 0 24 24">
+                                        <svg class="w-5 h-5 text-white dark:text-black hover:text-white dark:hover:text-white"
+                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                            height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                                 stroke-width="2" d="M5 12h14m-7 7V5" />
                                         </svg>
@@ -100,9 +101,15 @@
                             </div>
                         </div>
                         <div class="flex justify-end mb-1">
-                            <button type="submit"
-                                class="block text-white dark:text-black focus:ring-4 bg-gray-400 hover:bg-gray-900 dark:bg-slate-300  hover:text-white focus:outline-none font-bold rounded-lg text-sm px-10 py-2 text-center">
-                                Soumettre
+                            <button type="submit" id="btn-submit"
+                                class="py-2 px-4 flex justify-center items-center text-white dark:text-black bg-gray-400 hover:bg-gray-900 dark:bg-slate-300  hover:text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none rounded-lg">
+                                <svg width="20" height="20" fill="currentColor" class="hidden mr-2 animate-spin"
+                                    viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M526 1394q0 53-37.5 90.5t-90.5 37.5q-52 0-90-38t-38-90q0-53 37.5-90.5t90.5-37.5 90.5 37.5 37.5 90.5zm498 206q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-704-704q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm1202 498q0 52-38 90t-90 38q-53 0-90.5-37.5t-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-964-996q0 66-47 113t-113 47-113-47-47-113 47-113 113-47 113 47 47 113zm1170 498q0 53-37.5 90.5t-90.5 37.5-90.5-37.5-37.5-90.5 37.5-90.5 90.5-37.5 90.5 37.5 37.5 90.5zm-640-704q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm530 206q0 93-66 158.5t-158 65.5q-93 0-158.5-65.5t-65.5-158.5q0-92 65.5-158t158.5-66q92 0 158 66t66 158z">
+                                    </path>
+                                </svg>
+                                <span>Soumettre</span>
                             </button>
                         </div>
                     </form>
@@ -117,25 +124,25 @@
                 e.preventDefault();
                 i++;
                 $('#input-container').append(`
-            <div class="grid gap-4 md:grid-cols-6 input-group">
-                <div class="col-span-5 ">
-                    <div class="flex justify-between gap-3">
-                        <x-text-input id="designation" class="bg-gray-50 w-[80%] border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" type="text" name="demandes[${i}][designation]" placeholder="Ex. Rame papier duplicataire" required autofocus autocomplete="off" />
-                        <x-input-error :messages="$errors->get('designation')" class="mt-2" />
-                        <x-text-input id="qte_demandee" class="bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-[23.8%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" type="number" min="1" step="1" name="demandes[${i}][qte_demandee]" required autofocus autocomplete="off" placeholder="Ex. 10"/>
-                        <x-input-error :messages="$errors->get('qte_demandee')" class="mt-2" />
+                    <div class="grid gap-4 md:grid-cols-6 input-group">
+                        <div class="col-span-5 ">
+                            <div class="flex justify-between gap-3">
+                                <x-text-input id="designation" class="bg-gray-50 w-[80%] border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" type="text" name="demandes[${i}][designation]" placeholder="Ex. Rame papier duplicataire" required autofocus autocomplete="off" />
+                                <x-input-error :messages="$errors->get('designation')" class="mt-2" autocomplete="off" />
+                                <x-text-input id="qte_demandee" autocomplete="off" class="bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-[23.8%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" type="number" min="1" step="1" name="demandes[${i}][qte_demandee]" required autofocus autocomplete="off" placeholder="Ex. 10"/>
+                                <x-input-error :messages="$errors->get('qte_demandee')" class="mt-2" />
+                            </div>
+                        </div>
+                        <div class="flex justify-end mb-4">
+                            <button type="button" class="delete-input text-white bg-slate-700 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-md p-2.5 text-center inline-flex items-center me-2 dark:bg-slate-600 dark:hover:bg-slate-900 dark:focus:ring-slate-800">
+                                <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14" />
+                                </svg>
+                                <span class="sr-only">Icon description</span>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="flex justify-end mb-4">
-                    <button type="button" class="delete-input text-white bg-slate-700 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-md p-2.5 text-center inline-flex items-center me-2 dark:bg-slate-600 dark:hover:bg-slate-900 dark:focus:ring-slate-800">
-                        <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14" />
-                        </svg>
-                        <span class="sr-only">Icon description</span>
-                    </button>
-                </div>
-            </div>
-        `);
+                `);
             });
 
             // Ajout de la fonction de suppression
@@ -152,7 +159,10 @@
 
             // Validation du formulaire
             $('form').submit(function(e) {
+                $('#btn-submit svg').removeClass('hidden')
+                $('#btn-submit span').text('Chargement')
                 let isValid = true;
+                var demandes = []
                 $('.input-group').each(function() {
                     const designation = $(this).find('input[name*="[designation]"]').val();
                     const qte_demandee = $(this).find('input[name*="[qte_demandee]"]').val();
@@ -161,6 +171,7 @@
                         return false; // Arrête la boucle each
                     }
                 });
+                
                 if (!isValid) {
                     e.preventDefault(); // Empêche la soumission du formulaire
                 }
