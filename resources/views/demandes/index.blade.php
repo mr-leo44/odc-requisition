@@ -79,7 +79,14 @@
 
     <x-createDemande />
     <x-showRequisition />
-
+    <style>
+        .dt-search label{
+            display: none !important;
+        }
+        .dt-empty {
+            display: none !important
+        }
+    </style>
     <script>
         const ongoingButton = document.getElementById("ongoing-styled-tab");
         const collaboratorsButton = document.getElementById("collaborators-styled-tab");
@@ -225,6 +232,6 @@
                 statisticsTab.classList.add('hidden')
             }
         }
-        toggleTab()
+        toggleTab()       
     </script>
 </x-app-layout>

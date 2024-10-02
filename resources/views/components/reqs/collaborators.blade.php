@@ -1,33 +1,11 @@
 <div class="hidden p-4 rounded-lg" id="styled-collaborators" role="tabpanel" aria-labelledby="collaborators-tab">
-    <div class="flex gap-3 justify-between items-center mb-6">
-        <div class="flex justify-end items-center ml-auto">
-            <form class="flex items-center max-w-sm mx-auto">
-                <label for="simple-search" class="sr-only">Search</label>
-                <div class="relative w-full">
-                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 5v10M3 5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm0 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm12 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0V6a3 3 0 0 0-3-3H9m1.5-2-2 2 2 2" />
-                        </svg>
-                    </div>
-                    <input type="text" id="simple-search"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-theme focus:border-theme block w-full ps-10 p-2.5 dark:focus:text-gray-700"
-                        placeholder="Rechercher..." required />
-                </div>
-                <button type="submit" class="p-3.5 ms-2 text-sm font-medium text-white bg-gray-400 hover:bg-gray-600 rounded-lg">
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                    </svg>
-                    <span class="sr-only">Search</span>
-                </button>
-            </form>
-        </div>
+    <div class="flex gap-3 justify-between items-center mb-1">
+        <head>
+            <script src="https://cdn.datatables.net/2.1.7/js/dataTables.min.js"></script>
+        </head>
     </div>
     <div class="text-gray-900 overflow-x-auto dark:text-white" id="collaboratorsCardListView">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <table id="collabTab" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs uppercase bg-slate-100 dark:bg-transparent text-black dark:text-white">
                 <tr>
                     <th scope="col" class="px-6 py-3">
@@ -51,7 +29,6 @@
                 </tr>
             </thead>
             <tbody class="bg-white dark:bg-gray-800">
-                @if ($collaborators && $collaborators->count() > 0)
                     @foreach ($collaborators as $key => $req)
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-900 dark:border-gray-700">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">
@@ -84,13 +61,6 @@
                             </td>
                         </tr>
                     @endforeach
-                @else
-                    <tr class="dark:border-gray-700">
-                        <td colspan="7" class="px-6 py-4 text-lg text-center">
-                            {{ __('Pas de demande pour l\'instant!') }}
-                        </td>
-                    </tr>
-                @endif
             </tbody>
         </table>
         @if ($collaborators)
@@ -98,3 +68,10 @@
         @endif
     </div>
 </div>
+<script>
+
+          new DataTable("#collabTab", {
+        paging: false,
+        sortable: false
+    });
+</script>
