@@ -39,7 +39,7 @@ class PdfController extends Controller
             $flows = Traitement::where('demande_id', $demande->id)->get();
             foreach($flows as $flow) {
                 $user_validator = User::find($flow->approbateur_id);
-                $validator = Approbateur::where('email',$user_validator->email)->first();
+                $validator = Approbateur::where('email',$user_validator->email)->withTrashed()->first();
                 if($validator === null){
                     $services[] = [
                         'validator' => $user_validator->name,
