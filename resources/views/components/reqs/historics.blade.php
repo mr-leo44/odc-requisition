@@ -1,7 +1,11 @@
 <div class="hidden p-4 rounded-lg" id="styled-historics" role="tabpanel" aria-labelledby="historics-tab">
+    <div class="flex gap-3 justify-between items-center mb-1">
         <head>
             <script src="https://cdn.datatables.net/2.1.7/js/dataTables.min.js"></script>
         </head>
+    </div>
+
+
     <div class="text-gray-900 overflow-x-auto dark:text-white" id="historicsCardListView">
         <table id="historics" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs uppercase bg-slate-100 dark:bg-transparent text-black dark:text-white">
@@ -109,16 +113,17 @@
                             </td>
                             <td class="px-6 py-4 text-right flex items-center justify-end gap-2">
                                 <button data-modal-target="show-modal" data-modal-toggle="show-modal" type="button"
-                                class="bg-gray-400 hover:bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded" onclick="showModal({{ $req }})">
-                                <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                    viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-width="2"
-                                        d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
-                                    <path stroke="currentColor" stroke-width="2"
-                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                </svg>
-                            </button>
+                                    class="bg-gray-900 active:bg-gray-600 dark:active:bg-gray-600 hover:bg-theme dark:hover:bg-theme px-3 py-2 rounded"
+                                    onclick="showModal({{ $req }})">
+                                    <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-width="2"
+                                            d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                                        <path stroke="currentColor" stroke-width="2"
+                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    </svg>
+                                </button>
                             </td>
                         </tr>
                     @endforeach
@@ -126,48 +131,51 @@
             </tbody>
         </table>
     </div>
+
     <style>
-    div.dt-container .dt-search{
-        display: flex;
-        justify-content: flex-end;
-        margin: 24px;
-    }
-    div.dt-container .dt-search input {
-    border: 1px solid #aaa;
-    border-radius: 3px;
-    padding: 5px;
-    background-color: transparent;
-    color: inherit;
-    margin-left: 3px;
-    }
+        div.dt-container .dt-search {
+            display: flex;
+            justify-content: flex-end;
+            margin: 24px;
+        }
 
-    div.dt-container .dt-input {
-    border: 1px solid #aaa;
-    border-radius: 3px;
-    padding: 5px;
-    background-color: transparent;
-    color: inherit;
-    
-    }
+        div.dt-container .dt-search input {
+            border: 1px solid #aaa;
+            border-radius: 3px;
+            padding: 5px;
+            background-color: transparent;
+            color: inherit;
+            margin-left: 3px;
+        }
 
-    div.dt-container select.dt-input {
-    padding: 4px;
-    }
-    div.dt-container .dt-info{
-        display: none;
-    }
+        div.dt-container .dt-input {
+            border: 1px solid #aaa;
+            border-radius: 3px;
+            padding: 5px;
+            background-color: transparent;
+            color: inherit;
 
-</style>
+        }
+
+        div.dt-container select.dt-input {
+            padding: 4px;
+        }
+
+        div.dt-container .dt-info {
+            display: none;
+        }
+    </style>
 </div>
+
+
 <script>
-    new DataTable("#historics", {
+    new DataTable('#historics', {
         paging: false,
         sortable: false
-        
     });
-    const div = document.querySelector('.dt-search');
-    const label = document.querySelector('label[for="dt-search-0"]')
-    const Search = document.querySelector('.dt-input');
-    Search.placeholder ="Recherche";
-    label.style.display = 'none'
+
+    const div = document.querySelector('.datatable-search');
+    const Search = document.querySelector('.datatable-input');
+
+    Search.placeholder = "Recherche ...";
 </script>

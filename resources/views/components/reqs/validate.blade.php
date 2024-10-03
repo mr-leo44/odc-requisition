@@ -2,15 +2,16 @@
     <div class="flex gap-3 justify-between items-center mb-1">
         <div class="flex justify-between items-center">
             <button type="button" id="validateGridView"
-                class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-gray-400 hover:bg-gray-500 rounded-lg [&.active]:bg-gray-900 active">
+                class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-gray-900 active:bg-gray-600 dark:active:bg-gray-600 hover:bg-theme  rounded-lg [&.active]:bg-theme">
                 <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M9.143 4H4.857A.857.857 0 0 0 4 4.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 10 9.143V4.857A.857.857 0 0 0 9.143 4Zm10 0h-4.286a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 20 9.143V4.857A.857.857 0 0 0 19.143 4Zm-10 10H4.857a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286a.857.857 0 0 0 .857-.857v-4.286A.857.857 0 0 0 9.143 14Zm10 0h-4.286a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286a.857.857 0 0 0 .857-.857v-4.286a.857.857 0 0 0-.857-.857Z" />
                 </svg>
             </button>
+
             <button type="button" id="validateListView"
-                class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-gray-400 hover:bg-gray-500 rounded-lg [&.active]:bg-gray-900">
+                class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-gray-900 active:bg-gray-600 dark:active:bg-gray-600 hover:bg-theme rounded-lg [&.active]:bg-theme">
                 <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
@@ -21,8 +22,8 @@
         <div class="flex justify-between items-center gap-3">
             <button type="button" @if (Session::get('authUser')->compte->role->value === 'livraison') class="hidden" @endif
                 data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
-                class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-gray-400 hover:bg-gray-500  rounded-lg">
-                <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-gray-900 active:bg-theme dark:active:bg-theme    hover:bg-theme  rounded-lg">
+                <svg class="w-6 h-6 text-white " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M5 12h14m-7 7V5" />
@@ -31,10 +32,11 @@
         </div>
     </div>
     @if ($validate && $validate->count() > 0)
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 grid-cols-1 gap-3" id="validateCardGridView">
+    <hr class="h-px my-3 bg-transparent border-0 dark:bg-transparent">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 grid-cols-1 gap-3 " id="validateCardGridView">
             @foreach ($validate as $req)
                 <div
-                    class="block bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                    class="block transform transition-transform duration-300 hover:scale-105  bg-white border border-gray-200 rounded-lg shadow-xl p-8 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                     <div class="border-b dark:border-gray-600 p-4">
                         <div class="flex items-center justify-between">
                             <h5
@@ -50,7 +52,7 @@
                     <div class="flex justify-end ml-auto items-center p-4">
                         <div class="flex justify-end ml-auto items-center gap-2">
                             <button data-modal-target="show-modal" data-modal-toggle="show-modal" type="button"
-                                class="bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded" onclick="showModal({{ $req }})">
+                                class="bg-gray-900 active:bg-theme dark:active:bg-theme hover:bg-theme  dark:hover:bg-theme px-3 py-2 rounded" onclick="showModal({{ $req }})">
                                 <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                     viewBox="0 0 24 24">
@@ -66,6 +68,7 @@
             @endforeach
         </div>
     @else
+
         <div class="grid grid-cols-1" id="validateCardGridView">
             <div class="block bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                 <div class="flex items-center justify-center py-10 text-lg">
@@ -77,8 +80,12 @@
         <head>
             <script src="https://cdn.datatables.net/2.1.7/js/dataTables.min.js"></script>
         </head>
+
+    {{--Créer un espace avant le tableau--}}
+        <hr class="h-px my-3 bg-transparent border-0 dark:bg-transparent">
+
     <div class=" text-gray-900 overflow-x-auto dark:text-white" id="validateCardListView">
-        <table id="example" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <table id="validateData" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs uppercase bg-slate-100 dark:bg-transparent text-black dark:text-white">
                 <tr>
                     <th scope="col" class="px-6 py-3">
@@ -127,7 +134,7 @@
                             </td>
                             <td class="px-6 py-4 text-right flex items-center ml-auto justify-end gap-2">
                                 <button data-modal-target="show-modal" data-modal-toggle="show-modal" type="button"
-                                class="bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded" onclick="showModal({{ $req }})">
+                                class="bg-gray-900 active:bg-gray-600 dark:active:bg-gray-600 hover:bg-theme dark:hover:bg-theme px-3 py-2 rounded" onclick="showModal({{ $req }})">
                                 <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                     viewBox="0 0 24 24">
@@ -149,16 +156,18 @@
         justify-content: flex-end;
         margin: 24px;
     }
-    
+
     </style>
 </div>
 <script>
-      new DataTable("#example", {
+      new DataTable('#validateData',{
         paging: false,
         sortable: false
-    });
-    const div1 = document.querySelector('.datatable-search');
-    const Search2 = document.querySelector('.datatable-input');
+    })
+
+    const div = document querySelector('.datatable-search');
+    const Search = document.querySelector('.datatable-input');
+
     Search.placeholder ="Recherche ...";
 
 </script>
