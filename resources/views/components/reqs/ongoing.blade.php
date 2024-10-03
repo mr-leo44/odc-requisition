@@ -1,8 +1,14 @@
 <div class="hidden p-2 rounded-lg" id="styled-ongoing" role="tabpanel" aria-labelledby="ongoing-tab">
+
+    <div class="flex gap-3 justify-between items-center mb-1">
+        <head>
+            <script src="https://cdn.datatables.net/2.1.7/js/dataTables.min.js"></script>
+        </head>
+    </div>
     <div class="flex gap-3 justify-between items-center mb-1">
         <div class="flex justify-between items-center">
             <button type="button" id="ongoingGridView"
-                class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-gray-400 hover:bg-gray-500 rounded-lg [&.active]:bg-gray-900 active">
+                class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-gray-900 hover:bg-gray-500 rounded-lg [&.active]:bg-theme">
                 <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -10,7 +16,7 @@
                 </svg>
             </button>
             <button type="button" id="ongoingListView"
-                class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-gray-400 hover:bg-gray-500 rounded-lg [&.active]:bg-gray-900">
+                class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-gray-900 hover:bg-gray-500 rounded-lg [&.active]:bg-theme">
                 <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
@@ -21,7 +27,7 @@
         <div class="flex justify-between items-center gap-3">
             <button type="button" @if (Session::get('authUser')->compte->role->value === 'livraison') class="hidden" @endif
                 data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
-                class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-gray-400 hover:bg-gray-600 rounded-lg ">
+                class="p-2.5 ms-2 ease-in-out transition-all duration-75 text-sm font-medium text-white bg-gray-900 active:bg-theme dark:active:bg-theme hover:bg-theme rounded-lg ">
                 <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -31,6 +37,7 @@
         </div>
     </div>
     @if ($ongoings->count() > 0)
+    <hr class="h-px my-3 bg-transparent border-0 dark:bg-transparent">
         <div class="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 grid-cols-1 gap-3" id="ongoingCardGridView">
             @foreach ($ongoings as $req)
                 <div
@@ -50,7 +57,7 @@
                     <div class="flex justify-end items-center ml-auto p-4">
                         <div class="flex justify-end items-center gap-2">
                             <button data-modal-target="show-modal" data-modal-toggle="show-modal" type="button"
-                                class="bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded" onclick="showModal({{ $req }})">
+                                class="bg-gray-900 active:bg-gray-600 dark:active:bg-gray-600 hover:bg-theme dark:hover:bg-theme px-3 py-2 rounded" onclick="showModal({{ $req }})">
                                 <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                     viewBox="0 0 24 24">
@@ -94,9 +101,6 @@
         </div>
     @endif
 
-        <head>
-            <script src="https://cdn.datatables.net/2.1.7/js/dataTables.min.js"></script>
-        </head>
 
     <div class="hidden text-gray-900 overflow-x-auto dark:text-white" id="ongoingCardListView">
         <table id="ongoingData" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -148,7 +152,7 @@
                             </td>
                             <td class="px-6 py-4 text-right flex items-center justify-end gap-2">
                                 <button data-modal-target="show-modal" data-modal-toggle="show-modal" type="button"
-                                    class="bg-gray-400 hover:bg-gray-600 px-3 py-2 rounded" onclick="showModal({{ $req }})">
+                                    class="bg-gray-900 active:bg-gray-600 dark:active:bg-gray-600 hover:bg-theme  px-3 py-2 rounded" onclick="showModal({{ $req }})">
                                     <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         fill="none" viewBox="0 0 24 24">
@@ -162,7 +166,7 @@
                                     <a onclick="supprimer(event);" data-modal-target="delete-modal" id="tableDelete"
                                         href="{{ route('demandes.destroy', $req->id) }}"
                                         data-modal-toggle="delete-modal"
-                                        class="bg-gray-600 dark:hover:bg-gray-800 px-3 py-2 rounded">
+                                        class="bg-red-700 active:bg-theme dark:active:bg-theme hover:bg-red-800   dark:hover:bg-red-800 px-3 py-2 rounded">
                                         <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             fill="none" viewBox="0 0 24 24">
@@ -181,12 +185,19 @@
 </div>
 
 <x-deleteDemande />
+
+
 <script>
-    new Datatable('#ongoingData',{
+    new DataTable('#ongoingData',{
         paging: false,
         sortable: false
     })
-    
+
+    const div = document.querySelector('.datatable-search');
+    const Search = document.querySelector('.datatable-input');
+
+    Search.placeholder ="Recherche ...";
+
 </script>
 
 <script>
@@ -220,4 +231,7 @@
         }
     }
     toggleOngoingView()
+
+
+
 </script>
