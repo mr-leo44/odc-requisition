@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     if (Session::get('authUser') !== null) {
@@ -17,7 +16,6 @@ Route::fallback(function(){
     return response()->view('errors.404', ['status_code' => 404], 404);
 });
 
-Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard')->middleware(['auth', 'role:livraison']);
 Route::get('/profile', [ProfileController::class, 'profile'])->name('profile.index')->middleware('auth');
 Route::put('/profile/{user}/update', [ProfileController::class, 'profileUpdate'])->name('profile.update')->middleware('auth');
 
