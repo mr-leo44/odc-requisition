@@ -39,7 +39,7 @@ class DemandeMail extends Mailable
             view: 'mails.demandes',
             with: [
                 'demande' => $this->demande,
-                'is_manager' => $this->is_validator
+                'is_validator' => $this->is_validator
             ]
         );
     }
