@@ -7,6 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
+        * {
+            font-family: 'Helvetica neue', 'Helvetica', 'Figtree', sans-serif;
+        }
         h1 {
             font-weight: 700;
             line-height: 32px;
