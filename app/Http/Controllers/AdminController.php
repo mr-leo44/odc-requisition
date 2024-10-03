@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Mail\UserMail;
 use App\Models\Compte;
 use App\Models\Direction;
+use App\Models\Delegation;
 use App\Models\Approbateur;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\Delegation;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
@@ -98,6 +100,7 @@ class AdminController extends Controller
                 ]);
             }
         }
+
         $userInserted = DB::table('users')->insert([
             'id' => $userData['id'],
             'name' => $userData['first_name'] .  ' ' . $userData['last_name'],
@@ -107,7 +110,7 @@ class AdminController extends Controller
 
         if ($userInserted) {
             $user = User::find($userData['id']);
-            Compte::create([
+            $user_compte = Compte::create([
                 "manager" => $manager,
                 "user_id" => $user->id,
                 "service" => $request->service,
@@ -115,6 +118,10 @@ class AdminController extends Controller
                 'city' => $request->city,
                 "role" => $request->role
             ]);
+        }
+
+        if($user_compte) {
+            Mail::to($user->email, $user->name)->send(new UserMail($user));
         }
         return redirect()->route('admin.index')->with('success', 'user créée avec succès');
     }

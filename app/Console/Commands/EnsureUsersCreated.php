@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use App\Models\Compte;
-use App\Mail\DemandeMail;
 use App\Mail\UserMail;
 use App\Models\Approbateur;
 use Illuminate\Console\Command;
@@ -25,7 +24,7 @@ class EnsureUsersCreated extends Command
      *
      * @var string
      */
-    protected $description = 'Vous avez été designé dans le flow de validation';
+    protected $description = 'Vous avez été Ajouté dans Requisition App';
 
     /**
      * Execute the console command.
@@ -39,26 +38,27 @@ class EnsureUsersCreated extends Command
             $users = $response->json()['users'];
         }
 
-        foreach ($managers as $key => $managerData) {
+        foreach ($managers as $managerData) {
             $manager_id = $managerData->manager;
-            foreach ($users as $key => $user) {
+            foreach ($users as $user) {
                 if ($user['id'] === $manager_id) {
                     $manager_name = $user['first_name'] . ' ' . $user['last_name'];
-                    $userManager = User::where('name', $manager_name)->first();
-                    if ($userManager === null) {
-                        Mail::to($user['email'], $manager_name)->send(new UserMail($user, true));
+                    if (User::where('name', $manager_name)->first() === null) {
+                        $user['name'] = $manager_name;
+                        $user['manager'] = true;
+                        Mail::to($user['email'], $manager_name)->send(new UserMail($user));
                     }
                 }
             }
         }
 
-        foreach ($approvers as $key => $approver) {
-            foreach ($users as $key => $user) {
+        foreach ($approvers as $approver) {
+            foreach ($users as $user) {
                 if ($user['email'] === $approver->email) {
                     $validator_name = $user['first_name'] . ' ' . $user['last_name'];
-                    $userValidator = User::where('name', $validator_name)->first();
-
-                    if ($userValidator === null) {
+                    if (User::where('name', $validator_name)->first() === null) {
+                        $user['approver'] = true;
+                        $user['name'] = $validator_name;
                         Mail::to($user['email'], $validator_name)->send(new UserMail($user));
                     }
                 }
