@@ -40,7 +40,8 @@ class TraitementController extends Controller
                 return redirect()->back()->with('success', 'Validation reussie');
             } else { // Pendant le passage des flow
                 $prochain_level = (int)($en_cours->level) + 1;
-                $prochain_approb = Approbateur::where('level', $prochain_level)->first();
+                $prochain_approb = User::where('email', Approbateur::where('level', $prochain_level)->first()->email)->first();
+                // dd($prochain_approb);
                 $success = $en_cours->update([
                     'status' => $request->status
                 ]);
@@ -50,7 +51,7 @@ class TraitementController extends Controller
                         'level' => $en_cours->level + 1,
                         'demande_id' => $demande->id,
                         'demandeur_id' => $en_cours->demandeur_id,
-                        'approbateur_id' => $validateur->id
+                        'approbateur_id' => $prochain_approb->id
                     ]);
 
                     if ($prochain_traitement) { // Prochain flow
@@ -64,8 +65,8 @@ class TraitementController extends Controller
                         $demande['validated'] = true;
                         $demande['level'] = $prochain_traitement->level;
 
-                        Mail::to($validateur->email, $validateur->name)->send(new DemandeMail($demande, true)); 
-                        Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande)); 
+                        Mail::to($validateur->email, $validateur->name)->send(new DemandeMail($demande, true));
+                        Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande));
                     }
                 }
                 return redirect()->back()->with('success', 'Validation reussie');
