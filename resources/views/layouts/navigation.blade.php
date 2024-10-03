@@ -3,11 +3,8 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <a @if (Session::get('authUser')->compte->role->value === 'user') href="{{ route('demandes.index') }}"
-                    @elseif(Session::get('authUser')->compte->role->value === 'livraison')
-                        href="{{ route('dashboard') }}"
-                    @else
-                        href="{{ route('admin.index') }}" @endif
+                <a @profile('admin') href="{{ route('admin.index') }}" @endprofile 
+                @profile('not-admin') href="{{ route('demandes.index') }}" @endprofile 
                     class="flex ms-2 md:me-24 items-center">
                     <img src="{{ asset('img/orange.png') }}" class="h-7 me-3" alt="FlowBite Logo" />
                     <span
@@ -33,7 +30,8 @@
                         id="apps-dropdown">
                         <div class="p-4">
                             @profile('not-admin')
-                                <a href="{{ route('demandes.index') }}" class="flex items-center p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group">
+                                <a href="{{ route('demandes.index') }}"
+                                    class="flex items-center p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group">
                                     <svg aria-hidden="true"
                                         class="mr-3 w-7 h-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
                                         fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -44,7 +42,8 @@
                                     <div class="text-sm text-gray-900 dark:text-white">Demandes</div>
                                 </a>
                             @endprofile
-                            <a href="{{ route('profile.index') }}" class="flex items-center p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group">
+                            <a href="{{ route('profile.index') }}"
+                                class="flex items-center p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group">
                                 <svg aria-hidden="true"
                                     class="mr-3 w-7 h-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
                                     fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
