@@ -10,10 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\Mail as MailModel;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
-use App\Http\Requests\StoreTraitementRequest;
-use App\Http\Requests\UpdateTraitementRequest;
 use App\Mail\DemandeMail;
-use App\Mail\TraitementMail;
 
 class TraitementController extends Controller
 {
@@ -25,6 +22,7 @@ class TraitementController extends Controller
         $en_cours = Traitement::where('demande_id', $demande->id)
             ->where('status', 'en_cours')
             ->first();
+        $validateur = User::find($en_cours->approbateur_id);
         if ($request->status === 'valide') {
             if ($en_cours->level === Approbateur::count()) { // Si c'est la fin du flow
                 $success = $en_cours->update([
@@ -32,17 +30,17 @@ class TraitementController extends Controller
                 ]);
                 if ($success) {
                     MailModel::where('traitement_id', $en_cours->id)->delete();
-                    $validateur = User::find($en_cours->approbateur_id);
                     $demande['validated'] = true;
+                    $demande['validateur'] = $validateur->name;
+                    $demande['deliverable'] = true;
                     $demande['success'] = true;
-                    Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande));
                     Mail::to($validateur->email, $validateur->name)->send(new DemandeMail($demande, true));
+                    Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande));
                 }
                 return redirect()->back()->with('success', 'Validation reussie');
             } else { // Pendant le passage des flow
                 $prochain_level = (int)($en_cours->level) + 1;
                 $prochain_approb = Approbateur::where('level', $prochain_level)->first();
-                $validateur = User::where('email', $prochain_approb->email)->first();
                 $success = $en_cours->update([
                     'status' => $request->status
                 ]);
@@ -62,8 +60,11 @@ class TraitementController extends Controller
                         ]);
 
                         $demande['success'] = true;
+                        $demande['validateur'] = $validateur->name;
+                        $demande['validated'] = true;
                         $demande['level'] = $prochain_traitement->level;
 
+                        Mail::to($validateur->email, $validateur->name)->send(new DemandeMail($demande, true)); 
                         Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande)); 
                     }
                 }
@@ -76,11 +77,11 @@ class TraitementController extends Controller
             ]);
 
             if ($cloture_traitement) {
+                $demande['validateur'] = $validateur->name;
                 MailModel::where('traitement_id', $en_cours->id)->delete();
                 $demande['observation'] = $request->observation;
-                $demande['success'] = false;
 
-                // dd($demande);
+                Mail::to($validateur->email, $validateur->name)->send(new DemandeMail($demande, true));
                 Mail::to($demande->user->email, $demande->user->name)->send(new DemandeMail($demande));
             }
 

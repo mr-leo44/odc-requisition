@@ -16,7 +16,7 @@ class UserMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public $user, public $manager = false)
+    public function __construct(public $user)
     {
         //
     }
@@ -27,7 +27,7 @@ class UserMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Orange Requisition',
+            subject: 'Demande de requisition interne',
         );
     }
 
@@ -40,7 +40,6 @@ class UserMail extends Mailable
             view: 'mails.user',
             with: [
                 'user' => $this->user,
-                'role' => $this->manager
             ]
         );
     }

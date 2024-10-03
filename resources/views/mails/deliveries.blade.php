@@ -1,4 +1,4 @@
-@props(['demande', 'is_validator'])
+@props(['req'])
 <div class="logo">
     <img width="80" height="80" style="border-radius: 2px; margin-top:16px;"
         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARwAAAEcCAMAAAAiKvvSAAAABGdBTU
@@ -70,80 +70,17 @@
         L/iU7JDnwzP9ux1dIWlf9tusp2PnT+pbgW15JuShv4r/CAAxzgAAc4wAHOrYuDMIxf/A8F63/8Gc
         +iFwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMy0wOC0yNlQxMToxNDoxMiswMDowMGgheeoAAAAldE
         VYdGRhdGU6bW9kaWZ5ADIwMjMtMDgtMjZUMTE6MTQ6MTIrMDA6MDAZfMFWAAAAAElFTkSuQmCC"
-        alt="logo" />
+        alt="logo Orange" />
 </div>
-<div style="margin-top: 24px; width: 100%;">
-    @if ($demande->success)
-        @if ($is_validator)
-            @if ($demande->validated)
-                <p>
-                    Bonjour {{ $demande->validateur }},
-                    <br>
-                    La demande de requisition numéro {{ $demande->numero }} qui
-                    requerrait votre validation a été un succès.
-                </p>
-            @else
-                <p>
-                    Bonjour {{ $demande->validateur }},
-                    <br>
-                    Vous avez reçu une demande de requisition de la part de
-                    {{ $demande->user->name }} enregistrée avec le numéro {{ $demande->numero }}.
-                    <br>
-                    <span>
-                        Veuillez cliquer
-                        <a class="ms-3 text-white bg-theme hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-theme dark:hover:bg-orange-700 focus:outline-none dark:focus:ring-orange-800"
-                            href="{{ route('demandes.index') }}"> {{ __('ici') }}</a> pour valider.
-                    </span>
-                </p>
-            @endif
-        @elseif($demande->deliverable)
-            <p>
-                Bonjour {{ $demande->user->name }},
-                <br>
-                Votre demande de requisition enregistrée par le numéro {{ $demande->numero }} a requis toutes les
-                validation. Elle est maintenant en attente de livraison.
-            </p>
-        @elseif($demande->level > 0 && $demande->validated)
-            <p>Bonjour {{ $demande->user->name }},
-                <br> Votre demande de
-                requisition enregistrée par le numéro {{ $demande->numero }} a été validée. Elle passe maintenant au
-                niveau
-                {{ $demande->level }}.
-            </p>
-        @else
-            <p>
-                Bonjour {{ $demande->user->name }},
-                <br><br> Votre demande de
-                requisition créée et a été enregistrée par le numéro {{ $demande->numero }}. Elle est maintenant mise
-                en attente pour
-                validation.
-            </p>
-        @endif
-    @elseif ($is_validator && !$demande->success)
-        <p>
-            Bonjour {{ $demande->validateur }}, <br> La demande de requisition enregistrée au numéro
-            {{ $demande->numero }} a été
-            rejetée avec
-            succès.
-            @if ($demande->observation)
-            <br>
-            <p>
-                <span style="font-weight: 600">Motif :</span> {{ $demande->observation }}.
-            </p>
-            @endif
-        </p>
-    @else
-        <p>
-            Bonjour {{ $demande->user->name }}, <br> Votre demande de
-            requisition enregistrée par le numéro {{ $demande->numero }} a été rejetée.
-            @if ($demande->observation)
-                <br>
-                <p>
-                    <span style="font-weight: 600">Motif :</span> {{ $demande->observation }}.
-                </p>
-            @endif
-        </p>
-    @endif
+<div
+    style="margin-top: 24px; width: 100%;">
+    <p>Bonjour {{ $req->user->name }},</p>
+    <br><br>
+    <p>Votre demande de requisition numéro {{ $req->numero }} a été livrée avec succès.</p>
+    <br>
+    <p>Vous trouverez ci-joint le bon de livraison au format PDF</p>
+    <p>Merci de vérifier les détails et de nous informer en cas de besoin</p>
+    <br><br>
     <p>Cordialement!</p>
-    <p>{{ config('app.name') }}.</p>
+    <p>{{ config('name') }}.</p>
 </div>

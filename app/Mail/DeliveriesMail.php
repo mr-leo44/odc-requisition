@@ -3,21 +3,24 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Attachment;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class DemandeMail extends Mailable
+class DeliveriesMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(public $demande, public $is_validator = false)
+    public function __construct(public $req)
     {
+        //
     }
 
     /**
@@ -26,7 +29,7 @@ class DemandeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Demande de requisition interne',
+            subject: 'Demandes de requisition interne',
         );
     }
 
@@ -36,10 +39,9 @@ class DemandeMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mails.demandes',
+            view: 'mails.deliveries',
             with: [
-                'demande' => $this->demande,
-                'is_validator' => $this->is_validator
+                'req' => $this->req
             ]
         );
     }
@@ -51,6 +53,11 @@ class DemandeMail extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        $title = $this->req->numero . "pdf";
+        $pdf = Pdf::loadView('generatePdf.deliveries', ['req' => $this->req]);
+        return [
+            Attachment::fromData(fn() => $pdf->output(), "$title")
+                ->withMime('application/pdf'),
+        ];
     }
 }
