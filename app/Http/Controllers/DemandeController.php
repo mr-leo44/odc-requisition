@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Compte;
-use App\Enums\RoleEnum;
 use App\Models\Demande;
 use App\Mail\DemandeMail;
 use App\Models\Livraison;
@@ -18,7 +17,6 @@ use App\Models\DemandeDetail;
 use App\Models\Mail as MailModel;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Direction;
@@ -90,7 +88,7 @@ class DemandeController extends Controller
     {
         $last_flow = Traitement::where('demande_id', $req->id)->orderBy('id', 'desc')->first();
         $flows_datas = [];
-        if($last_flow->status === 'en_cours') {
+        if ($last_flow->status === 'en_cours') {
             $approvers = Approbateur::orderBy('level')->get();
             $firsts_flows = Traitement::where('demande_id', $req->id)->where('level', 0)->get();
             foreach ($firsts_flows as $first_flow) {
@@ -121,7 +119,7 @@ class DemandeController extends Controller
             }
         } else {
             $flows = Traitement::where('demande_id', $req->id)->get();
-            foreach($flows as $flow) {
+            foreach ($flows as $flow) {
                 $validator = User::find($flow->approbateur_id);
                 $flows_datas[] = [
                     'validator' => $validator->name,
@@ -138,7 +136,7 @@ class DemandeController extends Controller
         if ($user->compte->role->value === 'user') {
             $reqs = Demande::with('demande_details')->whereHas('traitement', function ($query) use ($user) {
                 $query->where('demandeur_id', $user->id)->where('status', 'en_cours');
-            })
+            })->latest()
                 ->paginate(12);
             foreach ($reqs as $req) {
                 $last_flow = Traitement::where('demande_id', $req->id)->orderBy('id', 'desc')->first();
@@ -187,7 +185,7 @@ class DemandeController extends Controller
                 }
             }
             $demandes_array = collect($on_going);
-            $reqs = Demande::with('demande_details')->whereIn('id', $demandes_array->pluck('id'))->orderBy('id', 'desc')->paginate(12);
+            $reqs = Demande::with('demande_details')->whereIn('id', $demandes_array->pluck('id'))->orderBy('id', 'desc')->latest()->paginate(12);
         }
         return $reqs;
     }
@@ -315,6 +313,8 @@ class DemandeController extends Controller
         $demandes = Demande::all();
         $stats = [];
         $all_validated_keys = [];
+
+        //Toutes les requisitionqs validées
         foreach ($demandes as $key => $demande) {
             $last = Traitement::where('demande_id', $demande->id)->orderBy('id', 'DESC')->first();
             if ($last && $last->status === 'valide') {
@@ -324,6 +324,8 @@ class DemandeController extends Controller
         $validated_reqs = Demande::whereIn('id', $all_validated_keys)->get();
         $reqs_delivered = [];
         $stats['all_reqs'] = $validated_reqs->count();
+
+        // Les requisitionqs livrées
         foreach ($validated_reqs as $key => $validated) {
             $req_details = DemandeDetail::where('demande_id', $validated->id)->get();
             $delivered = 0;
@@ -346,6 +348,9 @@ class DemandeController extends Controller
         }
         $demandes_array = collect($reqs_delivered);
         $stats['delivered'] = Demande::whereIn('id', $demandes_array->pluck('id'))->orderBy('created_at', 'desc')->count();
+
+
+        // Les requisitionqs du mois
         $validated_keys = [];
         foreach ($validated_reqs as $key => $validated) {
             $validated_keys[$key] = $validated->id;
@@ -358,35 +363,12 @@ class DemandeController extends Controller
             $months[$month]['name'] = Carbon::create()->month($month + 1)->translatedFormat('F');
             $months[$month]['count'] = Demande::whereIn('id', $validated_keys)->whereMonth('created_at', $month + 1)->whereYear('created_at', Carbon::now()->year)->count();
         }
-        $on_going = [];
-        foreach ($validated_reqs as $key => $validated) {
-            $req_details = DemandeDetail::where('demande_id', $validated->id)->get();
-            $delivered = 0;
-            foreach ($req_details as $req_detail) {
-                $req_count = $req_detail->qte_demandee;
-                $count = 0;
-                if (Livraison::where('demande_detail_id', $req_detail->id)->exists()) {
-                    $deliveries = Livraison::where('demande_detail_id', $req_detail->id)->get();
-                    foreach ($deliveries as $key => $delivery) {
-                        $count += $delivery->quantite;
-                    }
-                    if ($req_count === $count) {
-                        $delivered += 1;
-                    }
-                }
-            }
-            if ($delivered < $req_details->count()) {
-                $on_going[] = $validated;
-            }
-        }
-        $reqs_array = collect($on_going);
-        $ongoing_reqs = Demande::whereIn('id', $reqs_array->pluck('id'))->latest()->paginate(5);
-        $reqs_count = Demande::whereIn('id', $reqs_array->pluck('id'))->count();
-        $stats['ongoing_reqs'] = $ongoing_reqs;
-        $stats['ongoing'] = $reqs_count;
+
+        // les requisitionqs par Directions
         $directions = Direction::withTrashed()->get();
-        $array_direction_req_count = [];
-        foreach ($directions as $key => $direction) {
+        $array_directions_req_count = [];
+        
+        foreach ($directions as $direction) {
             $userD = User::whereHas('compte', function (Builder $query) use ($direction) {
                 $query->where('direction_id', $direction->id);
             })->get();
@@ -397,23 +379,22 @@ class DemandeController extends Controller
                     $user_req_validated = [];
                     $user_count = 0;
                     if ($user_reqs !== []) {
-                        foreach ($user_reqs as $key => $user_req) {
+                        foreach ($user_reqs as $user_req) {
                             $last_tr = Traitement::where('demande_id', $user_req->id)->orderBy('id', 'desc')->first();
-                            if ($last_tr !== null) {
-                                if ($last_tr->status === 'valide') {
-                                    $user_req_validated[$key] = $user_req;
-                                }
+                            if ($last_tr && $last_tr->status === 'valide') {
+                                $user_req_validated[] = $user_req;
                             }
-                            $user_count = count($user_req_validated);
                         }
+                        $user_count = count($user_req_validated);
                     }
                     $users_count += $user_count;
                 }
             }
             $direction['req_count'] = $users_count;
-            $array_direction_req_count[$key] = $users_count;
+            $array_directions_req_count[] = $users_count;
         }
-        $best_direction = $directions->where('req_count', max($array_direction_req_count))->first();
+        // dd($directions);
+        $best_direction = $directions->where('req_count', max($array_directions_req_count))->first();
         $stats['directions'] = $directions;
         $stats['best_direction'] = $best_direction;
         $stats['months'] = $months;
@@ -427,7 +408,8 @@ class DemandeController extends Controller
                 $query->where('demandeur_id', $user->id)
                     ->where('status', '!=', 'en_cours');
             })
-                ->orderBy('created_at', 'desc')->get();
+                ->orderBy('created_at', 'desc')
+                ->paginate(9);
         }
         if ($user->compte->role->value === 'livraison') {
             $reqs = Demande::all();
@@ -438,7 +420,7 @@ class DemandeController extends Controller
                     $all_validated_keys[$key] = $req->id;
                 }
             }
-            $demandes = Demande::with('demande_details')->whereIn('id', $all_validated_keys)->latest()->get();
+            $demandes = Demande::with('demande_details')->whereIn('id', $all_validated_keys)->latest()->paginate(9);
         }
 
         foreach ($demandes as $key => $req) {
@@ -572,12 +554,14 @@ class DemandeController extends Controller
 
     public function updateLivraison(Request $request)
     {
-
-        $validatedData = $request->validate([
+        $request->validate([
             'details' => 'required|array',
         ]);
 
-        foreach ($validatedData['details'] as $detail) {
+        $req = Demande::find(DemandeDetail::find((int)$request->details[0]["id"])->demande_id);
+        $details = $request->details;
+        $deliveries = [];
+        foreach ($details as $detail) {
             if ($detail['quantite'] !== null) {
                 $demandeDetail = DemandeDetail::find((int)$detail['id']);
                 $new_quantity = $demandeDetail->qte_livree + $detail['quantite'];
@@ -590,30 +574,20 @@ class DemandeController extends Controller
                     ]);
 
                     if ($delivery) {
+                        $deliveries[] = [
+                            'to_deliver' => $demandeDetail->qte_demandee,
+                            'designation' => $demandeDetail->designation,
+                            'delivered' => $detail['quantite']
+                        ];
                         $demandeDetail->update([
                             'qte_livree' => $new_quantity
                         ]);
                     }
                 }
             }
-
-            // $req = Demande::find((int)$request->req);
-            // $req_details = DemandeDetail::where('demande_id', $req->id)->get();
-            // $delivered = 0;
-            // foreach ($req_details as $req_detail) {
-            //     $req_count = $req_detail->qte_demandee;
-            //     $deliveries = Livraison::where('demande_detail_id', $req_detail->id)->get();
-            //     $count = 0;
-            //     if ($deliveries->count() > 0) {
-            //         foreach ($deliveries as $key => $delivery) {
-            //             $count += $delivery->quantite;
-            //         }
-            //     }
-            //     if ($req_count === $count) {
-            //         $delivered += 1;
-            //     }
-            // }
         }
+        $req['deliveries'] = $deliveries;
+        Mail::to($req->user->email, $req->user->name)->send(new DeliveriesMail($req));
 
         return redirect()->back()->with('success', 'Livraison mise à jour avec succès');
     }
