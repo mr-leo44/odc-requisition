@@ -102,7 +102,7 @@
                         </div>
                         <div class="flex justify-end mb-1">
                             <button type="submit" id="btn-submit"
-                                class="py-2 px-4 flex justify-center items-center text-white dark:text-black bg-gray-400 hover:bg-gray-900 dark:bg-slate-300  hover:text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none rounded-lg">
+                                class="py-2 px-4 flex justify-center items-center text-white dark:text-black bg-gray-900 hover:bg-gray-900 dark:bg-slate-300  hover:text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none rounded-lg">
                                 <svg width="20" height="20" fill="currentColor" class="hidden mr-2 animate-spin"
                                     viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -171,7 +171,7 @@
                         return false; // Arrête la boucle each
                     }
                 });
-                
+
                 if (!isValid) {
                     e.preventDefault(); // Empêche la soumission du formulaire
                 }

@@ -6,9 +6,9 @@
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    Création d'une direction
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-lg bg-gray-900 dark:bg-gray-800 dark:border-gray-600 dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-white dark:text-white">
+                    Créer une direction
                 </h3>
                 <button type="button"
                     class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -36,29 +36,34 @@
                     <form class="w-full" action="{{ route('directions.store') }}" method="POST">
                         @csrf
                         <div id="input-container">
-                            <div class="grid gap-4 mb-6 md:grid-cols-6">
+                            <div class="grid gap-4 mb- md:grid-cols-6">
                                 <div class="col-span-5">
                                     <div class="grid gap-32 grid-cols-3">
                                         <div class="col-span-2">
                                             <x-input-label
                                                 class="flex-start font-bold block mb-2 text-sm text-gray-900 dark:text-white"
-                                                for="name" :value="__('Veuillez entrer votre direction')" />
+                                                for="name" :value="__('Entrer le nom de la direction')" />
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="grid gap-4 mb-6 md:grid-cols-6 input-group ">
+                            <div class="grid gap-4 mb-5 md:grid-cols-5 input-group ">
                                 <div class="col-span-5">
-                                    <div class="flex justify-between gap-3">
+                                    <div class="ui-widget">
                                         <x-text-input id="name"
-                                            class="bg-gray-50 w-[80%] border-gray-300 text-gray-900 text-sm rounded-lg block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                                            class="bg-gray-50  border-gray-300 block mt-1 w-full  text-gray-900 text-sm rounded-lg p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
                                             type="text" name="name" :value="old('name')"
                                             placeholder="Nom " required autofocus
                                             autocomplete="name" />
-                                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                                        <button type="submit" class="block text-white bg-theme focus:ring-4 focus:outline-none font-bold rounded-lg text-sm px-10 text-center">
-                                        Soumettre
-                                        </button>
+                                        <x-input-error :messages="$errors->get('name')" class="mt-8" />
+                                        
+                                        
+                                            <div class="flex justify-end mt-3">
+
+                                            <button type="submit" class="text-white bg-gray-900 hover:bg-theme focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                                            Soumettre
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

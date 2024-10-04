@@ -5,9 +5,9 @@
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    Délégation
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-lg bg-gray-900 dark:bg-gray-800 dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-white dark:text-white">
+                    Créer une délégation
                 </h3>
                 <button type="button"
                     class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -59,18 +59,18 @@
                         <div class="mt-4 ui-widget flex justify-between">
                             <div class="mt-4 ui-widget" id="date_debut">
                                 <x-input-label for="date_debut" :value="__('Date de début')" />
-                                <input type="datetime-local" class="bg-slate-500 rounded-xl" name="date_debut" id="date_debut" required />
+                                <input type="datetime-local" class="bg-slate-300 rounded-xl" name="date_debut" id="date_debut" required />
                                 <x-input-error :messages="$errors->get('date_debut')" class="mt-2" />
                             </div>
                             <div class="mt-4 ui-widget">
                                 <x-input-label for="date_fin" :value="__('Date de fin')" />
-                                <input type="datetime-local" class="bg-slate-500 rounded-xl" name="date_fin" id="date_fin" required />
+                                <input type="datetime-local" class="bg-slate-300 rounded-xl" name="date_fin" id="date_fin" required />
                                 <x-input-error :messages="$errors->get('date_fin')" class="mt-2" />
                             </div>
                         </div>
                         <div class="flex justify-end mt-3 mb-4">
                             <button type="submit"
-                                class="text-white bg-theme hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                                class="text-white bg-gray-900 hover:bg-theme focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
                                 Soumettre
                                     </button>
                         </div>

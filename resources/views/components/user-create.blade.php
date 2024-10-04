@@ -5,14 +5,14 @@
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-lg bg-gray-900 dark:bg-gray-800 dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-white rouned-md dark:text-white">
                     Ajouter un utilisateur
                 </h3>
                 <button type="button"
                     class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                     data-modal-hide="modal">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    <svg class="w-3 h-3 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
@@ -37,37 +37,37 @@
 
                         <div class="ui-widget" id="name">
                             <x-input-label for="search_user" :value="__('Nom')" />
-                            <x-text-input id="search_user" class="block mt-1 w-full" type="text" name="name"
-                                :value="old('name')" required />
+                            <x-text-input id="search_user" class="block mt-1 w-full bg-gray-50" type="text" name="name"
+                                :value="old('name')" placeholder="Saisir le nom d'utilisateur... " required />
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
                         <div class="mt-4 ui-widget" id="direction">
                             <x-input-label for="search_direction" :value="__('Direction')" />
-                            <x-text-input id="search_direction" class="block mt-1 w-full" type="text"
-                                name="direction" :value="old('direction')" required />
+                            <x-text-input id="search_direction" class="block mt-1 w-full bg-gray-50" type="text"
+                                name="direction" :value="old('direction')" placeholder="Saisir le nom de la direction..." required />
                             <x-input-error :messages="$errors->get('direction')" class="mt-2" />
                         </div>
                         <div class="mt-4 ui-widget" id="service">
                             <x-input-label for="search_service" :value="__('Service')" />
-                            <x-text-input id="search_service" class="block mt-1 w-full" type="text" name="service"
-                                :value="old('service')" required />
+                            <x-text-input id="search_service" class="block mt-1 w-full bg-gray-50" type="text" name="service"
+                                :value="old('service')" placeholder="Saisir le nom du service..." required />
                             <x-input-error :messages="$errors->get('service')" class="mt-2" />
 
                         </div>
                         <div class="mt-4 ui-widget" id="city">
                             <x-input-label for="search_city" :value="__('Ville')" />
-                            <x-text-input id="search_city" class="block mt-1 w-full" type="text" name="city"
-                                :value="old('city')" required />
+                            <x-text-input id="search_city" class="block mt-1 w-full bg-gray-50" type="text" name="city"
+                                :value="old('city')" placeholder="Saisir le nom de la ville..." required />
                             <x-input-error :messages="$errors->get('city')" class="mt-2" />
 
                         </div>
                         <div class="mt-4 ui-widget">
                             <x-input-label for="search_manager" :value="__('Manager')" />
-                            <x-text-input id="search_manager" class="block mt-1 w-full" type="text" name="manager"
-                                :value="old('manager')" required />
+                            <x-text-input id="search_manager" class="block mt-1 w-full bg-gray-50" type="text" name="manager"
+                                :value="old('manager')" placeholder="Saisir le nom du manager..." required />
                             <x-input-error :messages="$errors->get('manager')" class="mt-2" />
                         </div>
-                        <div class="mt-4 w-52">
+                        <div class="mt-4 max-w-lg mx-full">
                             <x-input-label for="role" :value="__('Rôle')" />
                             <select name="role" id="role"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
@@ -81,7 +81,7 @@
                         </div>
                         <div class="flex justify-end mt-3 mb-4">
                             <button type="submit"
-                                class="text-white bg-theme hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                                class="text-white bg-gray-900 hover:bg-theme focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
                                 Soumettre
                             </button>
                         </div>
