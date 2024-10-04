@@ -55,7 +55,7 @@
                                 </div>
                                 <div class="flex justify-end mb-4">
                                     <button type="button"
-                                        class="add-input  text-white bg-gray-400 hover:bg-gray-900 dark:bg-slate-300  focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-md p-2.5 text-center inline-flex items-center me-2">
+                                        class="add-input  text-white dark:text-black bg-gray-900 hover:bg-theme dark:bg-slate-300  focus:ring-4 focus:outline-none  font-medium rounded-lg text-md p-2.5 text-center inline-flex items-center me-2">
                                         <svg class="w-5 h-5 text-white dark:text-black hover:text-white dark:hover:text-white"
                                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                                             height="24" fill="none" viewBox="0 0 24 24">
@@ -102,7 +102,7 @@
                         </div>
                         <div class="flex justify-end mb-1">
                             <button type="submit" id="btn-submit"
-                                class="py-2 px-4 flex justify-center items-center text-white dark:text-black bg-gray-900 hover:bg-gray-900 dark:bg-slate-300  hover:text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none rounded-lg">
+                                class="py-2 px-4 flex justify-center items-center text-white dark:text-black bg-gray-900 hover:bg-theme dark:bg-slate-300  hover:text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none rounded-lg">
                                 <svg width="20" height="20" fill="currentColor" class="hidden mr-2 animate-spin"
                                     viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
                                     <path
