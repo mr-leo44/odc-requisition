@@ -36,17 +36,17 @@ class DelegationController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    { 
+    {
         $name = $request->input('delegue');
         $delegant = $request->input('delegant');
         $motif = $request->input('motif');
         $date1 = $request->input('date_debut');
         $date2 = $request->input('date_fin');
-           
+
         $dateDebut = \Carbon\Carbon::parse($date1);
         $dateFin = \Carbon\Carbon::parse($date2);
         $dateCourante = \Carbon\Carbon::now();
-    
+
         if ($dateDebut->lt($dateCourante)) {
             return redirect()->back()->with('error', 'La date de début ne peut pas être inférieure à la date actuelle.');
         }
@@ -78,9 +78,9 @@ class DelegationController extends Controller
                 $data['delegant'] = $delegant_id;
                 Delegation::create($data);
             }
-            return redirect()->back()->with('message', 'Délégation effectuée avec succès !');
+            return redirect()->back()->with('delegation', 'Délégation effectuée avec succès !');
         }
-        
+
         return redirect()->back()->with('error','Erreur lors de la vérification de l\'ID.');
     }
 
@@ -115,7 +115,7 @@ class DelegationController extends Controller
     {
         $delegation = Delegation::findOrFail($id);
         $delegation->delete();
-        return redirect()->back()->with('message', "Délégué supprimé avec succès.");
+        return redirect()->back()->with('delegation', "Délégué supprimé avec succès.");
     }
     private function checkIdInAPI($name)
     {

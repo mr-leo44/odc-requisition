@@ -1,6 +1,6 @@
 <div class="hidden p-4 rounded-lg" id="styled-direction" role="tabpanel" aria-labelledby="direction-tab">
     <div>
-        @if (session()->has('message'))
+        @if (session()->has('direction'))
             <div id="direction-success-message"
                 class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
                 role="alert">
@@ -11,7 +11,7 @@
                 </svg>
                 <span class="sr-only">Info</span>
                 <div class="ms-3 text-sm font-medium">
-                    {{ session('message') }}
+                    {{ session('direction') }}
                 </div>
                 <button type="button"
                     class="ms-auto -mx-2.5 -my-2.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
@@ -65,7 +65,7 @@
             </button>
         </div>
     </div>
-    
+
     <div class="bg-white dark:bg-gray-800 shadow-md sm:rounded-lg">
         <div class="overflow-x-auto">
             <table id="example" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -119,7 +119,7 @@
         new DataTable("#example", {
         paging: false,
         sortable: false
-        
+
     });
     const div1 = document.querySelector('.dt-search');
     const label1 = document.querySelector('label[for="dt-search-1"]')
