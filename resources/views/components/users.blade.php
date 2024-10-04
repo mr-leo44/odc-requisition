@@ -1,5 +1,5 @@
 @props(['users', 'usersList', 'directions', 'services', 'cities'])
-<div class="hidden p-4 rounded-lg" id="styled-user" role="tabpanel" aria-labelledby="user-tab">
+<div class="hidden p-4 rounded-lg " id="styled-user" role="tabpanel" aria-labelledby="user-tab">
     <div class="flex flex-wrap items-center">
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
             <h3 class=" font-bold text-base dark:text-white">
@@ -101,7 +101,6 @@
                 </tr>
             </thead>
             <tbody class="bg-white dark:bg-gray-900">
-                @if ($users->count() > 0)
                     @foreach ($users as $key => $user)
                         <tr
                             class="bg-white  border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -152,13 +151,6 @@
                             </td>
                         </tr>
                     @endforeach
-                @else
-                    <tr>
-                        <td colspan="5" class="text-center px-6 py-4">
-                            {{ __('Aucun utilisateur se trouve dans cette application') }}
-                        </td>
-                    </tr>
-                @endif
             </tbody>
         </table>
     </div>
@@ -216,4 +208,7 @@
     const Search = document.querySelector('.dt-input')
     Search.placeholder ="Recherche";
     label.style.display = 'none';
+    let content = document.querySelector('.dt-empty');
+    content.textContent = " Aucun utilisateur trouvé";
+    content.classList.add('text-center');
 </script>
