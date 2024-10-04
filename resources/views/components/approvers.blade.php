@@ -239,7 +239,7 @@
 					</tr>
 
                 `;
-                        $("tbody").append(tr);
+                        $("#sortable").append(tr);
                     }
                 });
                 $('tbody').on('click', '.delete', function() {
@@ -249,8 +249,10 @@
                     var i = b + 1;
                     if (b == 4 && $a == true) {
                         document.getElementById('add').style.display = 'none';
-                    } else {
+                    } else if(b > 4) {
                         document.getElementById('add').style.display = 'block';
+                    }
+                    if(b == 0){
                         document.getElementById('create').style.display = 'none';
                     }
                 });
