@@ -40,7 +40,7 @@ class DirectionController extends Controller
             $directions->name = $request->name;
             $directions->save();
         }
-        return redirect()->back()->with('message', 'Direction créée avec succès');
+        return redirect()->back()->with('direction', 'Direction créée avec succès');
     }
 
     /**
@@ -72,8 +72,8 @@ class DirectionController extends Controller
      */
     public function destroy(Direction $direction )
     {
-        
+
         $direction->delete();
-        return back()->with('message', 'Direction supprimée avec succès');
+        return back()->with('direction', 'Direction supprimée avec succès');
     }
 }
