@@ -8,7 +8,7 @@
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-lg bg-gray-900 dark:bg-gray-800 dark:border-gray-600">
                 <div id="title"></div>
                 <button type="button"
                     class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -38,11 +38,10 @@
                         @method('PUT')
                         <div id="id">
                         </div>
-                        <div class="flex">
-                            <label for="role"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white m-4">Rôle :</label>
+                        <div class="mt-4 max-w-lg mx-full">
+                            <x-input-label for="role" :value="__('Rôle')" />
                             <select name="role" id="role"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-52 p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                 required>
                                 @foreach ($roles as $role)
                                     <option value="{{ $role->value }}"
@@ -50,11 +49,12 @@
                                     </option>
                                 @endforeach
                             </select>
+                            <x-input-error :messages="$errors->get('role')" class="mt-2" />
                         </div>
-                        <div class="flex justify-end mt-2 mb-2">
+                        <div class="flex justify-end mt-3 mb-4">
                             <button type="submit"
-                                class="text-white bg-theme focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-orange-400 dark:hover:bg-orange-500 dark:focus:ring-orange-500">
-                                Valider
+                                class="text-white bg-gray-900 hover:bg-theme focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                                Soumettre
                             </button>
                         </div>
                     </form>
@@ -69,7 +69,7 @@
         event.preventDefault()
         const title = document.getElementById('title')
         title.innerHTML =
-            `<h3 class="text-xl font-semibold text-gray-900 dark:text-white px-6" id="title">Changement du rôle de ${user.name}</h3><h3 class="text-md font-semibold text-gray-900 dark:text-white px-6" id="title">Rôle actuel : ${user.compte.role}</h3> `
+            `<h3 class="text-xl font-semibold text-white rouned-md dark:text-white px-6" id="title">Changement du rôle de ${user.name}</h3><h3 class="text-xl font-semibold text-white rouned-md dark:text-white px-6" id="title">Rôle actuel : ${user.compte.role}</h3> `
         const id = document.getElementById('id')
         id.innerHTML = `<input type="hidden" name="id" value="${user.id}">`
     }
